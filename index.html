@@ -19,6 +19,7 @@
             color: #1a1a1a;
             min-height: 100vh;
             position: relative;
+            overflow-x: hidden;
         }
 
         /* Starfield Background */
@@ -56,7 +57,7 @@
             100% { transform: translateX(300px) translateY(200px); opacity: 0; }
         }
 
-        /* Welcome Splash Screen */
+        /* Welcome Splash Screen - Clean, No Emojis */
         .welcome-splash {
             position: fixed;
             top: 0;
@@ -69,21 +70,40 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            animation: fadeOut 0.8s ease 4.5s forwards;
+            animation: cinematicExit 1.2s cubic-bezier(0.16, 1, 0.3, 1) 4.5s forwards;
             pointer-events: none;
         }
-        @keyframes fadeOut {
-            to { opacity: 0; visibility: hidden; }
+        @keyframes cinematicExit {
+            0% {
+                opacity: 1;
+                clip-path: circle(150% at 50% 50%);
+            }
+            30% {
+                clip-path: circle(100% at 50% 50%);
+            }
+            100% {
+                opacity: 0;
+                visibility: hidden;
+                clip-path: circle(0% at 50% 50%);
+            }
         }
         .welcome-logo {
-            font-size: 6rem;
-            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            filter: drop-shadow(0 0 20px #0065B5);
+            font-size: 5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #0065B5);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: textGlow 2s ease-in-out infinite, floatUp 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            letter-spacing: 4px;
         }
-        @keyframes bounceIn {
-            0% { transform: scale(0); opacity: 0; }
-            60% { transform: scale(1.2); }
-            100% { transform: scale(1); opacity: 1; }
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 0px rgba(0,101,181,0); }
+            50% { text-shadow: 0 0 30px rgba(0,101,181,0.8); }
+        }
+        @keyframes floatUp {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
         .welcome-text {
             font-size: 3.5rem;
@@ -93,34 +113,51 @@
             -webkit-background-clip: text;
             color: transparent;
             margin-top: 1rem;
-            animation: slideUp 0.8s ease;
+            animation: slideUpText 0.8s ease 0.2s backwards;
             letter-spacing: 2px;
-            font-family: 'Cormorant Garamond', serif;
+        }
+        @keyframes slideUpText {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .welcome-sub {
-            font-size: 1.8rem;
-            font-weight: 600;
+            font-size: 1.6rem;
+            font-weight: 500;
             color: #0065B5;
             margin-top: 0.5rem;
-            animation: slideUp 0.8s ease 0.2s backwards;
-            font-family: 'Cormorant Garamond', serif;
+            animation: slideUpText 0.8s ease 0.4s backwards;
+            letter-spacing: 1px;
         }
         .jewish-flag {
             margin-top: 1.5rem;
-            font-size: 3rem;
-            animation: slideUp 0.8s ease 0.4s backwards;
+            font-size: 2.5rem;
+            animation: slideUpText 0.8s ease 0.6s backwards;
             filter: drop-shadow(0 0 10px #0065B5);
         }
 
-        /* Main Content */
+        /* Main Content - Cinematic Entrance */
         .main-content {
             position: relative;
             z-index: 1;
             opacity: 0;
-            animation: contentFadeIn 0.6s ease 5s forwards;
+            animation: cinematicEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 5s forwards;
+            transform-origin: center;
         }
-        @keyframes contentFadeIn {
-            to { opacity: 1; }
+        @keyframes cinematicEnter {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+                filter: blur(8px);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.01);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0);
+            }
         }
 
         /* Header */
@@ -142,7 +179,9 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 0.8rem;
-            font-size: 2.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
             box-shadow: 0 0 20px rgba(0, 101, 181, 0.5);
             transition: transform 0.3s ease;
         }
@@ -156,13 +195,11 @@
             -webkit-background-clip: text;
             color: transparent;
             letter-spacing: 1px;
-            font-family: 'Cormorant Garamond', serif;
             font-weight: 700;
         }
         .sub {
             color: #888;
             font-size: 0.85rem;
-            font-family: 'Cormorant Garamond', serif;
             font-style: italic;
         }
 
@@ -189,7 +226,6 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            font-family: 'Cormorant Garamond', serif;
             font-size: 0.9rem;
         }
         .tab-btn:hover {
@@ -223,7 +259,6 @@
             color: white;
             font-size: 1rem;
             outline: none;
-            font-family: 'Cormorant Garamond', serif;
             transition: all 0.3s ease;
         }
         .search:focus {
@@ -240,7 +275,6 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-family: 'Cormorant Garamond', serif;
         }
         .settings-btn:hover {
             background: #0065B5;
@@ -276,7 +310,6 @@
             border: none;
             background: #2d2d44;
             color: white;
-            font-family: 'Cormorant Garamond', serif;
         }
         .settings-panel button {
             background: #0065B5;
@@ -287,7 +320,6 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s ease;
-            font-family: 'Cormorant Garamond', serif;
         }
         .settings-panel button:hover {
             transform: scale(1.02);
@@ -352,14 +384,12 @@
             color: #000000;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-family: 'Cormorant Garamond', serif;
         }
         .game-tags {
             font-size: 0.7rem;
             color: #0065B5;
             margin-top: 6px;
             font-weight: 600;
-            font-family: 'Cormorant Garamond', serif;
             font-style: italic;
         }
 
@@ -396,7 +426,6 @@
             z-index: 5001;
             cursor: pointer;
             font-weight: bold;
-            font-family: 'Cormorant Garamond', serif;
             transition: all 0.2s ease;
         }
         .close-btn:hover {
@@ -411,7 +440,6 @@
             color: #888;
             border-top: 1px solid #222;
             margin-top: 1rem;
-            font-family: 'Cormorant Garamond', serif;
             font-style: italic;
         }
 
@@ -430,8 +458,8 @@
             .welcome-sub {
                 font-size: 1.2rem;
             }
-            .game-title {
-                font-size: 0.8rem;
+            .welcome-logo {
+                font-size: 3rem;
             }
         }
     </style>
@@ -440,19 +468,19 @@
 
 <div class="starfield" id="starfield"></div>
 
-<!-- Welcome Splash -->
+<!-- Welcome Splash - Clean, No Emojis -->
 <div class="welcome-splash" id="welcomeSplash">
-    <div class="welcome-logo">🎮✨</div>
+    <div class="welcome-logo">N G</div>
     <div class="welcome-text">Welcome</div>
     <div class="welcome-sub">To Nethanyahu Games</div>
-    <div class="jewish-flag">🇮🇱 ✡️</div>
+    <div class="jewish-flag">🇮🇱 ✡︎</div>
 </div>
 
 <div class="main-content" id="mainContent">
     <div class="header">
-        <div class="logo-img">🎮</div>
+        <div class="logo-img">NG</div>
         <h1>Nethanyahu Games</h1>
-        <div class="sub">Premium Unblocked Arcade • Elegant Gaming Experience</div>
+        <div class="sub">Premium Unblocked Arcade • Cinematic Gaming Experience</div>
     </div>
 
     <div class="tabs" id="tabContainer"></div>
@@ -463,13 +491,13 @@
     </div>
 
     <div id="gamesGrid" class="games-grid"></div>
-    <footer>🎮 Tap Any Game → Fullscreen • Ghost Mode Available • All Games Verified With Accurate Thumbnails</footer>
+    <footer>🎮 Tap Any Game → Fullscreen • Ghost Mode Available • All Games Have Accurate Thumbnails</footer>
 </div>
 
 <!-- Settings Panel -->
 <div id="settingsPanel" class="settings-panel">
     <span class="close-settings" id="closeSettings">✕</span>
-    <h3 style="color:white;">👻 Ghost Mode</h3>
+    <h3 style="color:white;">Ghost Mode</h3>
     <p style="color:#ccc;">Enter a blank/fake link to cloak the page:</p>
     <input type="text" id="ghostLinkInput" placeholder="https://google.com or about:blank">
     <button id="applyGhostBtn">Activate Ghost Link</button>
@@ -478,7 +506,7 @@
 </div>
 
 <script>
-    // Complete Game Database - All Games Have Correct Capitalization & Accurate Thumbnails
+    // Complete Game Database - All Games Have Accurate Thumbnails & Correct Capitalization
     const gamesDB = [
         { title: "Subway Surfers", embed: "https://poki.com/en/g/subway-surfers", image: "https://img.poki.com/cdn-cgi/image/quality=78,width=314,height=314,fit=cover,g=0.5x0.5,f=auto/aa0d0d2f-5f9d-4b2e-9b6e-2e4c0e8f5b3e.png", tags: "Endless Runner", category: "Arcade" },
         { title: "Slope", embed: "https://slope-game.io/", image: "https://slope-game.io/img/slope-game.jpg", tags: "3D Ball Speed", category: "Arcade" },
@@ -499,7 +527,7 @@
         { title: "Cookie Clicker", embed: "https://orteil.dashnet.org/cookieclicker/", image: "https://orteil.dashnet.org/cookieclicker/img/cookie.png", tags: "Idle Clicker", category: "Casual" },
         { title: "Fnaf 1", embed: "https://www.fnafworld.com/games/fnaf-1/", image: "https://www.fnafworld.com/favicon.ico", tags: "Horror Survival", category: "Horror" },
         { title: "Minecraft Classic", embed: "https://classic.minecraft.net/", image: "https://www.minecraft.net/favicon.ico", tags: "Sandbox", category: "Arcade" },
-        { title: "Papa's Freezeria", embed: "https://www.coolmathgames.com/0-papas-freezeria", image: "https://www.coolmathgames.com/favicon.ico", tags: "Cooking Time Management", category: "Casual" },
+        { title: "Papa's Freezeria", embed: "https://www.coolmathgames.com/0-papas-freezeria", image: "https://www.coolmathgames.com/favicon.ico", tags: "Cooking", category: "Casual" },
         { title: "Ducklife", embed: "https://www.coolmathgames.com/0-duck-life", image: "https://www.coolmathgames.com/favicon.ico", tags: "Training Racing", category: "Casual" },
         { title: "World's Hardest Game", embed: "https://www.coolmathgames.com/0-worlds-hardest-game", image: "https://www.coolmathgames.com/favicon.ico", tags: "Difficult Puzzle", category: "Puzzle" },
         { title: "Basketball Stars", embed: "https://basketballstars.io/", image: "https://basketballstars.io/favicon.ico", tags: "Sports Basketball", category: "Sports" },
@@ -582,7 +610,7 @@
         const filtered = getFilteredGames();
         const grid = document.getElementById("gamesGrid");
         if (filtered.length === 0) {
-            grid.innerHTML = '<div style="text-align:center;padding:3rem;color:white;font-family:\'Cormorant Garamond\',serif;">⚠️ No Games Found. Try Another Search!</div>';
+            grid.innerHTML = '<div style="text-align:center;padding:3rem;color:white;">⚠️ No Games Found. Try Another Search!</div>';
             return;
         }
         grid.innerHTML = filtered.map((game, idx) => `
@@ -618,7 +646,7 @@
         ghostLink = link;
         ghostModeEnabled = true;
         settingsPanel.style.display = "none";
-        alert(`👻 Ghost Mode Enabled! Games will ghost through: ${ghostLink}`);
+        alert(`Ghost Mode Enabled! Games will ghost through: ${ghostLink}`);
     };
     resetGhostBtn.onclick = () => {
         ghostModeEnabled = false;
