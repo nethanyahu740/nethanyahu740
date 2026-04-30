@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Nexus Hub | Games & Apps</title>
+    <title>Nethanyahu games</title> <!-- updated title -->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <!-- iOS / iPhone specific: make web app feel native -->
+    <!-- iOS / iPhone specific -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="format-detection" content="telephone=no">
@@ -14,7 +14,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent; /* remove grey flash on tap iOS */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -25,13 +25,60 @@
             overflow-x: hidden;
         }
 
-        /* smooth scrolling + touch friendly */
         html {
             -webkit-text-size-adjust: 100%;
             touch-action: manipulation;
         }
 
-        /* modern scrollbar (still works iOS) */
+        /* ========== ANIMATIONS GLOBAL ========== */
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes gentlePulse {
+            0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(168, 85, 247, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+        }
+        @keyframes floatGlow {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes borderPulse {
+            0% { border-color: rgba(139, 92, 246, 0.4); }
+            50% { border-color: rgba(168, 85, 247, 0.9); }
+            100% { border-color: rgba(139, 92, 246, 0.4); }
+        }
+
+        .glass-nav, .panel, .game-card, .app-card, .section-title, .sub, footer {
+            animation: fadeSlideUp 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+        }
+
+        .game-card, .app-card {
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            animation: fadeSlideUp 0.5s ease backwards;
+            animation-delay: calc(0.03s * var(--order, 0));
+        }
+        .game-card:hover, .app-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            animation: gentlePulse 1.2s infinite, borderPulse 1.8s infinite;
+        }
+        .game-card:active, .app-card:active {
+            transform: scale(0.97);
+            transition: 0.05s;
+        }
+        .nav-btn {
+            transition: all 0.2s ease;
+        }
+        .nav-btn:active {
+            transform: scale(0.94);
+        }
+        .section-title {
+            animation: floatGlow 3s ease-in-out infinite;
+        }
+
+        /* scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -45,7 +92,7 @@
             border-radius: 12px;
         }
 
-        /* header navigation – sticky & touch optimized */
+        /* header navigation */
         .glass-nav {
             background: rgba(46, 26, 74, 0.85);
             backdrop-filter: blur(16px);
@@ -69,6 +116,7 @@
             -webkit-background-clip: text;
             color: transparent;
             letter-spacing: -0.3px;
+            animation: floatGlow 2.5s ease-in-out infinite;
         }
         .nav-buttons {
             display: flex;
@@ -83,32 +131,23 @@
             color: white;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.2s ease;
             backdrop-filter: blur(4px);
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
             -webkit-tap-highlight-color: transparent;
         }
-        .nav-btn:active {
-            transform: scale(0.96);
-            background: #a855f7;
-        }
         .nav-btn.active {
             background: #a855f7;
-            box-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+            box-shadow: 0 0 14px rgba(168, 85, 247, 0.6);
         }
 
-        /* main panels */
+        /* panels */
         .panel {
             display: none;
-            animation: fadeIn 0.3s ease;
+            animation: fadeSlideUp 0.45s ease;
             padding: 1.8rem 1.2rem 2.5rem;
         }
         .panel.active-panel {
             display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px);}
-            to { opacity: 1; transform: translateY(0);}
         }
 
         .section-title {
@@ -129,30 +168,24 @@
             font-size: 0.9rem;
         }
 
-        /* card grid - responsive touch grid */
+        /* card grid */
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
             gap: 1.5rem;
-            max-width: 1300px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* game & app cards - big touch targets */
         .game-card, .app-card {
             background: rgba(46, 34, 65, 0.7);
             backdrop-filter: blur(8px);
             border-radius: 1.8rem;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            border: 1px solid rgba(139, 92, 246, 0.4);
+            border: 1px solid rgba(139, 92, 246, 0.5);
             box-shadow: 0 12px 18px -8px rgba(0, 0, 0, 0.4);
             -webkit-tap-highlight-color: transparent;
-        }
-        .game-card:active, .app-card:active {
-            transform: scale(0.97);
-            background: rgba(80, 55, 110, 0.9);
         }
         .card-img {
             width: 100%;
@@ -167,13 +200,11 @@
             text-align: center;
             font-weight: 700;
             font-size: 1.05rem;
-            letter-spacing: -0.2px;
             background: rgba(0, 0, 0, 0.3);
             border-top: 1px solid rgba(255,255,255,0.05);
             color: #f0e9ff;
         }
 
-        /* footer */
         footer {
             background: #1a0f29;
             text-align: center;
@@ -183,8 +214,7 @@
             border-top: 1px solid #3b2a55;
         }
 
-        /* =========== IOS FRIENDLY FULLSCREEN OVERLAY =========== */
-        /* fullscreen iframe with close button and gesture support */
+        /* fullscreen overlay */
         .fullscreen-overlay {
             position: fixed;
             top: 0;
@@ -195,7 +225,7 @@
             z-index: 2000;
             display: flex;
             flex-direction: column;
-            animation: fadeIn 0.25s ease;
+            animation: fadeSlideUp 0.25s ease;
         }
         .fullscreen-iframe {
             width: 100%;
@@ -203,12 +233,11 @@
             border: none;
             background: #000;
         }
-        /* iOS safe area close button */
         .close-fullscreen-btn {
             position: absolute;
             top: 12px;
             right: 18px;
-            background: rgba(0,0,0,0.65);
+            background: rgba(0,0,0,0.7);
             backdrop-filter: blur(12px);
             padding: 12px 20px;
             border-radius: 50px;
@@ -218,16 +247,11 @@
             border: none;
             z-index: 2002;
             cursor: pointer;
-            font-family: inherit;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
-            transition: 0.1s ease;
-            -webkit-tap-highlight-color: transparent;
+            transition: 0.1s;
         }
         .close-fullscreen-btn:active {
             transform: scale(0.96);
-            background: rgba(0,0,0,0.85);
         }
-        /* hint for iOS */
         .ios-hint {
             position: absolute;
             bottom: 20px;
@@ -243,112 +267,57 @@
             margin: 0 auto;
             border-radius: 30px;
             pointer-events: none;
-            z-index: 2001;
-            font-weight: 500;
         }
 
         @media (max-width: 640px) {
             .glass-nav {
                 flex-direction: row;
-                justify-content: space-between;
                 padding: 0.8rem 1rem;
             }
-            .logo {
-                font-size: 1.2rem;
-            }
-            .nav-btn {
-                padding: 0.5rem 1.1rem;
-                font-size: 0.9rem;
-            }
-            .section-title {
-                font-size: 1.7rem;
-            }
-            .card-grid {
-                gap: 1rem;
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-            .card-img {
-                height: 140px;
-            }
-            .card-title {
-                font-size: 0.95rem;
-                padding: 0.7rem 0.4rem;
-            }
-            .close-fullscreen-btn {
-                top: 8px;
-                right: 12px;
-                padding: 8px 16px;
-                font-size: 0.85rem;
-            }
+            .logo { font-size: 1.2rem; }
+            .nav-btn { padding: 0.5rem 1.1rem; font-size: 0.9rem; }
+            .section-title { font-size: 1.7rem; }
+            .card-grid { gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+            .card-img { height: 140px; }
         }
-
-        /* landscape adjustments */
         @media (orientation: landscape) and (max-height: 500px) {
-            .game-card, .app-card {
-                border-radius: 1.2rem;
-            }
-            .card-img {
-                height: 110px;
-            }
+            .card-img { height: 110px; }
         }
     </style>
     <script>
-        // iOS-friendly fullscreen handler (replaces old method, works on iPhones)
+        // fullscreen handler (iOS friendly)
         function openFullscreen(url) {
-            // prevent multiple overlays
             if (document.querySelector('.fullscreen-overlay')) return;
-            
-            // create overlay container
             const overlay = document.createElement('div');
             overlay.className = 'fullscreen-overlay';
-            
-            // create iframe
             const iframe = document.createElement('iframe');
             iframe.src = url;
             iframe.className = 'fullscreen-iframe';
             iframe.setAttribute('allowfullscreen', 'true');
             iframe.setAttribute('allow', 'autoplay; fullscreen; clipboard-write; accelerometer; gyroscope');
-            iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-presentation'); // keeps most games functional
-            
-            // close button (big touch target)
+            iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-presentation');
             const closeBtn = document.createElement('button');
             closeBtn.innerText = '✕ CLOSE';
             closeBtn.className = 'close-fullscreen-btn';
-            closeBtn.setAttribute('aria-label', 'Close game');
-            
-            // iOS hint
             const hint = document.createElement('div');
             hint.className = 'ios-hint';
-            hint.innerText = 'Tap outside or press ✕ to exit | swipe to navigate? use close button';
-            
+            hint.innerText = 'Tap ✕ to exit game';
             overlay.appendChild(iframe);
             overlay.appendChild(closeBtn);
             overlay.appendChild(hint);
             document.body.appendChild(overlay);
             document.body.style.overflow = 'hidden';
-            
-            // close function
             const closeFullscreen = () => {
                 if (overlay && overlay.parentNode) overlay.remove();
                 document.body.style.overflow = '';
-                // cleanup any leftover focus
-                document.activeElement?.blur();
             };
-            
-            // close on button click
             closeBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 closeFullscreen();
             });
-            
-            // Optional: close on tapping the background (but not on iframe)
             overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    closeFullscreen();
-                }
+                if (e.target === overlay) closeFullscreen();
             });
-            
-            // Also handle escape key for keyboards (bluetooth keyboard on iPad)
             const escHandler = (e) => {
                 if (e.key === 'Escape') {
                     closeFullscreen();
@@ -357,91 +326,91 @@
             };
             document.addEventListener('keydown', escHandler);
             overlay._escHandler = escHandler;
-            
-            // for iOS: prevent body scroll while fullscreen (already overflow hidden)
-            // ensure iframe gets focus if possible but not intrusive
-            setTimeout(() => {
-                try { iframe.contentWindow?.focus(); } catch(e) {}
-            }, 200);
         }
         
-        // Navigation between Games & Apps (keep all original games/apps exact)
         function showPanel(panelId) {
-            document.querySelectorAll('.panel').forEach(panel => {
-                panel.classList.remove('active-panel');
-            });
+            document.querySelectorAll('.panel').forEach(panel => panel.classList.remove('active-panel'));
             document.getElementById(panelId).classList.add('active-panel');
-            
-            // update active button style
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            if (panelId === 'gamesPanel') {
-                document.getElementById('btnGames').classList.add('active');
-            } else {
-                document.getElementById('btnApps').classList.add('active');
-            }
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            if (panelId === 'gamesPanel') document.getElementById('btnGames').classList.add('active');
+            else document.getElementById('btnApps').classList.add('active');
         }
         
         document.addEventListener('DOMContentLoaded', () => {
             showPanel('gamesPanel');
-            
-            // Add iOS body class for specific styles if needed
-            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                document.body.classList.add('ios-device');
-            }
+            // set staggered animation delay for cards
+            let cards = document.querySelectorAll('.game-card, .app-card');
+            cards.forEach((card, idx) => {
+                card.style.setProperty('--order', idx);
+            });
         });
-        
-        // make any dynamic cards touch-friendly (no double-tap zoom on cards)
-        const style = document.createElement('style');
-        style.textContent = `
-            .game-card, .app-card {
-                touch-action: manipulation;
-            }
-            iframe.fullscreen-iframe {
-                width: 100%;
-                height: 100%;
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </head>
 <body>
 
 <nav class="glass-nav">
-    <div class="logo">✦ NEXUS HUB ✦</div>
+    <div class="logo">⚡ Nethanyahu games ⚡</div>
     <div class="nav-buttons">
         <button class="nav-btn active" id="btnGames" onclick="showPanel('gamesPanel')">🎮 Games</button>
         <button class="nav-btn" id="btnApps" onclick="showPanel('appsPanel')">📱 Apps</button>
     </div>
 </nav>
 
-<!-- GAMES PANEL (original games: Krunker, Agar, Slither, Shell Shockers, Diep.io - untouched) -->
+<!-- GAMES PANEL : Contains original games + trending games from freegames.io -->
 <div id="gamesPanel" class="panel active-panel">
     <div class="section-title">🎮 Arcade & Action</div>
-    <div class="sub">tap any card → fullscreen play • optimized for iPhone / iPad</div>
+    <div class="sub">🔥 trending from freegames.io + your classics | tap to play</div>
     <div class="card-grid">
-        <!-- Krunker.io -->
-        <div class="game-card" onclick="openFullscreen('https://krunker.io/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=krunker.io&sz=128" alt="Krunker.io" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Krunker'">
-            <div class="card-title">🔫 Krunker.io</div>
-        </div>
-        <!-- Agar.io -->
-        <div class="game-card" onclick="openFullscreen('https://agar.io/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=agar.io&sz=128" alt="Agar.io" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Agar.io'">
-            <div class="card-title">🟢 Agar.io</div>
-        </div>
-        <!-- Slither.io -->
-        <div class="game-card" onclick="openFullscreen('https://slither.io/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=slither.io&sz=128" alt="Slither.io" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Slither.io'">
-            <div class="card-title">🐍 Slither.io</div>
-        </div>
-        <!-- Shell Shockers -->
+        <!-- ========== NEW GAMES from freegames.io (embedded as direct working links) ========== -->
+        <!-- Shell Shockers (popular) -->
         <div class="game-card" onclick="openFullscreen('https://shellshock.io/')">
             <img class="card-img" src="https://www.google.com/s2/favicons?domain=shellshock.io&sz=128" alt="Shell Shockers" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Shell+Shockers'">
             <div class="card-title">🥚 Shell Shockers</div>
         </div>
-        <!-- Diep.io -->
+        <!-- Powerline.io -->
+        <div class="game-card" onclick="openFullscreen('https://powerline.io/')">
+            <img class="card-img" src="https://www.google.com/s2/favicons?domain=powerline.io&sz=128" alt="Powerline.io" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Powerline.io'">
+            <div class="card-title">⚡ Powerline.io</div>
+        </div>
+        <!-- Basket Bros -->
+        <div class="game-card" onclick="openFullscreen('https://basketbros.io/')">
+            <img class="card-img" src="https://www.google.com/s2/favicons?domain=basketbros.io&sz=128" alt="Basket Bros" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Basket+Bros'">
+            <div class="card-title">🏀 Basket Bros</div>
+        </div>
+        <!-- Evowars -->
+        <div class="game-card" onclick="openFullscreen('https://evowars.io/')">
+            <img class="card-img" src="https://www.google.com/s2/favicons?domain=evowars.io&sz=128" alt="Evowars" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Evowars'">
+            <div class="card-title">🐉 Evowars</div>
+        </div>
+        <!-- Moto X3M -->
+        <div class="game-card" onclick="openFullscreen('https://motox3m.io/')">
+            <img class="card-img" src="https://www.google.com/s2/favicons?domain=motox3m.io&sz=128" alt="Moto X3M" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Moto+X3M'">
+            <div class="card-title">🏍️ Moto X3M</div>
+        </div>
+        <!-- Smash Karts -->
+        <div class="game-card" onclick="openFullscreen('https://smashkarts.io/')">
+            <img class="card-img" src="https://www.google.com/s2/favicons?domain=smashkarts.io&sz=128" alt="Smash Karts" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Smash+Karts'">
+            <div class="card-title">🏎️ Smash Karts</div>
+        </div>
+        <!-- Castles.cc -->
+        <div class="game-card" onclick="openFullscreen('https://castles.cc/')">
+            <img class="card-img" src="https://www.google.com/s2/favicons?domain=castles.cc&sz=128" alt="Castles.cc" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Castles.cc'">
+            <div class="card-title">🏰 Castles.cc</div>
+        </div>
+        
+        <!-- original classic games (existing ones, keeping from prior) -->
+        <div class="game-card" onclick="openFullscreen('https://krunker.io/')">
+            <img class="card-img" src="https://www.google.com/s2/favicons?domain=krunker.io&sz=128" alt="Krunker.io" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Krunker'">
+            <div class="card-title">🔫 Krunker.io</div>
+        </div>
+        <div class="game-card" onclick="openFullscreen('https://agar.io/')">
+            <img class="card-img" src="https://www.google.com/s2/favicons?domain=agar.io&sz=128" alt="Agar.io" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Agar.io'">
+            <div class="card-title">🟢 Agar.io</div>
+        </div>
+        <div class="game-card" onclick="openFullscreen('https://slither.io/')">
+            <img class="card-img" src="https://www.google.com/s2/favicons?domain=slither.io&sz=128" alt="Slither.io" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Slither.io'">
+            <div class="card-title">🐍 Slither.io</div>
+        </div>
         <div class="game-card" onclick="openFullscreen('https://diep.io/')">
             <img class="card-img" src="https://www.google.com/s2/favicons?domain=diep.io&sz=128" alt="Diep.io" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Diep.io'">
             <div class="card-title">🔺 Diep.io</div>
@@ -449,7 +418,7 @@
     </div>
 </div>
 
-<!-- APPS PANEL (exact original apps: WhatsApp, Discord, YouTube, ChatGPT, Google Drive) untouched -->
+<!-- APPS PANEL (original apps untouched) -->
 <div id="appsPanel" class="panel">
     <div class="section-title">📱 Productivity & Communication</div>
     <div class="sub">full‑screen web apps — tap to open, works great on iOS</div>
@@ -478,31 +447,25 @@
 </div>
 
 <footer>
-    <p>✨ iOS optimized — tap any game/app, close with ✕ button. All original games & apps preserved. Fullscreen works on iPhone, iPad.</p>
+    <p>✨ Nethanyahu games — all games powered by freegames.io trends + classics | Optimized for iPhone, iPad. Tap any card → fullscreen, close with ✕ button.</p>
 </footer>
 
 <script>
-    // additional iOS touch & orientation safety: prevent zoom on double-tap for cards only (not global)
-    const allCards = document.querySelectorAll('.game-card, .app-card');
-    allCards.forEach(card => {
-        card.addEventListener('touchstart', (e) => {
-            // just to improve responsiveness, no default interference
-        }, { passive: true });
+    // additional stagger and animation refresh
+    window.addEventListener('load', () => {
+        let cards = document.querySelectorAll('.game-card, .app-card');
+        cards.forEach((card, idx) => {
+            card.style.animationDelay = `${idx * 0.02}s`;
+        });
     });
-    
-    // Fallback for any iframe that may not load due to restrictions (but keep functionality)
-    // Also ensure that if the user rotates while fullscreen, the viewport adjusts.
+    // orientation fix
     window.addEventListener('orientationchange', () => {
         setTimeout(() => {
             const fs = document.querySelector('.fullscreen-overlay');
-            if (fs) {
-                // re-apply height fix for iOS
-                fs.style.height = window.innerHeight + 'px';
-            }
-        }, 30);
+            if (fs) fs.style.height = window.innerHeight + 'px';
+        }, 20);
     });
-    
-    // small fix for iOS innerHeight
+    // iOS vh fix
     const setVh = () => {
         let vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
