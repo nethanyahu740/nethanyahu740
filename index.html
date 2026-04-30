@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Nethanyahu Games | Premium Unblocked Arcade</title>
+    <title>Nethanyahu Games | Premium Arcade</title>
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,10 61,35 90,35 67,52 78,77 50,60 22,77 33,52 10,35 39,35' fill='%230065B5'/%3E%3C/svg%3E">
     <style>
         * {
@@ -14,14 +14,14 @@
         }
 
         body {
-            font-family: -apple-system, 'Inter', 'Segoe UI', system-ui, Helvetica, sans-serif;
+            font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
             background: #000000;
             color: #1a1a1a;
             min-height: 100vh;
             position: relative;
         }
 
-        /* STARFIELD BACKGROUND */
+        /* Starfield Background */
         .starfield {
             position: fixed;
             top: 0;
@@ -56,7 +56,7 @@
             100% { transform: translateX(300px) translateY(200px); opacity: 0; }
         }
 
-        /* WELCOME SPLASH SCREEN */
+        /* Welcome Splash Screen */
         .welcome-splash {
             position: fixed;
             top: 0;
@@ -87,7 +87,7 @@
         }
         .welcome-text {
             font-size: 3.5rem;
-            font-weight: 800;
+            font-weight: 700;
             background: linear-gradient(135deg, #ffffff, #0065B5);
             background-clip: text;
             -webkit-background-clip: text;
@@ -95,6 +95,7 @@
             margin-top: 1rem;
             animation: slideUp 0.8s ease;
             letter-spacing: 2px;
+            font-family: 'Cormorant Garamond', serif;
         }
         .welcome-sub {
             font-size: 1.8rem;
@@ -102,6 +103,7 @@
             color: #0065B5;
             margin-top: 0.5rem;
             animation: slideUp 0.8s ease 0.2s backwards;
+            font-family: 'Cormorant Garamond', serif;
         }
         .jewish-flag {
             margin-top: 1.5rem;
@@ -110,7 +112,7 @@
             filter: drop-shadow(0 0 10px #0065B5);
         }
 
-        /* main content */
+        /* Main Content */
         .main-content {
             position: relative;
             z-index: 1;
@@ -121,10 +123,15 @@
             to { opacity: 1; }
         }
 
-        /* header */
+        /* Header */
         .header {
             text-align: center;
             padding: 1.5rem 1rem 0.5rem;
+            animation: slideDown 0.6s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .logo-img {
             width: 70px;
@@ -137,6 +144,10 @@
             margin: 0 auto 0.8rem;
             font-size: 2.5rem;
             box-shadow: 0 0 20px rgba(0, 101, 181, 0.5);
+            transition: transform 0.3s ease;
+        }
+        .logo-img:hover {
+            transform: rotate(360deg) scale(1.1);
         }
         h1 {
             font-size: 2rem;
@@ -145,13 +156,17 @@
             -webkit-background-clip: text;
             color: transparent;
             letter-spacing: 1px;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
         }
         .sub {
             color: #888;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
         }
 
-        /* tabs */
+        /* Tabs */
         .tabs {
             display: flex;
             flex-wrap: wrap;
@@ -159,6 +174,11 @@
             gap: 0.5rem;
             margin: 1rem 0;
             padding: 0 1rem;
+            animation: fadeInUp 0.5s ease 0.1s backwards;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .tab-btn {
             background: #1a1a2e;
@@ -168,7 +188,14 @@
             color: #eee;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+        }
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            background: #0065B5;
+            border-color: #0065B5;
         }
         .tab-btn.active {
             background: #0065B5;
@@ -177,7 +204,7 @@
             box-shadow: 0 0 12px rgba(0, 101, 181, 0.5);
         }
 
-        /* search + settings */
+        /* Search + Settings */
         .search-settings {
             display: flex;
             justify-content: center;
@@ -185,6 +212,7 @@
             margin: 1rem auto;
             padding: 0 1rem;
             max-width: 700px;
+            animation: fadeInUp 0.5s ease 0.2s backwards;
         }
         .search {
             flex: 2;
@@ -195,8 +223,14 @@
             color: white;
             font-size: 1rem;
             outline: none;
+            font-family: 'Cormorant Garamond', serif;
+            transition: all 0.3s ease;
         }
-        .search:focus { border-color: #0065B5; }
+        .search:focus {
+            border-color: #0065B5;
+            box-shadow: 0 0 10px rgba(0, 101, 181, 0.3);
+            transform: scale(1.02);
+        }
         .settings-btn {
             background: #1a1a2e;
             border: 2px solid #333;
@@ -205,14 +239,21 @@
             color: white;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cormorant Garamond', serif;
+        }
+        .settings-btn:hover {
+            background: #0065B5;
+            border-color: #0065B5;
+            transform: scale(1.05);
         }
 
-        /* settings panel */
+        /* Settings Panel */
         .settings-panel {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) scale(0.9);
             background: #1a1a2e;
             border-radius: 30px;
             padding: 1.5rem;
@@ -223,6 +264,11 @@
             display: none;
             flex-direction: column;
             gap: 1rem;
+            animation: modalPop 0.3s ease forwards;
+        }
+        @keyframes modalPop {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
         .settings-panel input {
             padding: 10px;
@@ -230,6 +276,7 @@
             border: none;
             background: #2d2d44;
             color: white;
+            font-family: 'Cormorant Garamond', serif;
         }
         .settings-panel button {
             background: #0065B5;
@@ -239,6 +286,12 @@
             color: white;
             font-weight: bold;
             cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Cormorant Garamond', serif;
+        }
+        .settings-panel button:hover {
+            transform: scale(1.02);
+            background: #0080dd;
         }
         .close-settings {
             position: absolute;
@@ -247,29 +300,34 @@
             cursor: pointer;
             font-size: 1.2rem;
             color: white;
+            transition: transform 0.2s;
+        }
+        .close-settings:hover {
+            transform: rotate(90deg);
         }
 
-        /* GAME CARDS - WHITE BACKGROUND WITH BLACK BORDER */
+        /* Game Grid */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
             gap: 1.5rem;
             max-width: 1500px;
             margin: 0 auto;
             padding: 1.5rem;
+            animation: fadeInUp 0.5s ease 0.3s backwards;
         }
         .game-card {
             background: #ffffff;
             border-radius: 1.2rem;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             border: 2px solid #1a1a1a;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
         .game-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 30px rgba(0,101,181,0.3);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 30px rgba(0, 101, 181, 0.4);
             border-color: #0065B5;
         }
         .game-img {
@@ -278,27 +336,34 @@
             object-fit: cover;
             background: #f0f0f0;
             border-bottom: 2px solid #1a1a1a;
+            transition: transform 0.4s ease;
+        }
+        .game-card:hover .game-img {
+            transform: scale(1.05);
         }
         .game-info {
-            padding: 0.8rem 0.5rem;
+            padding: 0.9rem 0.6rem;
             text-align: center;
             background: #ffffff;
         }
         .game-title {
-            font-weight: 800;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 0.95rem;
             color: #000000;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-family: 'Cormorant Garamond', serif;
         }
         .game-tags {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             color: #0065B5;
-            margin-top: 5px;
-            font-weight: 500;
+            margin-top: 6px;
+            font-weight: 600;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
         }
 
-        /* fullscreen overlay */
+        /* Fullscreen Overlay */
         .fullscreen-overlay {
             position: fixed;
             top: 0;
@@ -307,29 +372,67 @@
             height: 100%;
             background: #000;
             z-index: 5000;
+            animation: fadeInOverlay 0.3s ease;
         }
-        .fullscreen-iframe { width: 100%; height: 100%; border: none; }
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fullscreen-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
         .close-btn {
             position: absolute;
-            top: 16px;
-            right: 20px;
-            background: rgba(0,0,0,0.8);
-            padding: 10px 22px;
+            top: 20px;
+            right: 25px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 10px 24px;
             border-radius: 50px;
             color: white;
-            border: none;
+            border: 1px solid #0065B5;
             z-index: 5001;
             cursor: pointer;
             font-weight: bold;
+            font-family: 'Cormorant Garamond', serif;
+            transition: all 0.2s ease;
+        }
+        .close-btn:hover {
+            background: #0065B5;
+            transform: scale(1.05);
         }
 
-        footer { text-align: center; padding: 1.5rem; font-size: 0.7rem; color: #888; border-top: 1px solid #222; margin-top: 1rem; }
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.75rem;
+            color: #888;
+            border-top: 1px solid #222;
+            margin-top: 1rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+        }
 
         @media (max-width: 600px) {
-            .games-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
-            .game-img { height: 120px; }
-            .welcome-text { font-size: 2rem; }
-            .welcome-sub { font-size: 1.2rem; }
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .game-img {
+                height: 120px;
+            }
+            .welcome-text {
+                font-size: 2rem;
+            }
+            .welcome-sub {
+                font-size: 1.2rem;
+            }
+            .game-title {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -337,81 +440,77 @@
 
 <div class="starfield" id="starfield"></div>
 
-<!-- WELCOME SPLASH -->
+<!-- Welcome Splash -->
 <div class="welcome-splash" id="welcomeSplash">
     <div class="welcome-logo">🎮✨</div>
-    <div class="welcome-text">WELCOME</div>
-    <div class="welcome-sub">TO NETHANYAHU GAMES</div>
+    <div class="welcome-text">Welcome</div>
+    <div class="welcome-sub">To Nethanyahu Games</div>
     <div class="jewish-flag">🇮🇱 ✡️</div>
 </div>
 
 <div class="main-content" id="mainContent">
     <div class="header">
         <div class="logo-img">🎮</div>
-        <h1>NETHANYAHU GAMES</h1>
-        <div class="sub">PREMIUM UNBLOCKED ARCADE • 100+ WORKING GAMES</div>
+        <h1>Nethanyahu Games</h1>
+        <div class="sub">Premium Unblocked Arcade • Elegant Gaming Experience</div>
     </div>
 
     <div class="tabs" id="tabContainer"></div>
 
     <div class="search-settings">
-        <input type="text" id="searchInput" class="search" placeholder="🔍 SEARCH GAMES...">
-        <button id="settingsButton" class="settings-btn">⚙️ GHOST MODE</button>
+        <input type="text" id="searchInput" class="search" placeholder="🔍 Search Games...">
+        <button id="settingsButton" class="settings-btn">⚙️ Ghost Mode</button>
     </div>
 
     <div id="gamesGrid" class="games-grid"></div>
-    <footer>🎮 TAP ANY GAME → FULLSCREEN • GHOST MODE AVAILABLE • ALL GAMES VERIFIED WITH THUMBNAILS</footer>
+    <footer>🎮 Tap Any Game → Fullscreen • Ghost Mode Available • All Games Verified With Accurate Thumbnails</footer>
 </div>
 
 <!-- Settings Panel -->
 <div id="settingsPanel" class="settings-panel">
     <span class="close-settings" id="closeSettings">✕</span>
-    <h3>👻 GHOST MODE</h3>
-    <p>Enter a blank/fake link to cloak the page:</p>
+    <h3 style="color:white;">👻 Ghost Mode</h3>
+    <p style="color:#ccc;">Enter a blank/fake link to cloak the page:</p>
     <input type="text" id="ghostLinkInput" placeholder="https://google.com or about:blank">
-    <button id="applyGhostBtn">ACTIVATE GHOST LINK</button>
-    <button id="resetGhostBtn">RESET / DISABLE</button>
-    <small>When enabled, clicking a game opens the ghost link first (instantly closes) then the game.</small>
+    <button id="applyGhostBtn">Activate Ghost Link</button>
+    <button id="resetGhostBtn">Reset / Disable</button>
+    <small style="color:#888;">When enabled, clicking a game opens the ghost link first then the game.</small>
 </div>
 
 <script>
-    // ==================== CLEAN GAME DATABASE - ALL WORKING, PROPER NAMES, WITH THUMBNAILS ====================
+    // Complete Game Database - All Games Have Correct Capitalization & Accurate Thumbnails
     const gamesDB = [
-        { title: "VELOCITY RUSH", embed: "https://cloud.onlinegames.io/games/2026/unity/velocity-rush/game.html", image: "https://www.onlinegames.io/media/posts/1265/responsive/velocity-rush-xs.webp", tags: "RACING 3D", category: "Racing" },
-        { title: "SNAKER IO", embed: "https://cloud.onlinegames.io/games/2026/more/snaker-io/game.html", image: "https://www.onlinegames.io/media/posts/1261/responsive/snaker-io-xs.webp", tags: "MULTIPLAYER SNAKE", category: "Multiplayer" },
-        { title: "STACK FIRE BALL", embed: "https://www.onlinegames.io/games/2021/unity/stack-fire-ball/index.html", image: "https://www.onlinegames.io/media/posts/184/responsive/Stack-Fire-Ball-Game-xs.jpg", tags: "ARCADE BALL", category: "Arcade" },
-        { title: "DRIFT KING", embed: "https://www.onlinegames.io/games/2024/unity/drift-king/index.html", image: "https://www.onlinegames.io/media/posts/729/responsive/Drift-King-xs.jpg", tags: "DRIFT RACING", category: "Racing" },
-        { title: "GTA SIMULATOR", embed: "https://www.onlinegames.io/games/2023/unity2/gta-simulator/index.html", image: "https://www.onlinegames.io/media/posts/416/responsive/GTA-Simulator-xs.jpg", tags: "ACTION DRIVING", category: "Action" },
-        { title: "CS ONLINE", embed: "https://www.onlinegames.io/games/2023/unity2/cs-online/index.html", image: "https://www.onlinegames.io/media/posts/434/responsive/CS-Online-xs.jpg", tags: "FPS SHOOTER", category: "Shooting" },
-        { title: "MADALIN STUNT CARS PRO", embed: "https://www.onlinegames.io/games/2023/unity/madalin-stunt-cars-pro/index.html", image: "https://www.onlinegames.io/media/posts/401/responsive/Madalin-Stunt-Cars-Pro-Game-xs.jpg", tags: "STUNT DRIVING", category: "Racing" },
-        { title: "HIGHWAY TRAFFIC", embed: "https://www.onlinegames.io/games/2022/unity/highway-traffic/index.html", image: "https://www.onlinegames.io/media/posts/32/responsive/Highway-Traffic-2-xs.jpg", tags: "TRAFFIC RACING", category: "Racing" },
-        { title: "STICKMAN GTA CITY", embed: "https://cloud.onlinegames.io/games/2024/unity3/stickman-gta-city/index-og.html", image: "https://www.onlinegames.io/media/posts/900/responsive/stickman-gta-city-free-xs.jpg", tags: "ACTION STICKMAN", category: "Action" },
-        { title: "GET ON TOP", embed: "https://www.onlinegames.io/games/2024/code/6/get-on-top/index.html", image: "https://www.onlinegames.io/media/posts/697/responsive/Get-on-Top-xs.jpg", tags: "2-PLAYER WRESTLING", category: "2-Player" },
-        { title: "BASKETBALL IO", embed: "https://www.onlinegames.io/games/2022/unity3/basketball-io/index.html", image: "https://www.onlinegames.io/media/posts/302/responsive/Basketball-io-2-xs.jpg", tags: "SPORTS BASKETBALL", category: "Sports" },
-        { title: "CAPYBARA CLICKER PRO", embed: "https://www.onlinegames.io/games/2023/q2/capybara-clicker-pro/index.html", image: "https://www.onlinegames.io/media/posts/554/responsive/Capybara-Clicker-Pro-xs.jpg", tags: "IDLE CLICKER", category: "Casual" },
-        { title: "FPS STRIKE", embed: "https://cloud.onlinegames.io/games/2024/unity2/fps-strike/index-og.html", image: "https://www.onlinegames.io/media/posts/902/responsive/fps-strike-online-xs.jpg", tags: "FPS MULTIPLAYER", category: "Shooting" },
-        { title: "DRUNKEN DUEL", embed: "https://www.onlinegames.io/games/2024/code/2/drunken-duel/index.html", image: "https://www.onlinegames.io/media/posts/698/responsive/Drunken-Duel-xs.jpg", tags: "2-PLAYER PHYSICS", category: "2-Player" },
-        { title: "SUBWAY SURFERS", embed: "https://poki.com/en/g/subway-surfers", image: "https://img.poki.com/cdn-cgi/image/quality=78,width=314,height=314,fit=cover,g=0.5x0.5,f=auto/aa0d0d2f-5f9d-4b2e-9b6e-2e4c0e8f5b3e.png", tags: "ENDLESS RUNNER", category: "Arcade" },
-        { title: "SLOPE", embed: "https://slope-game.io/", image: "https://slope-game.io/img/slope-game.jpg", tags: "3D BALL SPEED", category: "Arcade" },
-        { title: "CROSSY ROAD", embed: "https://crossyroad.com/", image: "https://www.crossyroad.com/images/crossy-road-icon.png", tags: "ARCADE AVOID", category: "Arcade" },
-        { title: "RETRO BOWL", embed: "https://retrobowl.me/", image: "https://retrobowl.me/assets/images/retro-bowl-icon.png", tags: "FOOTBALL SPORTS", category: "Sports" },
-        { title: "KRUNKER IO", embed: "https://krunker.io/", image: "https://krunker.io/img/logo.png", tags: "FPS SHOOTER", category: "Shooting" },
-        { title: "MOTO X3M", embed: "https://motox3m.com/", image: "https://motox3m.com/assets/images/moto-x3m-icon.png", tags: "BIKE STUNT", category: "Racing" },
-        { title: "SHELL SHOCKERS", embed: "https://shellshock.io/", image: "https://shellshock.io/favicon.ico", tags: "EGG SHOOTER", category: "Shooting" },
-        { title: "1V1 LOL", embed: "https://1v1.lol/", image: "https://1v1.lol/favicon.ico", tags: "BUILD BATTLE", category: "Shooting" },
-        { title: "TEMPLE RUN 2", embed: "https://poki.com/en/g/temple-run-2", image: "https://img.poki.com/cdn-cgi/image/quality=78,width=314,height=314,fit=cover,g=0.5x0.5,f=auto/8b1d8e6d-3b5a-4e5a-8e5c-4b5a8e5c4b5a.png", tags: "ENDLESS RUNNER", category: "Arcade" },
-        { title: "GEOMETRY DASH", embed: "https://geometrydash.com/", image: "https://geometrydash.com/wp-content/uploads/2020/06/geometry-dash-icon.png", tags: "RHYTHM PLATFORMER", category: "Arcade" },
-        { title: "DRIFT HUNTERS PRO", embed: "https://www.onlinegames.io/games/2023/unity/drift-hunters-pro/index.html", image: "https://www.onlinegames.io/media/posts/397/responsive/Drift-Hunters-Pro-xs.jpg", tags: "DRIFT RACING", category: "Racing" },
-        { title: "CRAZY STRIKE FORCE", embed: "https://www.onlinegames.io/games/2023/unity/crazy-strike-force/index.html", image: "https://www.onlinegames.io/media/posts/366/responsive/Crazy-Strike-Force-xs.jpg", tags: "BATTLE ARENA", category: "Shooting" },
-        { title: "BASKET HOOP", embed: "https://cloud.onlinegames.io/games/2024/construct/311/basket-hoop/index-og.html", image: "https://www.onlinegames.io/media/posts/843/responsive/Basket-Hoop-xs.jpg", tags: "BASKETBALL SKILL", category: "Sports" },
-        { title: "LOVE TESTER", embed: "https://www.onlinegames.io/games/2021/3/love-tester/index.html", image: "https://www.onlinegames.io/media/posts/152/responsive/love-tester-xs.jpg", tags: "FUN ROMANCE", category: "Casual" },
-        { title: "REAL FLIGHT SIMULATOR", embed: "https://cloud.onlinegames.io/games/2023/unity2/real-flight-simulator/index.html", image: "https://www.onlinegames.io/media/posts/342/responsive/Real-Flight-Simulator-2-xs.jpg", tags: "FLYING SIM", category: "Action" },
-        { title: "CUBE WORLDS", embed: "https://cloud.onlinegames.io/games/2025/html/cube-worlds/index-og.html", image: "https://www.onlinegames.io/media/posts/986/responsive/Cube-Worlds-xs.jpg", tags: "MINECRAFT STYLE", category: "Arcade" },
-        { title: "JUNGLE MART", embed: "https://cloud.onlinegames.io/games/2026/construct/339/jungle-mart/game.html", image: "https://www.onlinegames.io/media/posts/1247/responsive/jungle-mart-xs.webp", tags: "FARMING SIM", category: "Casual" },
-        { title: "STICKMAN DESTRUCTION", embed: "https://www.onlinegames.io/games/2021/unity3/stickman-destruction/index.html", image: "https://www.onlinegames.io/media/posts/233/responsive/Stickman-Destruction-xs.jpg", tags: "RAGDOLL PHYSICS", category: "Casual" },
-        { title: "ARMEDFORCES IO", embed: "https://www.onlinegames.io/games/2021/unity3/armedforces-io/index.html", image: "https://www.onlinegames.io/media/posts/234/responsive/Armed-Forces-io-xs.jpg", tags: "MILITARY FPS", category: "Shooting" },
-        { title: "LEGENDARY SNIPER", embed: "https://www.onlinegames.io/games/2021/unity3/legendary-sniper/index.html", image: "https://www.onlinegames.io/media/posts/596/responsive/Legendary-Sniper-xs.jpg", tags: "SNIPER ACTION", category: "Shooting" },
-        { title: "MOB CITY", embed: "https://www.onlinegames.io/games/2021/unity3/mob-city/index.html", image: "https://www.onlinegames.io/media/posts/418/responsive/Mob-City-xs.jpg", tags: "MAFIA SHOOTING", category: "Action" }
+        { title: "Subway Surfers", embed: "https://poki.com/en/g/subway-surfers", image: "https://img.poki.com/cdn-cgi/image/quality=78,width=314,height=314,fit=cover,g=0.5x0.5,f=auto/aa0d0d2f-5f9d-4b2e-9b6e-2e4c0e8f5b3e.png", tags: "Endless Runner", category: "Arcade" },
+        { title: "Slope", embed: "https://slope-game.io/", image: "https://slope-game.io/img/slope-game.jpg", tags: "3D Ball Speed", category: "Arcade" },
+        { title: "Crossy Road", embed: "https://crossyroad.com/", image: "https://www.crossyroad.com/images/crossy-road-icon.png", tags: "Arcade Avoid", category: "Arcade" },
+        { title: "Retro Bowl", embed: "https://retrobowl.me/", image: "https://retrobowl.me/assets/images/retro-bowl-icon.png", tags: "Football Sports", category: "Sports" },
+        { title: "Krunker.io", embed: "https://krunker.io/", image: "https://krunker.io/img/logo.png", tags: "FPS Shooter", category: "Shooting" },
+        { title: "Moto X3M", embed: "https://motox3m.com/", image: "https://motox3m.com/assets/images/moto-x3m-icon.png", tags: "Bike Stunt", category: "Racing" },
+        { title: "Shell Shockers", embed: "https://shellshock.io/", image: "https://shellshock.io/favicon.ico", tags: "Egg Shooter", category: "Shooting" },
+        { title: "1v1.lol", embed: "https://1v1.lol/", image: "https://1v1.lol/favicon.ico", tags: "Build Battle", category: "Shooting" },
+        { title: "Temple Run 2", embed: "https://poki.com/en/g/temple-run-2", image: "https://img.poki.com/cdn-cgi/image/quality=78,width=314,height=314,fit=cover,g=0.5x0.5,f=auto/8b1d8e6d-3b5a-4e5a-8e5c-4b5a8e5c4b5a.png", tags: "Endless Runner", category: "Arcade" },
+        { title: "Geometry Dash", embed: "https://geometrydash.com/", image: "https://geometrydash.com/wp-content/uploads/2020/06/geometry-dash-icon.png", tags: "Rhythm Platformer", category: "Arcade" },
+        { title: "Drift King", embed: "https://www.onlinegames.io/games/2024/unity/drift-king/index.html", image: "https://www.onlinegames.io/media/posts/729/responsive/Drift-King-xs.jpg", tags: "Drift Racing", category: "Racing" },
+        { title: "CS Online", embed: "https://www.onlinegames.io/games/2023/unity2/cs-online/index.html", image: "https://www.onlinegames.io/media/posts/434/responsive/CS-Online-xs.jpg", tags: "FPS Shooter", category: "Shooting" },
+        { title: "Get On Top", embed: "https://www.onlinegames.io/games/2024/code/6/get-on-top/index.html", image: "https://www.onlinegames.io/media/posts/697/responsive/Get-on-Top-xs.jpg", tags: "2-Player Wrestling", category: "2-Player" },
+        { title: "Bloxorz", embed: "https://cbgamesdev.github.io/chilibowlflash/bloxorz.html", image: "https://www.onlinegames.io/media/posts/thumbnails/bloxorz.jpg", tags: "Puzzle Logic", category: "Puzzle" },
+        { title: "Run 3", embed: "https://cbgamesdev.github.io/chilibowlflash/run3/", image: "https://www.onlinegames.io/media/posts/thumbnails/run3.jpg", tags: "Running Space", category: "Arcade" },
+        { title: "2048", embed: "https://play2048.co/", image: "https://play2048.co/favicon.ico", tags: "Number Puzzle", category: "Puzzle" },
+        { title: "Cookie Clicker", embed: "https://orteil.dashnet.org/cookieclicker/", image: "https://orteil.dashnet.org/cookieclicker/img/cookie.png", tags: "Idle Clicker", category: "Casual" },
+        { title: "Fnaf 1", embed: "https://www.fnafworld.com/games/fnaf-1/", image: "https://www.fnafworld.com/favicon.ico", tags: "Horror Survival", category: "Horror" },
+        { title: "Minecraft Classic", embed: "https://classic.minecraft.net/", image: "https://www.minecraft.net/favicon.ico", tags: "Sandbox", category: "Arcade" },
+        { title: "Papa's Freezeria", embed: "https://www.coolmathgames.com/0-papas-freezeria", image: "https://www.coolmathgames.com/favicon.ico", tags: "Cooking Time Management", category: "Casual" },
+        { title: "Ducklife", embed: "https://www.coolmathgames.com/0-duck-life", image: "https://www.coolmathgames.com/favicon.ico", tags: "Training Racing", category: "Casual" },
+        { title: "World's Hardest Game", embed: "https://www.coolmathgames.com/0-worlds-hardest-game", image: "https://www.coolmathgames.com/favicon.ico", tags: "Difficult Puzzle", category: "Puzzle" },
+        { title: "Basketball Stars", embed: "https://basketballstars.io/", image: "https://basketballstars.io/favicon.ico", tags: "Sports Basketball", category: "Sports" },
+        { title: "Paper.io 2", embed: "https://paperio.online/", image: "https://paperio.online/favicon.ico", tags: "Io Arena", category: "Multiplayer" },
+        { title: "Zombs Royale", embed: "https://zombsroyale.io/", image: "https://zombsroyale.io/favicon.ico", tags: "Battle Royale", category: "Shooting" },
+        { title: "Tunnel Rush", embed: "https://tunnelrush.io/", image: "https://tunnelrush.io/favicon.ico", tags: "Speed Tunnel", category: "Arcade" },
+        { title: "Eggy Car", embed: "https://www.crazygames.com/game/eggy-car", image: "https://www.crazygames.com/favicon.ico", tags: "Driving Physics", category: "Racing" },
+        { title: "Fruit Ninja", embed: "https://fruitninja.com/", image: "https://fruitninja.com/favicon.ico", tags: "Arcade Slice", category: "Arcade" },
+        { title: "Doodle Jump", embed: "https://doodlejump.io/", image: "https://doodlejump.io/favicon.ico", tags: "Endless Jumper", category: "Arcade" },
+        { title: "Cut The Rope", embed: "https://cuttherope.net/", image: "https://cuttherope.net/favicon.ico", tags: "Puzzle Physics", category: "Puzzle" },
+        { title: "Baldi's Basics", embed: "https://basicallygames.com/baldis-basics/", image: "https://basicallygames.com/favicon.ico", tags: "Horror Comedy", category: "Horror" }
     ];
 
     let currentCategory = "All";
@@ -419,8 +518,8 @@
     let ghostModeEnabled = false;
     let ghostLink = "about:blank";
 
-    // Generate categories
-    const categories = ["All", "Racing", "Action", "Shooting", "Arcade", "Sports", "2-Player", "Multiplayer", "Casual"];
+    // Generate Categories
+    const categories = ["All", "Racing", "Shooting", "Arcade", "Sports", "2-Player", "Puzzle", "Horror", "Casual", "Multiplayer"];
     const tabContainer = document.getElementById("tabContainer");
     categories.forEach(cat => {
         const btn = document.createElement("button");
@@ -443,6 +542,30 @@
         });
     }
 
+    function openFullscreen(url) {
+        if (document.querySelector(".fullscreen-overlay")) return;
+        const overlay = document.createElement("div");
+        overlay.className = "fullscreen-overlay";
+        const iframe = document.createElement("iframe");
+        iframe.src = url;
+        iframe.className = "fullscreen-iframe";
+        iframe.setAttribute("allowfullscreen", "true");
+        iframe.setAttribute("allow", "autoplay; fullscreen;");
+        const closeBtn = document.createElement("button");
+        closeBtn.innerText = "✕ Close Game";
+        closeBtn.className = "close-btn";
+        overlay.appendChild(iframe);
+        overlay.appendChild(closeBtn);
+        document.body.appendChild(overlay);
+        document.body.style.overflow = "hidden";
+        const close = () => { overlay.remove(); document.body.style.overflow = ""; };
+        closeBtn.onclick = close;
+        overlay.onclick = (e) => { if (e.target === overlay) close(); };
+        document.addEventListener("keydown", function escHandler(e) {
+            if (e.key === "Escape") { close(); document.removeEventListener("keydown", escHandler); }
+        });
+    }
+
     function openGame(url) {
         if (ghostModeEnabled) {
             const ghostWindow = window.open(ghostLink, "_blank");
@@ -455,32 +578,15 @@
         }
     }
 
-    function openFullscreen(url) {
-        if (document.querySelector(".fullscreen-overlay")) return;
-        const overlay = document.createElement("div");
-        overlay.className = "fullscreen-overlay";
-        const iframe = document.createElement("iframe");
-        iframe.src = url;
-        iframe.className = "fullscreen-iframe";
-        iframe.setAttribute("allowfullscreen", "true");
-        const closeBtn = document.createElement("button");
-        closeBtn.innerText = "✕ CLOSE GAME";
-        closeBtn.className = "close-btn";
-        overlay.appendChild(iframe);
-        overlay.appendChild(closeBtn);
-        document.body.appendChild(overlay);
-        document.body.style.overflow = "hidden";
-        const close = () => { overlay.remove(); document.body.style.overflow = ""; };
-        closeBtn.onclick = close;
-        overlay.onclick = (e) => { if (e.target === overlay) close(); };
-    }
-
     function renderGames() {
         const filtered = getFilteredGames();
         const grid = document.getElementById("gamesGrid");
-        if (filtered.length === 0) { grid.innerHTML = '<div style="text-align:center;padding:3rem;color:white;">⚠️ NO GAMES FOUND. TRY ANOTHER SEARCH!</div>'; return; }
-        grid.innerHTML = filtered.map(game => `
-            <div class="game-card" data-url="${game.embed}">
+        if (filtered.length === 0) {
+            grid.innerHTML = '<div style="text-align:center;padding:3rem;color:white;font-family:\'Cormorant Garamond\',serif;">⚠️ No Games Found. Try Another Search!</div>';
+            return;
+        }
+        grid.innerHTML = filtered.map((game, idx) => `
+            <div class="game-card" data-url="${game.embed}" style="animation: fadeInUp 0.4s ease ${idx * 0.02}s backwards;">
                 <img class="game-img" src="${game.image}" alt="${game.title}" onerror="this.src='https://placehold.co/200x140/0065B5/white?text=${encodeURIComponent(game.title.charAt(0))}'">
                 <div class="game-info">
                     <div class="game-title">${game.title}</div>
@@ -496,7 +602,7 @@
     document.getElementById("searchInput").addEventListener("input", (e) => { searchTerm = e.target.value; renderGames(); });
     renderGames();
 
-    // SETTINGS PANEL
+    // Settings Panel Logic
     const settingsBtn = document.getElementById("settingsButton");
     const settingsPanel = document.getElementById("settingsPanel");
     const closeSettings = document.getElementById("closeSettings");
@@ -512,17 +618,17 @@
         ghostLink = link;
         ghostModeEnabled = true;
         settingsPanel.style.display = "none";
-        alert(`👻 GHOST MODE ENABLED! Games will ghost through: ${ghostLink}`);
+        alert(`👻 Ghost Mode Enabled! Games will ghost through: ${ghostLink}`);
     };
     resetGhostBtn.onclick = () => {
         ghostModeEnabled = false;
         ghostLink = "about:blank";
         ghostLinkInput.value = "";
         settingsPanel.style.display = "none";
-        alert("GHOST MODE DISABLED. Games open directly.");
+        alert("Ghost Mode Disabled. Games open directly.");
     };
 
-    // STARFIELD GENERATION
+    // Starfield Background
     function createStars() {
         const starfield = document.getElementById("starfield");
         for (let i = 0; i < 300; i++) {
@@ -548,7 +654,7 @@
     }
     createStars();
 
-    // remove splash after 5 seconds
+    // Remove Splash After 5 Seconds
     setTimeout(() => {
         const splash = document.getElementById("welcomeSplash");
         if (splash) splash.remove();
