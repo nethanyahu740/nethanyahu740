@@ -2,606 +2,464 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Crossy Road Clone - 1:1 Replica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Slope Game Hub | Play Online</title>
     <style>
-        body {
+        * {
             margin: 0;
-            overflow: hidden;
-            font-family: 'Segoe UI', 'Courier New', monospace;
-            background-color: #1a472a; /* deep country green */
+            padding: 0;
+            box-sizing: border-box;
         }
-        #info {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(0,0,0,0.7);
-            color: #ffd966;
-            padding: 8px 16px;
-            border-radius: 8px;
-            pointer-events: none;
-            z-index: 10;
-            font-weight: bold;
-            font-size: 14px;
-            backdrop-filter: blur(4px);
-            border-left: 4px solid #ffaa33;
+
+        body {
+            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Inter', sans-serif;
+            color: #eef5ff;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
         }
-        #score {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 24px;
-            font-weight: bold;
-            font-family: monospace;
-            pointer-events: none;
-            z-index: 10;
-            letter-spacing: 2px;
-            backdrop-filter: blur(4px);
+
+        /* main container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
         }
-        #restart-btn {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ff9900;
-            color: #2c2c2c;
-            border: none;
-            padding: 12px 24px;
-            font-size: 18px;
-            font-weight: bold;
+
+        /* header section */
+        .game-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .game-header h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #FFFFFF, #6ee7ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .game-header p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+            margin-top: 0.5rem;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ========== 1. DIRECT LINK (BUTTON STYLE) ========== */
+        .link-card {
+            background: rgba(15, 25, 45, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.2rem 2rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            border: 1px solid rgba(72, 187, 255, 0.3);
+            box-shadow: 0 12px 28px -8px rgba(0,0,0,0.4);
+        }
+
+        .link-info h3 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge {
+            background: #2b6ef0;
+            font-size: 0.7rem;
+            padding: 4px 12px;
             border-radius: 40px;
-            cursor: pointer;
-            font-family: monospace;
-            z-index: 20;
-            box-shadow: 0 4px 0 #b45f06;
-            transition: 0.05s linear;
-            pointer-events: auto;
+            font-weight: 500;
         }
-        #restart-btn:active {
-            transform: translateX(-50%) translateY(2px);
-            box-shadow: 0 2px 0 #b45f06;
+
+        .btn-game {
+            background: linear-gradient(95deg, #3b82f6, #9333ea);
+            border: none;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.3);
         }
-        @media (max-width: 600px) {
-            #score { font-size: 18px; top: 12px; right: 12px; padding: 4px 12px; }
-            #info { font-size: 10px; top: 12px; left: 12px; }
+
+        .btn-game:hover {
+            transform: scale(1.02);
+            background: linear-gradient(95deg, #2563eb, #7c3aed);
+            box-shadow: 0 12px 22px rgba(59,130,246,0.4);
+        }
+
+        /* ========== 2. IFRAME EMBED (try to embed if allowed) ========== */
+        .embed-section {
+            background: #010414cc;
+            border-radius: 2rem;
+            margin-bottom: 2.8rem;
+            padding: 1rem;
+            border: 1px solid #2d3a5e;
+        }
+
+        .embed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            padding: 0.5rem 1rem 0.8rem 1rem;
+        }
+
+        .embed-header h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .note {
+            font-size: 0.8rem;
+            background: #1e293b;
+            padding: 5px 12px;
+            border-radius: 50px;
+            color: #bbd7ff;
+        }
+
+        .iframe-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background: #000000;
+            box-shadow: 0 20px 35px -10px black;
+        }
+
+        .responsive-iframe {
+            width: 100%;
+            height: 550px;
+            border: none;
+            display: block;
+        }
+
+        .fallback-message {
+            background: #0f172a;
+            padding: 1rem;
+            text-align: center;
+            border-radius: 1rem;
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+            border-left: 5px solid #facc15;
+        }
+
+        /* ========== 3. THUMBNAIL PREVIEW CARD ========== */
+        .thumbnail-card {
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 1.8rem;
+            margin-bottom: 3rem;
+            padding: 1.6rem;
+            backdrop-filter: blur(4px);
+            border: 1px solid #31486c;
+            transition: 0.2s;
+        }
+
+        .preview-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-img {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .preview-img img {
+            max-width: 100%;
+            width: 280px;
+            border-radius: 28px;
+            box-shadow: 0 18px 30px rgba(0,0,0,0.5);
+            border: 2px solid #3b82f680;
+            transition: transform 0.2s;
+        }
+
+        .preview-img img:hover {
+            transform: scale(1.02);
+        }
+
+        .preview-desc {
+            flex: 2;
+        }
+
+        .preview-desc h3 {
+            font-size: 1.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-thumb {
+            display: inline-block;
+            background: #1e2a3e;
+            margin-top: 1rem;
+            padding: 10px 24px;
+            border-radius: 40px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+            border: 1px solid #4791ff;
+        }
+
+        .btn-thumb:hover {
+            background: #2d3e5e;
+            transform: translateY(-2px);
+        }
+
+        /* ========== 4. GAME GRID / LIBRARY ========== */
+        .library-section {
+            margin-top: 1rem;
+        }
+
+        .library-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.2rem;
+            display: inline-block;
+            border-left: 5px solid #3b82f6;
+            padding-left: 18px;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1.2rem;
+        }
+
+        .game-card {
+            background: #0f172ae0;
+            backdrop-filter: blur(4px);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            transition: all 0.25s ease;
+            border: 1px solid #2d3a5e;
+            text-align: center;
+            padding: 1.2rem 1rem 1.5rem;
+        }
+
+        .game-card:hover {
+            transform: translateY(-6px);
+            border-color: #3b82f6;
+            box-shadow: 0 18px 28px -12px #000000aa;
+        }
+
+        .game-icon {
+            font-size: 3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .game-card h3 {
+            font-size: 1.4rem;
+            margin: 0.5rem 0;
+        }
+
+        .game-card p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .game-link-btn {
+            background: #2563eb;
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .game-link-btn:hover {
+            background: #1d4ed8;
+            gap: 0.8rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3.5rem;
+            padding-top: 1.8rem;
+            border-top: 1px solid #2d3a60;
+            font-size: 0.85rem;
+            color: #8aa3cc;
+        }
+
+        @media (max-width: 680px) {
+            body {
+                padding: 1rem;
+            }
+            .responsive-iframe {
+                height: 400px;
+            }
+            .game-header h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="info">🐔 CROSSY ROAD [ORIGINAL REPLICA]</div>
-    <div id="score">SCORE: 0</div>
-    <button id="restart-btn">🚗 RESTART 🚛</button>
+<div class="container">
+    <div class="game-header">
+        <h1>⚡ SLOPE GAME VAULT ⚡</h1>
+        <p>High-speed 3D rolling action · Endless tracks · Reflex challenge — now on your GitHub page</p>
+    </div>
 
-    <!-- Import Three.js core and add-ons -->
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
-            }
-        }
-    </script>
+    <!-- 1️⃣ SIMPLE DIRECT LINK (opens new tab) -->
+    <div class="link-card">
+        <div class="link-info">
+            <h3>🎮 Play Slope Game <span class="badge">NEW TAB</span></h3>
+            <p>Official game link — opens in fullscreen-ready window. Best performance & no embed restrictions.</p>
+        </div>
+        <a href="https://slopeonline.online/" target="_blank" rel="noopener noreferrer" class="btn-game">
+            🕹️ Launch Game → 
+        </a>
+    </div>
 
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+    <!-- 2️⃣ IFRAME EMBED (Direct play within page if allowed) -->
+    <div class="embed-section">
+        <div class="embed-header">
+            <h2>🎬 Live Preview · In-Page Embed</h2>
+            <span class="note">⚠️ if blocked, use the direct link above</span>
+        </div>
+        <div class="iframe-wrapper">
+            <iframe 
+                class="responsive-iframe"
+                src="https://slopeonline.online/" 
+                title="Slope Game Embedded"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                allowfullscreen>
+            </iframe>
+        </div>
+        <div class="fallback-message">
+            💡 <strong>Note:</strong> Some websites block iframe embedding due to security policies (X-Frame-Options).<br>
+            If the game doesn't load above, simply <a href="https://slopeonline.online/" target="_blank" style="color:#60a5fa;">click here to play directly on slopeonline.online</a> — best experience!
+        </div>
+    </div>
 
-        // --- setup scene, camera, renderers ---
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x87CEEB); // sky blue
-        scene.fog = new THREE.Fog(0x87CEEB, 30, 60);
+    <!-- 3️⃣ THUMBNAIL PREVIEW + LINK (Stylish card) -->
+    <div class="thumbnail-card">
+        <div class="preview-flex">
+            <div class="preview-img">
+                <!-- Dynamic generated thumbnail / slope themed placeholder (data:image + svg game vibe) -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%230d111a'/%3E%3Cpath d='M50,200 L200,80 L350,200' stroke='%233b82f6' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='200' cy='100' r='18' fill='%23facc15'/%3E%3Cpolygon points='120,240 200,150 280,240' fill='%231e2a47' stroke='%2344aaff' stroke-width='2'/%3E%3Ctext x='90' y='280' fill='%23a5f3ff' font-size='16' font-family='monospace'%3ESLOPE RUNNER%3C/text%3E%3C/svg%3E"
+                     alt="Slope Game Preview Thumbnail"
+                     style="background:#090c15;">
+            </div>
+            <div class="preview-desc">
+                <h3>🔥 Slope Unblocked · Global Hit</h3>
+                <p>Endless 3D tunnel racing with neon visuals and dynamic difficulty. Control a rolling ball, dodge red barriers, and beat your high score. Perfect for quick reflex training.</p>
+                <a href="https://slopeonline.online/" target="_blank" class="btn-thumb">
+                    🎯 PLAY FULL GAME → 
+                </a>
+            </div>
+        </div>
+    </div>
 
-        // Camera: exact classic Crossy Road isometric-ish top-down but angled 45 degrees
-        // Replicating the classic angle: 45 degrees from horizontal, looking at the player from above and front
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(8, 12, 10);
-        camera.lookAt(0, 0, 0);
+    <!-- 4️⃣ GAME GRID / LIBRARY (multiple style cards & similar games) using existing game link + extra recommended -->
+    <div class="library-section">
+        <h2>🎲 Game Library · Play More</h2>
+        <div class="game-grid">
+            <!-- Card 1: Main Slope Game (existing link) -->
+            <div class="game-card">
+                <div class="game-icon">🌀</div>
+                <h3>Slope Game</h3>
+                <p>Infinite rolling speed. Neon tracks, crazy obstacles, and pure addiction.</p>
+                <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Play Now →</a>
+            </div>
+            <!-- Card 2: Slope Game 2 (Sequel info based on site similar games) -->
+            <div class="game-card">
+                <div class="game-icon">⚡</div>
+                <h3>Slope Game 2</h3>
+                <p>Enhanced obstacles, shifting platforms & unpredictable gaps.</p>
+                <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Explore Sequel →</a>
+            </div>
+            <!-- Card 3: Slope Rider 3D (Snow vibe) -->
+            <div class="game-card">
+                <div class="game-icon">🏔️</div>
+                <h3>Slope Rider 3D</h3>
+                <p>Sled riding down snowy slopes. Collect gifts, avoid trees.</p>
+                <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Ride Now →</a>
+            </div>
+            <!-- Card 4: Slippery Slope (car racing) -->
+            <div class="game-card">
+                <div class="game-icon">🏎️</div>
+                <h3>Slippery Slope</h3>
+                <p>Drive car on dynamic slopes. 18 unique racetracks.</p>
+                <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Drive →</a>
+            </div>
+            <!-- Card 5: Cowboy Safari runner -->
+            <div class="game-card">
+                <div class="game-icon">🐎</div>
+                <h3>Cowboy Safari</h3>
+                <p>Endless runner, tame wild animals, build zoo.</p>
+                <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Ride Wild →</a>
+            </div>
+            <!-- Card 6: Traffic Road moto -->
+            <div class="game-card">
+                <div class="game-icon">🏍️</div>
+                <h3>Traffic Road</h3>
+                <p>Highway motorcycle racing, dodge traffic, unlock upgrades.</p>
+                <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Race →</a>
+            </div>
+        </div>
+        <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; opacity: 0.7;">🌟 All similar games are accessible via the main Slope portal — jump right into action!</p>
+    </div>
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true; // shadows for depth
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        document.body.appendChild(renderer.domElement);
+    <footer>
+        <p>🎮 Slope Game official source: <strong>https://slopeonline.online/</strong> — optimized for GitHub Pages.<br>
+        ⚡ Use the <strong>direct link button</strong> for best compatibility. Iframe may be restricted by external site policies.<br>
+        🚀 High scores & endless fun. Add this page to your GitHub repository and share with friends.</p>
+    </footer>
+</div>
 
-        // CSS2DRenderer for floating score and labels (optional, but for that "arcade" charm)
-        const labelRenderer = new CSS2DRenderer();
-        labelRenderer.setSize(window.innerWidth, window.innerHeight);
-        labelRenderer.domElement.style.position = 'absolute';
-        labelRenderer.domElement.style.top = '0px';
-        labelRenderer.domElement.style.left = '0px';
-        labelRenderer.domElement.style.pointerEvents = 'none';
-        document.body.appendChild(labelRenderer.domElement);
-
-        // --- Lighting to match bright original ---
-        // Ambient light
-        const ambientLight = new THREE.AmbientLight(0x4c4c4c);
-        scene.add(ambientLight);
-        // Main directional light (sun)
-        const sunLight = new THREE.DirectionalLight(0xfff5d1, 1.2);
-        sunLight.position.set(5, 12, 3);
-        sunLight.castShadow = true;
-        sunLight.receiveShadow = true;
-        sunLight.shadow.mapSize.width = 1024;
-        sunLight.shadow.mapSize.height = 1024;
-        sunLight.shadow.camera.near = 0.5;
-        sunLight.shadow.camera.far = 30;
-        sunLight.shadow.camera.left = -8;
-        sunLight.shadow.camera.right = 8;
-        sunLight.shadow.camera.top = 8;
-        sunLight.shadow.camera.bottom = -8;
-        scene.add(sunLight);
-        // Fill light from below / rim
-        const fillLight = new THREE.PointLight(0xccaa88, 0.4);
-        fillLight.position.set(0, 3, 0);
-        scene.add(fillLight);
-        // Back rim light
-        const rimLight = new THREE.PointLight(0xffaa66, 0.5);
-        rimLight.position.set(-2, 5, -5);
-        scene.add(rimLight);
-
-        // --- ground grid reference (optional decorative) but we have actual road tiles
-        const gridHelper = new THREE.GridHelper(50, 20, 0x88aaff, 0x88aaff);
-        gridHelper.position.y = -0.2;
-        gridHelper.material.transparent = true;
-        gridHelper.material.opacity = 0.25;
-        scene.add(gridHelper);
-
-        // --- World Generation: 9 rows, each row type (road, grass, water? but classic crossy road replica has roads and grass/train? but to be identical: roads with moving logs? Actually original Crossy Road has roads with cars, then rivers with logs. But to make it 1:1 with "the same map" I'll create alternating lanes: some with cars, some with trucks. And for the top part a river simulation? But to avoid overcomplication but keep exact feel: I will make 3 grass safe zones, 4 road lanes with vehicles, and a final finish zone (river with logs) to replicate the classic goal. But original replica must include the chicken crossing to the top. I'll implement river with logs and lilypads to match iconic feel.
-        
-        // Define world layout (rows from z = -4 to z = +4)
-        // each lane type: 'grass', 'road', 'river'
-        const laneDefs = [
-            { type: 'grass', y: 0, direction: 0, speed: 0, color: 0x6aab5a, startZ: -4.5 },
-            { type: 'road', y: 0, direction: 1, speed: 2.5, color: 0x3a3a3a, startZ: -3.0 }, // cars right
-            { type: 'road', y: 0, direction: -1, speed: 2.2, color: 0x3a3a3a, startZ: -1.5 }, // cars left
-            { type: 'grass', y: 0, direction: 0, speed: 0, color: 0x7cb518, startZ: 0.0 },
-            { type: 'road', y: 0, direction: 1, speed: 3.0, color: 0x2e2e2e, startZ: 1.5 }, // trucks fast
-            { type: 'road', y: 0, direction: -1, speed: 2.8, color: 0x2e2e2e, startZ: 3.0 },
-            { type: 'grass', y: 0, direction: 0, speed: 0, color: 0x8bc34a, startZ: 4.5 },
-            { type: 'river', y: 0, direction: 1, speed: 2.0, color: 0x2a6f8f, startZ: 6.0 }, // logs moving right
-            { type: 'river', y: 0, direction: -1, speed: 2.3, color: 0x2a6f8f, startZ: 7.5 }, // logs left
-            { type: 'goal_grass', y: 0, direction: 0, speed: 0, color: 0x4caf50, startZ: 9.0 }  // finish zone
-        ];
-
-        const LANE_WIDTH = 1.5;
-        const TILE_SIZE = 1.2;
-        
-        // Store moving objects per lane
-        const movingObjects = []; // each { mesh, laneIndex, speed, direction, rangeMin, rangeMax }
-        
-        // Helper: create road tile with asphalt texture variation
-        function createRoadTile(x, z, laneColor) {
-            const geometry = new THREE.BoxGeometry(TILE_SIZE, 0.2, TILE_SIZE);
-            const material = new THREE.MeshStandardMaterial({ color: laneColor, roughness: 0.7, metalness: 0.1 });
-            const tile = new THREE.Mesh(geometry, material);
-            tile.position.set(x, -0.1, z);
-            tile.receiveShadow = true;
-            tile.castShadow = false;
-            return tile;
-        }
-        
-        function createGrassTile(x, z, color) {
-            const geometry = new THREE.BoxGeometry(TILE_SIZE, 0.15, TILE_SIZE);
-            const material = new THREE.MeshStandardMaterial({ color: color, roughness: 0.9 });
-            const tile = new THREE.Mesh(geometry, material);
-            tile.position.set(x, -0.1, z);
-            tile.receiveShadow = true;
-            return tile;
-        }
-        
-        function createRiverTile(x, z, color) {
-            const geometry = new THREE.BoxGeometry(TILE_SIZE, 0.1, TILE_SIZE);
-            const material = new THREE.MeshStandardMaterial({ color: color, roughness: 0.2, metalness: 0.6, emissive: 0x114455 });
-            const tile = new THREE.Mesh(geometry, material);
-            tile.position.set(x, -0.15, z);
-            tile.receiveShadow = true;
-            return tile;
-        }
-        
-        // Build world grid: from x = -5 to 5, and z from -5 to 10
-        const laneStartZ = -4.5;
-        for (let laneIdx = 0; laneIdx < laneDefs.length; laneIdx++) {
-            const lane = laneDefs[laneIdx];
-            const zCenter = lane.startZ;
-            for (let x = -5; x <= 5; x++) {
-                let tile;
-                if (lane.type === 'road') {
-                    tile = createRoadTile(x, zCenter, lane.color);
-                } else if (lane.type === 'river') {
-                    tile = createRiverTile(x, zCenter, lane.color);
-                } else if (lane.type === 'goal_grass') {
-                    const geom = new THREE.BoxGeometry(TILE_SIZE, 0.2, TILE_SIZE);
-                    const mat = new THREE.MeshStandardMaterial({ color: 0xf9e076, emissive: 0x442200 });
-                    tile = new THREE.Mesh(geom, mat);
-                    tile.position.set(x, -0.05, zCenter);
-                    tile.receiveShadow = true;
-                } else {
-                    tile = createGrassTile(x, zCenter, lane.color);
+<!-- small script to add extra dynamic note if iframe fails (optional) -->
+<script>
+    (function() {
+        // detect if iframe fails to load (optional graceful hint, but user already aware)
+        const iframe = document.querySelector('.responsive-iframe');
+        if(iframe) {
+            iframe.addEventListener('error', function() {
+                const wrapper = document.querySelector('.fallback-message');
+                if(wrapper) {
+                    wrapper.innerHTML = '⚠️ The game website blocked embedding (X-Frame-Options). <strong><a href="https://slopeonline.online/" target="_blank" style="color:#facc15;">Click HERE to play Slope Game in new tab →</a></strong> Full experience unlocked.';
                 }
-                scene.add(tile);
-            }
-        }
-        
-        // Add decorative sidewalk edges and details: small flowers on grass
-        const grassDeco = () => {
-            const flowerMat = new THREE.MeshStandardMaterial({ color: 0xffaa66 });
-            for (let i = -4; i <= 4; i++) {
-                const randZ = [-4.5, 0, 4.5, 9.0];
-                randZ.forEach(z => {
-                    const flower = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.15, 0.2, 6), flowerMat);
-                    flower.position.set(i + 0.3, -0.05, z + 0.4);
-                    flower.castShadow = true;
-                    scene.add(flower);
-                    const flower2 = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.15, 0.2, 6), new THREE.MeshStandardMaterial({ color: 0xdd8844 }));
-                    flower2.position.set(i - 0.2, -0.05, z - 0.3);
-                    flower2.castShadow = true;
-                    scene.add(flower2);
-                });
-            }
-        };
-        grassDeco();
-        
-        // --- VEHICLES & LOGS creation with classic low-poly style ---
-        function createCar(color, xOffset = 0) {
-            const group = new THREE.Group();
-            const bodyGeo = new THREE.BoxGeometry(0.9, 0.4, 0.6);
-            const bodyMat = new THREE.MeshStandardMaterial({ color: color, roughness: 0.3 });
-            const body = new THREE.Mesh(bodyGeo, bodyMat);
-            body.position.y = 0.2;
-            body.castShadow = true;
-            group.add(body);
-            const roofGeo = new THREE.BoxGeometry(0.6, 0.3, 0.6);
-            const roofMat = new THREE.MeshStandardMaterial({ color: 0xccccdd });
-            const roof = new THREE.Mesh(roofGeo, roofMat);
-            roof.position.y = 0.5;
-            roof.castShadow = true;
-            group.add(roof);
-            // wheels
-            const wheelMat = new THREE.MeshStandardMaterial({ color: 0x222222 });
-            const positions = [[-0.4, 0.05, 0.35], [0.4, 0.05, 0.35], [-0.4, 0.05, -0.35], [0.4, 0.05, -0.35]];
-            positions.forEach(pos => {
-                const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.1, 12), wheelMat);
-                wheel.rotation.z = Math.PI/2;
-                wheel.position.set(pos[0], pos[1], pos[2]);
-                wheel.castShadow = true;
-                group.add(wheel);
             });
-            return group;
-        }
-        
-        function createTruck(color) {
-            const group = new THREE.Group();
-            const cab = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.5, 0.7), new THREE.MeshStandardMaterial({ color: color }));
-            cab.position.set(-0.5, 0.25, 0);
-            cab.castShadow = true;
-            group.add(cab);
-            const cargo = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.5, 0.9), new THREE.MeshStandardMaterial({ color: 0xaa9977 }));
-            cargo.position.set(0.5, 0.25, 0);
-            cargo.castShadow = true;
-            group.add(cargo);
-            const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111 });
-            const wPos = [[-0.9, 0.05, 0.5], [0.9, 0.05, 0.5], [-0.9, 0.05, -0.5], [0.9, 0.05, -0.5]];
-            wPos.forEach(pos => {
-                const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.12, 12), wheelMat);
-                wheel.rotation.z = Math.PI/2;
-                wheel.position.set(pos[0], pos[1], pos[2]);
-                wheel.castShadow = true;
-                group.add(wheel);
-            });
-            return group;
-        }
-        
-        function createLog() {
-            const log = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.2, 0.7), new THREE.MeshStandardMaterial({ color: 0xbc9a6c, roughness: 0.8 }));
-            log.castShadow = true;
-            log.receiveShadow = false;
-            return log;
-        }
-        
-        // Populate lanes
-        laneDefs.forEach((lane, idx) => {
-            if (lane.type === 'road') {
-                const vehicleCount = 6;
-                const spawnRange = [-5.5, 5.5];
-                for (let i = 0; i < vehicleCount; i++) {
-                    let vehicle;
-                    const isTruck = idx === 4 || idx === 5; // heavy lanes
-                    if (isTruck) vehicle = createTruck(0xc95a3a);
-                    else vehicle = createCar(Math.random() > 0.5 ? 0xdd3333 : 0x44aa44);
-                    const startX = (Math.random() * (spawnRange[1] - spawnRange[0]) + spawnRange[0]);
-                    vehicle.position.set(startX, 0.05, lane.startZ);
-                    scene.add(vehicle);
-                    movingObjects.push({
-                        mesh: vehicle,
-                        laneIdx: idx,
-                        speed: lane.speed,
-                        direction: lane.direction,
-                        laneZ: lane.startZ,
-                        rangeX: [-6, 6],
-                        width: 1.2
-                    });
-                }
-            } else if (lane.type === 'river') {
-                const logCount = 5;
-                for (let i = 0; i < logCount; i++) {
-                    const logMesh = createLog();
-                    const startX = (Math.random() * 10) - 5;
-                    logMesh.position.set(startX, 0.05, lane.startZ);
-                    scene.add(logMesh);
-                    movingObjects.push({
-                        mesh: logMesh,
-                        laneIdx: idx,
-                        speed: lane.speed,
-                        direction: lane.direction,
-                        laneZ: lane.startZ,
-                        rangeX: [-6.5, 6.5],
-                        isLog: true
-                    });
-                }
-            }
-        });
-        
-        // --- CHICKEN MODEL (iconic with red comb and tail feathers) ---
-        const chickenGroup = new THREE.Group();
-        // body (yellow)
-        const bodyGeo = new THREE.SphereGeometry(0.45, 16, 16);
-        const bodyMat = new THREE.MeshStandardMaterial({ color: 0xffcc44, roughness: 0.2 });
-        const body = new THREE.Mesh(bodyGeo, bodyMat);
-        body.scale.set(1, 0.9, 0.8);
-        body.position.y = 0.2;
-        body.castShadow = true;
-        chickenGroup.add(body);
-        // head
-        const headGeo = new THREE.SphereGeometry(0.35, 16, 16);
-        const headMat = new THREE.MeshStandardMaterial({ color: 0xffaa33 });
-        const head = new THREE.Mesh(headGeo, headMat);
-        head.position.set(0, 0.55, 0.35);
-        head.castShadow = true;
-        chickenGroup.add(head);
-        // beak (orange)
-        const beakGeo = new THREE.ConeGeometry(0.12, 0.2, 8);
-        const beakMat = new THREE.MeshStandardMaterial({ color: 0xdd6622 });
-        const beak = new THREE.Mesh(beakGeo, beakMat);
-        beak.position.set(0, 0.52, 0.68);
-        beak.rotation.x = 0.2;
-        chickenGroup.add(beak);
-        // eyes (white + black)
-        const eyeWhiteGeo = new THREE.SphereGeometry(0.09, 12, 12);
-        const eyeWhiteMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
-        const leftEye = new THREE.Mesh(eyeWhiteGeo, eyeWhiteMat);
-        leftEye.position.set(-0.18, 0.7, 0.62);
-        const rightEye = new THREE.Mesh(eyeWhiteGeo, eyeWhiteMat);
-        rightEye.position.set(0.18, 0.7, 0.62);
-        chickenGroup.add(leftEye);
-        chickenGroup.add(rightEye);
-        const pupilGeo = new THREE.SphereGeometry(0.05, 8, 8);
-        const pupilMat = new THREE.MeshStandardMaterial({ color: 0x000000 });
-        const leftPupil = new THREE.Mesh(pupilGeo, pupilMat);
-        leftPupil.position.set(-0.18, 0.68, 0.71);
-        const rightPupil = new THREE.Mesh(pupilGeo, pupilMat);
-        rightPupil.position.set(0.18, 0.68, 0.71);
-        chickenGroup.add(leftPupil);
-        chickenGroup.add(rightPupil);
-        // comb (red)
-        const combGeo = new THREE.ConeGeometry(0.15, 0.2, 6);
-        const combMat = new THREE.MeshStandardMaterial({ color: 0xdd3333 });
-        const comb = new THREE.Mesh(combGeo, combMat);
-        comb.position.set(0, 0.85, 0.45);
-        chickenGroup.add(comb);
-        // tail feathers
-        const tailGeo = new THREE.CylinderGeometry(0.12, 0.2, 0.35, 6);
-        const tailMat = new THREE.MeshStandardMaterial({ color: 0xcc8844 });
-        const tail = new THREE.Mesh(tailGeo, tailMat);
-        tail.position.set(0, 0.3, -0.55);
-        tail.rotation.x = -0.4;
-        chickenGroup.add(tail);
-        
-        chickenGroup.position.set(0, 0, -4.2); // starting grass
-        chickenGroup.castShadow = true;
-        chickenGroup.receiveShadow = false;
-        scene.add(chickenGroup);
-        
-        // --- Game State ---
-        let currentPos = { x: 0, z: -4.2 };
-        let score = 0;
-        let gameActive = true;
-        let moveCooldown = false;
-        let invincibleFrames = 0;
-        const scoreElement = document.getElementById('score');
-        
-        function updateScoreUI() {
-            scoreElement.innerText = `SCORE: ${score}`;
-        }
-        
-        function checkCollisionAndWin() {
-            if (!gameActive) return;
-            // collision with vehicles
-            for (let obj of movingObjects) {
-                if (obj.laneIdx !== undefined) {
-                    const laneZ = laneDefs[obj.laneIdx]?.startZ;
-                    if (Math.abs(currentPos.z - laneZ) < 0.7) {
-                        const dx = Math.abs(currentPos.x - obj.mesh.position.x);
-                        if (dx < 0.8) {
-                            gameActive = false;
-                            showGameOver();
-                            return;
-                        }
-                    }
-                }
-            }
-            // river & log detection: if chicken is on river lane without standing on log -> die
-            const currentLane = laneDefs.find(lane => Math.abs(lane.startZ - currentPos.z) < 0.6);
-            if (currentLane && currentLane.type === 'river') {
-                let onLog = false;
-                for (let obj of movingObjects) {
-                    if (obj.isLog && Math.abs(currentPos.z - obj.laneZ) < 0.5) {
-                        const dx = Math.abs(currentPos.x - obj.mesh.position.x);
-                        if (dx < 0.9) {
-                            onLog = true;
-                            // also push chicken with log movement
-                            if (gameActive) {
-                                const push = obj.direction * obj.speed * 0.016; // delta factor applied in animate
-                                // but we'll handle movement in update loop: we'll push position relative to log, but cleaner: in animation update we auto shift if onLog
-                            }
-                            break;
-                        }
-                    }
-                }
-                if (!onLog) {
-                    gameActive = false;
-                    showGameOver();
-                }
-            }
-            
-            // Win condition: reached goal_grass (z >= 8.7)
-            if (currentPos.z >= 8.8 && gameActive) {
-                score++;
-                updateScoreUI();
-                // respawn at start but increase difficulty? keep same but reset position
-                currentPos = { x: 0, z: -4.2 };
-                chickenGroup.position.set(currentPos.x, 0, currentPos.z);
-                // simple effect: camera slight bump (optional)
-                gameActive = true; // keep active
-                invincibleFrames = 10;
-            }
-        }
-        
-        function showGameOver() {
-            gameActive = false;
-            const gameOverDiv = document.createElement('div');
-            gameOverDiv.id = 'gameover-msg';
-            gameOverDiv.innerText = '💀 GAME OVER 💀';
-            gameOverDiv.style.position = 'absolute';
-            gameOverDiv.style.top = '40%';
-            gameOverDiv.style.left = '50%';
-            gameOverDiv.style.transform = 'translate(-50%, -50%)';
-            gameOverDiv.style.backgroundColor = 'black';
-            gameOverDiv.style.color = '#ff6666';
-            gameOverDiv.style.padding = '20px 40px';
-            gameOverDiv.style.fontSize = '36px';
-            gameOverDiv.style.fontFamily = 'monospace';
-            gameOverDiv.style.borderRadius = '20px';
-            gameOverDiv.style.border = '3px solid red';
-            gameOverDiv.style.zIndex = '100';
-            gameOverDiv.style.textAlign = 'center';
-            gameOverDiv.style.backdropFilter = 'blur(8px)';
-            document.body.appendChild(gameOverDiv);
+            // also iframe load timeout (some browsers may show empty)
             setTimeout(() => {
-                if (gameOverDiv) gameOverDiv.remove();
+                try {
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+                    if (!iframeDoc || iframeDoc.location.href === 'about:blank') {
+                        // not critical, just keep fallback message visible
+                        const msgDiv = document.querySelector('.fallback-message');
+                        if(msgDiv && !msgDiv.innerHTML.includes('directly')) {
+                            msgDiv.style.backgroundColor = '#1e1f2e';
+                        }
+                    }
+                } catch(e) { /* cross-origin limits but fine */ }
             }, 2000);
         }
-        
-        function restartGame() {
-            gameActive = true;
-            score = 0;
-            updateScoreUI();
-            currentPos = { x: 0, z: -4.2 };
-            chickenGroup.position.set(0, 0, -4.2);
-            invincibleFrames = 15;
-            const existingMsg = document.getElementById('gameover-msg');
-            if (existingMsg) existingMsg.remove();
-        }
-        
-        // Movement handler (arrow keys / WASD) classic grid snap
-        function handleMove(dx, dz) {
-            if (!gameActive) return;
-            if (moveCooldown) return;
-            let newX = currentPos.x + dx;
-            let newZ = currentPos.z + dz;
-            if (newX < -4.8) newX = -4.8;
-            if (newX > 4.8) newX = 4.8;
-            if (newZ < -4.5) newZ = -4.5;
-            if (newZ > 9.0) newZ = 9.0;
-            currentPos = { x: newX, z: newZ };
-            chickenGroup.position.set(currentPos.x, 0, currentPos.z);
-            moveCooldown = true;
-            setTimeout(() => { moveCooldown = false; }, 160);
-            // immediate check after move
-            checkCollisionAndWin();
-        }
-        
-        window.addEventListener('keydown', (e) => {
-            const key = e.key;
-            if (key === 'ArrowUp' || key === 'w') handleMove(0, 1.5);
-            if (key === 'ArrowDown' || key === 's') handleMove(0, -1.5);
-            if (key === 'ArrowLeft' || key === 'a') handleMove(-1.5, 0);
-            if (key === 'ArrowRight' || key === 'd') handleMove(1.5, 0);
-            e.preventDefault();
-        });
-        document.getElementById('restart-btn').addEventListener('click', () => { restartGame(); });
-        
-        // Animation loop: moving vehicles and logs
-        let lastTimestamp = 0;
-        function animate(time) {
-            const delta = Math.min(0.033, (time - lastTimestamp) / 1000);
-            lastTimestamp = time;
-            if (gameActive) {
-                // update moving objects positions
-                movingObjects.forEach(obj => {
-                    let step = obj.speed * obj.direction * delta;
-                    obj.mesh.position.x += step;
-                    if (obj.mesh.position.x > 6.2) obj.mesh.position.x = -6.2;
-                    if (obj.mesh.position.x < -6.2) obj.mesh.position.x = 6.2;
-                });
-                
-                // River log auto-ride: if chicken on river lane and on log, shift chicken X with log movement
-                if (gameActive) {
-                    const currentLaneCheck = laneDefs.find(lane => Math.abs(lane.startZ - currentPos.z) < 0.6);
-                    if (currentLaneCheck && currentLaneCheck.type === 'river') {
-                        for (let obj of movingObjects) {
-                            if (obj.isLog && Math.abs(currentPos.z - obj.laneZ) < 0.5 && Math.abs(currentPos.x - obj.mesh.position.x) < 0.9) {
-                                const push = obj.speed * obj.direction * delta;
-                                let newX = currentPos.x + push;
-                                if (newX > 4.8) newX = 4.8;
-                                if (newX < -4.8) newX = -4.8;
-                                currentPos.x = newX;
-                                chickenGroup.position.x = currentPos.x;
-                                break;
-                            }
-                        }
-                    }
-                }
-                // invincibility frames after death respawn? not used heavily but reset
-                if (invincibleFrames > 0) invincibleFrames--;
-                checkCollisionAndWin();
-            }
-            // camera dynamic follow: keep chicken in center of view (exact like original: camera fixed relative to chicken? Actually replica camera fixed angle but follows)
-            camera.position.x += (currentPos.x - camera.position.x) * 0.05;
-            camera.lookAt(currentPos.x, 0, currentPos.z);
-            renderer.render(scene, camera);
-            labelRenderer.render(scene, camera);
-            requestAnimationFrame(animate);
-        }
-        
-        requestAnimationFrame(animate);
-        
-        // Add touch support for mobile
-        let touchStart = null;
-        window.addEventListener('touchstart', (e) => {
-            touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-            e.preventDefault();
-        });
-        window.addEventListener('touchend', (e) => {
-            if (!touchStart) return;
-            const dx = e.changedTouches[0].clientX - touchStart.x;
-            const dy = e.changedTouches[0].clientY - touchStart.y;
-            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 20) {
-                if (dx > 0) handleMove(1.5, 0);
-                else handleMove(-1.5, 0);
-            } else if (Math.abs(dy) > 20) {
-                if (dy > 0) handleMove(0, -1.5);
-                else handleMove(0, 1.5);
-            }
-            touchStart = null;
-        });
-        
-        // camera stabilization initial
-        camera.lookAt(0, 0, 0);
-    </script>
+    })();
+</script>
 </body>
 </html>
