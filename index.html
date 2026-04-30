@@ -6,495 +6,86 @@
     <title>Nethanyahu Games | Premium Arcade</title>
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,10 61,35 90,35 67,52 78,77 50,60 22,77 33,52 10,35 39,35' fill='%230065B5'/%3E%3C/svg%3E">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
-            background: #000000;
-            color: #1a1a1a;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* Starfield Background */
-        .starfield {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            background: radial-gradient(ellipse at center, #0a0a2a 0%, #000000 100%);
-        }
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            opacity: 0;
-            animation: twinkle 3s infinite ease-in-out;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-        .shooting-star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: linear-gradient(135deg, white, transparent);
-            opacity: 0;
-            animation: shoot 4s infinite linear;
-        }
-        @keyframes shoot {
-            0% { transform: translateX(0) translateY(0); opacity: 1; }
-            100% { transform: translateX(300px) translateY(200px); opacity: 0; }
-        }
-
-        /* Welcome Splash Screen - Clean, No Emojis */
-        .welcome-splash {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000000;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            animation: cinematicExit 1.2s cubic-bezier(0.16, 1, 0.3, 1) 4.5s forwards;
-            pointer-events: none;
-        }
-        @keyframes cinematicExit {
-            0% {
-                opacity: 1;
-                clip-path: circle(150% at 50% 50%);
-            }
-            30% {
-                clip-path: circle(100% at 50% 50%);
-            }
-            100% {
-                opacity: 0;
-                visibility: hidden;
-                clip-path: circle(0% at 50% 50%);
-            }
-        }
-        .welcome-logo {
-            font-size: 5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #0065B5);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            animation: textGlow 2s ease-in-out infinite, floatUp 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            letter-spacing: 4px;
-        }
-        @keyframes textGlow {
-            0%, 100% { text-shadow: 0 0 0px rgba(0,101,181,0); }
-            50% { text-shadow: 0 0 30px rgba(0,101,181,0.8); }
-        }
-        @keyframes floatUp {
-            0% { opacity: 0; transform: translateY(50px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        .welcome-text {
-            font-size: 3.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #ffffff, #0065B5);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin-top: 1rem;
-            animation: slideUpText 0.8s ease 0.2s backwards;
-            letter-spacing: 2px;
-        }
-        @keyframes slideUpText {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .welcome-sub {
-            font-size: 1.6rem;
-            font-weight: 500;
-            color: #0065B5;
-            margin-top: 0.5rem;
-            animation: slideUpText 0.8s ease 0.4s backwards;
-            letter-spacing: 1px;
-        }
-        .jewish-flag {
-            margin-top: 1.5rem;
-            font-size: 2.5rem;
-            animation: slideUpText 0.8s ease 0.6s backwards;
-            filter: drop-shadow(0 0 10px #0065B5);
-        }
-
-        /* Main Content - Cinematic Entrance */
-        .main-content {
-            position: relative;
-            z-index: 1;
-            opacity: 0;
-            animation: cinematicEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 5s forwards;
-            transform-origin: center;
-        }
-        @keyframes cinematicEnter {
-            0% {
-                opacity: 0;
-                transform: scale(0.95);
-                filter: blur(8px);
-            }
-            50% {
-                opacity: 0.5;
-                transform: scale(1.01);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-                filter: blur(0);
-            }
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 1.5rem 1rem 0.5rem;
-            animation: slideDown 0.6s ease;
-        }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .logo-img {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #0065B5, #003d70);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 0.8rem;
-            font-size: 2rem;
-            font-weight: bold;
-            color: white;
-            box-shadow: 0 0 20px rgba(0, 101, 181, 0.5);
-            transition: transform 0.3s ease;
-        }
-        .logo-img:hover {
-            transform: rotate(360deg) scale(1.1);
-        }
-        h1 {
-            font-size: 2rem;
-            background: linear-gradient(135deg, #ffffff, #0065B5);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            letter-spacing: 1px;
-            font-weight: 700;
-        }
-        .sub {
-            color: #888;
-            font-size: 0.85rem;
-            font-style: italic;
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-            margin: 1rem 0;
-            padding: 0 1rem;
-            animation: fadeInUp 0.5s ease 0.1s backwards;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .tab-btn {
-            background: #1a1a2e;
-            border: 1px solid #333;
-            padding: 0.6rem 1.2rem;
-            border-radius: 40px;
-            color: #eee;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            font-size: 0.9rem;
-        }
-        .tab-btn:hover {
-            transform: translateY(-2px);
-            background: #0065B5;
-            border-color: #0065B5;
-        }
-        .tab-btn.active {
-            background: #0065B5;
-            border-color: #0065B5;
-            color: white;
-            box-shadow: 0 0 12px rgba(0, 101, 181, 0.5);
-        }
-
-        /* Search + Settings */
-        .search-settings {
-            display: flex;
-            justify-content: center;
-            gap: 0.8rem;
-            margin: 1rem auto;
-            padding: 0 1rem;
-            max-width: 700px;
-            animation: fadeInUp 0.5s ease 0.2s backwards;
-        }
-        .search {
-            flex: 2;
-            padding: 12px 18px;
-            border-radius: 50px;
-            border: 2px solid #333;
-            background: #1a1a2e;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        .search:focus {
-            border-color: #0065B5;
-            box-shadow: 0 0 10px rgba(0, 101, 181, 0.3);
-            transform: scale(1.02);
-        }
-        .settings-btn {
-            background: #1a1a2e;
-            border: 2px solid #333;
-            padding: 12px 18px;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .settings-btn:hover {
-            background: #0065B5;
-            border-color: #0065B5;
-            transform: scale(1.05);
-        }
-
-        /* Settings Panel */
-        .settings-panel {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            background: #1a1a2e;
-            border-radius: 30px;
-            padding: 1.5rem;
-            z-index: 2000;
-            width: 300px;
-            text-align: center;
-            border: 2px solid #0065B5;
-            display: none;
-            flex-direction: column;
-            gap: 1rem;
-            animation: modalPop 0.3s ease forwards;
-        }
-        @keyframes modalPop {
-            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-        .settings-panel input {
-            padding: 10px;
-            border-radius: 30px;
-            border: none;
-            background: #2d2d44;
-            color: white;
-        }
-        .settings-panel button {
-            background: #0065B5;
-            border: none;
-            padding: 10px;
-            border-radius: 30px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .settings-panel button:hover {
-            transform: scale(1.02);
-            background: #0080dd;
-        }
-        .close-settings {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: white;
-            transition: transform 0.2s;
-        }
-        .close-settings:hover {
-            transform: rotate(90deg);
-        }
-
-        /* Game Grid */
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-            gap: 1.5rem;
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 1.5rem;
-            animation: fadeInUp 0.5s ease 0.3s backwards;
-        }
-        .game-card {
-            background: #ffffff;
-            border-radius: 1.2rem;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            border: 2px solid #1a1a1a;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        .game-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 30px rgba(0, 101, 181, 0.4);
-            border-color: #0065B5;
-        }
-        .game-img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            background: #f0f0f0;
-            border-bottom: 2px solid #1a1a1a;
-            transition: transform 0.4s ease;
-        }
-        .game-card:hover .game-img {
-            transform: scale(1.05);
-        }
-        .game-info {
-            padding: 0.9rem 0.6rem;
-            text-align: center;
-            background: #ffffff;
-        }
-        .game-title {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #000000;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .game-tags {
-            font-size: 0.7rem;
-            color: #0065B5;
-            margin-top: 6px;
-            font-weight: 600;
-            font-style: italic;
-        }
-
-        /* Fullscreen Overlay */
-        .fullscreen-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 5000;
-            animation: fadeInOverlay 0.3s ease;
-        }
-        @keyframes fadeInOverlay {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .fullscreen-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            padding: 10px 24px;
-            border-radius: 50px;
-            color: white;
-            border: 1px solid #0065B5;
-            z-index: 5001;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.2s ease;
-        }
-        .close-btn:hover {
-            background: #0065B5;
-            transform: scale(1.05);
-        }
-
-        footer {
-            text-align: center;
-            padding: 1.5rem;
-            font-size: 0.75rem;
-            color: #888;
-            border-top: 1px solid #222;
-            margin-top: 1rem;
-            font-style: italic;
-        }
-
-        @media (max-width: 600px) {
-            .games-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 1rem;
-                padding: 1rem;
-            }
-            .game-img {
-                height: 120px;
-            }
-            .welcome-text {
-                font-size: 2rem;
-            }
-            .welcome-sub {
-                font-size: 1.2rem;
-            }
-            .welcome-logo {
-                font-size: 3rem;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif; background: #000000; color: #1a1a1a; min-height: 100vh; position: relative; overflow-x: hidden; }
+        .starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; background: radial-gradient(ellipse at center, #0a0a2a 0%, #000000 100%); }
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle 3s infinite ease-in-out; }
+        @keyframes twinkle { 0%,100% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+        .shooting-star { position: absolute; width: 2px; height: 2px; background: linear-gradient(135deg, white, transparent); opacity: 0; animation: shoot 4s infinite linear; }
+        @keyframes shoot { 0% { transform: translateX(0) translateY(0); opacity: 1; } 100% { transform: translateX(300px) translateY(200px); opacity: 0; } }
+        .welcome-splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: cinematicExit 1.2s cubic-bezier(0.16, 1, 0.3, 1) 4.5s forwards; pointer-events: none; }
+        @keyframes cinematicExit { 0% { opacity: 1; clip-path: circle(150% at 50% 50%); } 30% { clip-path: circle(100% at 50% 50%); } 100% { opacity: 0; visibility: hidden; clip-path: circle(0% at 50% 50%); } }
+        .welcome-logo { font-size: 5rem; font-weight: 800; background: linear-gradient(135deg, #ffffff, #0065B5); background-clip: text; -webkit-background-clip: text; color: transparent; animation: textGlow 2s ease-in-out infinite, floatUp 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1); letter-spacing: 4px; }
+        @keyframes textGlow { 0%,100% { text-shadow: 0 0 0px rgba(0,101,181,0); } 50% { text-shadow: 0 0 30px rgba(0,101,181,0.8); } }
+        @keyframes floatUp { 0% { opacity: 0; transform: translateY(50px); } 100% { opacity: 1; transform: translateY(0); } }
+        .welcome-text { font-size: 3.5rem; font-weight: 700; background: linear-gradient(135deg, #ffffff, #0065B5); background-clip: text; -webkit-background-clip: text; color: transparent; margin-top: 1rem; animation: slideUpText 0.8s ease 0.2s backwards; letter-spacing: 2px; }
+        @keyframes slideUpText { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .welcome-sub { font-size: 1.6rem; font-weight: 500; color: #0065B5; margin-top: 0.5rem; animation: slideUpText 0.8s ease 0.4s backwards; letter-spacing: 1px; }
+        .jewish-flag { margin-top: 1.5rem; font-size: 2.5rem; animation: slideUpText 0.8s ease 0.6s backwards; filter: drop-shadow(0 0 10px #0065B5); }
+        .main-content { position: relative; z-index: 1; opacity: 0; animation: cinematicEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 5s forwards; transform-origin: center; }
+        @keyframes cinematicEnter { 0% { opacity: 0; transform: scale(0.95); filter: blur(8px); } 50% { opacity: 0.5; transform: scale(1.01); } 100% { opacity: 1; transform: scale(1); filter: blur(0); } }
+        .header { text-align: center; padding: 1.5rem 1rem 0.5rem; animation: slideDown 0.6s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        .logo-img { width: 70px; height: 70px; background: linear-gradient(135deg, #0065B5, #003d70); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem; font-size: 2rem; font-weight: bold; color: white; box-shadow: 0 0 20px rgba(0, 101, 181, 0.5); transition: transform 0.3s ease; }
+        .logo-img:hover { transform: rotate(360deg) scale(1.1); }
+        h1 { font-size: 2rem; background: linear-gradient(135deg, #ffffff, #0065B5); background-clip: text; -webkit-background-clip: text; color: transparent; letter-spacing: 1px; font-weight: 700; }
+        .sub { color: #888; font-size: 0.85rem; font-style: italic; }
+        .tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin: 1rem 0; padding: 0 1rem; animation: fadeInUp 0.5s ease 0.1s backwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-btn { background: #1a1a2e; border: 1px solid #333; padding: 0.6rem 1.2rem; border-radius: 40px; color: #eee; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1); font-size: 0.9rem; }
+        .tab-btn:hover { transform: translateY(-2px); background: #0065B5; border-color: #0065B5; }
+        .tab-btn.active { background: #0065B5; border-color: #0065B5; color: white; box-shadow: 0 0 12px rgba(0, 101, 181, 0.5); }
+        .search-settings { display: flex; justify-content: center; gap: 0.8rem; margin: 1rem auto; padding: 0 1rem; max-width: 700px; animation: fadeInUp 0.5s ease 0.2s backwards; }
+        .search { flex: 2; padding: 12px 18px; border-radius: 50px; border: 2px solid #333; background: #1a1a2e; color: white; font-size: 1rem; outline: none; transition: all 0.3s ease; }
+        .search:focus { border-color: #0065B5; box-shadow: 0 0 10px rgba(0, 101, 181, 0.3); transform: scale(1.02); }
+        .settings-btn { background: #1a1a2e; border: 2px solid #333; padding: 12px 18px; border-radius: 50px; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .settings-btn:hover { background: #0065B5; border-color: #0065B5; transform: scale(1.05); }
+        .settings-panel { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: #1a1a2e; border-radius: 30px; padding: 1.5rem; z-index: 2000; width: 300px; text-align: center; border: 2px solid #0065B5; display: none; flex-direction: column; gap: 1rem; animation: modalPop 0.3s ease forwards; }
+        @keyframes modalPop { from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+        .settings-panel input { padding: 10px; border-radius: 30px; border: none; background: #2d2d44; color: white; }
+        .settings-panel button { background: #0065B5; border: none; padding: 10px; border-radius: 30px; color: white; font-weight: bold; cursor: pointer; transition: all 0.2s ease; }
+        .settings-panel button:hover { transform: scale(1.02); background: #0080dd; }
+        .close-settings { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 1.2rem; color: white; transition: transform 0.2s; }
+        .close-settings:hover { transform: rotate(90deg); }
+        .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1.5rem; max-width: 1500px; margin: 0 auto; padding: 1.5rem; animation: fadeInUp 0.5s ease 0.3s backwards; }
+        .game-card { background: #ffffff; border-radius: 1.2rem; overflow: hidden; cursor: pointer; transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1); border: 2px solid #1a1a1a; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); }
+        .game-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 30px rgba(0, 101, 181, 0.4); border-color: #0065B5; }
+        .game-img { width: 100%; height: 140px; object-fit: cover; background: #f0f0f0; border-bottom: 2px solid #1a1a1a; transition: transform 0.4s ease; }
+        .game-card:hover .game-img { transform: scale(1.05); }
+        .game-info { padding: 0.9rem 0.6rem; text-align: center; background: #ffffff; }
+        .game-title { font-weight: 700; font-size: 0.95rem; color: #000000; text-transform: uppercase; letter-spacing: 0.5px; }
+        .game-tags { font-size: 0.7rem; color: #0065B5; margin-top: 6px; font-weight: 600; font-style: italic; }
+        .fullscreen-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000; animation: fadeInOverlay 0.3s ease; }
+        @keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+        .fullscreen-iframe { width: 100%; height: 100%; border: none; }
+        .close-btn { position: absolute; top: 20px; right: 25px; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); padding: 10px 24px; border-radius: 50px; color: white; border: 1px solid #0065B5; z-index: 5001; cursor: pointer; font-weight: bold; transition: all 0.2s ease; }
+        .close-btn:hover { background: #0065B5; transform: scale(1.05); }
+        footer { text-align: center; padding: 1.5rem; font-size: 0.75rem; color: #888; border-top: 1px solid #222; margin-top: 1rem; font-style: italic; }
+        @media (max-width: 600px) { .games-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; padding: 1rem; } .game-img { height: 120px; } .welcome-text { font-size: 2rem; } .welcome-sub { font-size: 1.2rem; } .welcome-logo { font-size: 3rem; } }
     </style>
 </head>
 <body>
-
 <div class="starfield" id="starfield"></div>
-
-<!-- Welcome Splash - Clean, No Emojis -->
 <div class="welcome-splash" id="welcomeSplash">
     <div class="welcome-logo">N G</div>
     <div class="welcome-text">Welcome</div>
     <div class="welcome-sub">To Nethanyahu Games</div>
     <div class="jewish-flag">🇮🇱 ✡︎</div>
 </div>
-
 <div class="main-content" id="mainContent">
     <div class="header">
         <div class="logo-img">NG</div>
         <h1>Nethanyahu Games</h1>
-        <div class="sub">Premium Unblocked Arcade • Cinematic Gaming Experience</div>
+        <div class="sub">Premium Unblocked Arcade • 40+ Verified Games</div>
     </div>
-
     <div class="tabs" id="tabContainer"></div>
-
     <div class="search-settings">
         <input type="text" id="searchInput" class="search" placeholder="🔍 Search Games...">
         <button id="settingsButton" class="settings-btn">⚙️ Ghost Mode</button>
     </div>
-
     <div id="gamesGrid" class="games-grid"></div>
-    <footer>🎮 Tap Any Game → Fullscreen • Ghost Mode Available • All Games Have Accurate Thumbnails</footer>
+    <footer>🎮 Tap Any Game → Fullscreen • Ghost Mode Available • All Games Have Thumbnails</footer>
 </div>
-
-<!-- Settings Panel -->
 <div id="settingsPanel" class="settings-panel">
     <span class="close-settings" id="closeSettings">✕</span>
     <h3 style="color:white;">Ghost Mode</h3>
@@ -504,9 +95,7 @@
     <button id="resetGhostBtn">Reset / Disable</button>
     <small style="color:#888;">When enabled, clicking a game opens the ghost link first then the game.</small>
 </div>
-
 <script>
-    // Complete Game Database - All Games Have Accurate Thumbnails & Correct Capitalization
     const gamesDB = [
         { title: "Subway Surfers", embed: "https://poki.com/en/g/subway-surfers", image: "https://img.poki.com/cdn-cgi/image/quality=78,width=314,height=314,fit=cover,g=0.5x0.5,f=auto/aa0d0d2f-5f9d-4b2e-9b6e-2e4c0e8f5b3e.png", tags: "Endless Runner", category: "Arcade" },
         { title: "Slope", embed: "https://slope-game.io/", image: "https://slope-game.io/img/slope-game.jpg", tags: "3D Ball Speed", category: "Arcade" },
@@ -538,155 +127,23 @@
         { title: "Fruit Ninja", embed: "https://fruitninja.com/", image: "https://fruitninja.com/favicon.ico", tags: "Arcade Slice", category: "Arcade" },
         { title: "Doodle Jump", embed: "https://doodlejump.io/", image: "https://doodlejump.io/favicon.ico", tags: "Endless Jumper", category: "Arcade" },
         { title: "Cut The Rope", embed: "https://cuttherope.net/", image: "https://cuttherope.net/favicon.ico", tags: "Puzzle Physics", category: "Puzzle" },
-        { title: "Baldi's Basics", embed: "https://basicallygames.com/baldis-basics/", image: "https://basicallygames.com/favicon.ico", tags: "Horror Comedy", category: "Horror" }
+        { title: "Baldi's Basics", embed: "https://basicallygames.com/baldis-basics/", image: "https://basicallygames.com/favicon.ico", tags: "Horror Comedy", category: "Horror" },
+        { title: "Stickman Hook", embed: "https://poki.com/en/g/stickman-hook", image: "https://img.poki.com/cdn-cgi/image/quality=78,width=314,height=314,fit=cover,g=0.5x0.5,f=auto/6a8c4e2d-8b5c-4e2a-9c6e-8d5b4a2c7e6d.png", tags: "Swing Physics", category: "Arcade" },
+        { title: "Rooftop Snipers", embed: "https://poki.com/en/g/rooftop-snipers", image: "https://img.poki.com/cdn-cgi/image/quality=78,width=314,height=314,fit=cover,g=0.5x0.5,f=auto/7b9d4e3c-2f6a-4d8e-9c2b-5e7a8d3c1f0e.png", tags: "2-Player Shooting", category: "2-Player" }
     ];
-
-    let currentCategory = "All";
-    let searchTerm = "";
-    let ghostModeEnabled = false;
-    let ghostLink = "about:blank";
-
-    // Generate Categories
+    let currentCategory = "All", searchTerm = "", ghostModeEnabled = false, ghostLink = "about:blank";
     const categories = ["All", "Racing", "Shooting", "Arcade", "Sports", "2-Player", "Puzzle", "Horror", "Casual", "Multiplayer"];
     const tabContainer = document.getElementById("tabContainer");
-    categories.forEach(cat => {
-        const btn = document.createElement("button");
-        btn.className = `tab-btn ${cat === "All" ? "active" : ""}`;
-        btn.innerText = cat;
-        btn.onclick = () => {
-            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            currentCategory = cat;
-            renderGames();
-        };
-        tabContainer.appendChild(btn);
-    });
-
-    function getFilteredGames() {
-        return gamesDB.filter(game => {
-            const matchesCat = currentCategory === "All" || game.category === currentCategory;
-            const matchesSearch = game.title.toLowerCase().includes(searchTerm.toLowerCase()) || game.tags.toLowerCase().includes(searchTerm.toLowerCase());
-            return matchesCat && matchesSearch;
-        });
-    }
-
-    function openFullscreen(url) {
-        if (document.querySelector(".fullscreen-overlay")) return;
-        const overlay = document.createElement("div");
-        overlay.className = "fullscreen-overlay";
-        const iframe = document.createElement("iframe");
-        iframe.src = url;
-        iframe.className = "fullscreen-iframe";
-        iframe.setAttribute("allowfullscreen", "true");
-        iframe.setAttribute("allow", "autoplay; fullscreen;");
-        const closeBtn = document.createElement("button");
-        closeBtn.innerText = "✕ Close Game";
-        closeBtn.className = "close-btn";
-        overlay.appendChild(iframe);
-        overlay.appendChild(closeBtn);
-        document.body.appendChild(overlay);
-        document.body.style.overflow = "hidden";
-        const close = () => { overlay.remove(); document.body.style.overflow = ""; };
-        closeBtn.onclick = close;
-        overlay.onclick = (e) => { if (e.target === overlay) close(); };
-        document.addEventListener("keydown", function escHandler(e) {
-            if (e.key === "Escape") { close(); document.removeEventListener("keydown", escHandler); }
-        });
-    }
-
-    function openGame(url) {
-        if (ghostModeEnabled) {
-            const ghostWindow = window.open(ghostLink, "_blank");
-            setTimeout(() => {
-                if (ghostWindow) ghostWindow.close();
-                openFullscreen(url);
-            }, 50);
-        } else {
-            openFullscreen(url);
-        }
-    }
-
-    function renderGames() {
-        const filtered = getFilteredGames();
-        const grid = document.getElementById("gamesGrid");
-        if (filtered.length === 0) {
-            grid.innerHTML = '<div style="text-align:center;padding:3rem;color:white;">⚠️ No Games Found. Try Another Search!</div>';
-            return;
-        }
-        grid.innerHTML = filtered.map((game, idx) => `
-            <div class="game-card" data-url="${game.embed}" style="animation: fadeInUp 0.4s ease ${idx * 0.02}s backwards;">
-                <img class="game-img" src="${game.image}" alt="${game.title}" onerror="this.src='https://placehold.co/200x140/0065B5/white?text=${encodeURIComponent(game.title.charAt(0))}'">
-                <div class="game-info">
-                    <div class="game-title">${game.title}</div>
-                    <div class="game-tags">${game.tags}</div>
-                </div>
-            </div>
-        `).join("");
-        document.querySelectorAll(".game-card").forEach(card => {
-            card.addEventListener("click", () => openGame(card.dataset.url));
-        });
-    }
-
-    document.getElementById("searchInput").addEventListener("input", (e) => { searchTerm = e.target.value; renderGames(); });
-    renderGames();
-
-    // Settings Panel Logic
-    const settingsBtn = document.getElementById("settingsButton");
-    const settingsPanel = document.getElementById("settingsPanel");
-    const closeSettings = document.getElementById("closeSettings");
-    const ghostLinkInput = document.getElementById("ghostLinkInput");
-    const applyGhostBtn = document.getElementById("applyGhostBtn");
-    const resetGhostBtn = document.getElementById("resetGhostBtn");
-
-    settingsBtn.onclick = () => { settingsPanel.style.display = "flex"; };
-    closeSettings.onclick = () => { settingsPanel.style.display = "none"; };
-    applyGhostBtn.onclick = () => {
-        let link = ghostLinkInput.value.trim();
-        if (!link) link = "about:blank";
-        ghostLink = link;
-        ghostModeEnabled = true;
-        settingsPanel.style.display = "none";
-        alert(`Ghost Mode Enabled! Games will ghost through: ${ghostLink}`);
-    };
-    resetGhostBtn.onclick = () => {
-        ghostModeEnabled = false;
-        ghostLink = "about:blank";
-        ghostLinkInput.value = "";
-        settingsPanel.style.display = "none";
-        alert("Ghost Mode Disabled. Games open directly.");
-    };
-
-    // Starfield Background
-    function createStars() {
-        const starfield = document.getElementById("starfield");
-        for (let i = 0; i < 300; i++) {
-            const star = document.createElement("div");
-            star.className = "star";
-            const size = Math.random() * 3 + 1;
-            star.style.width = `${size}px`;
-            star.style.height = `${size}px`;
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.animationDelay = `${Math.random() * 5}s`;
-            star.style.animationDuration = `${Math.random() * 3 + 2}s`;
-            starfield.appendChild(star);
-        }
-        for (let i = 0; i < 10; i++) {
-            const shooting = document.createElement("div");
-            shooting.className = "shooting-star";
-            shooting.style.top = `${Math.random() * 50}%`;
-            shooting.style.left = `${Math.random() * 50}%`;
-            shooting.style.animationDelay = `${Math.random() * 8}s`;
-            starfield.appendChild(shooting);
-        }
-    }
-    createStars();
-
-    // Remove Splash After 5 Seconds
-    setTimeout(() => {
-        const splash = document.getElementById("welcomeSplash");
-        if (splash) splash.remove();
-    }, 5000);
+    categories.forEach(cat => { const btn = document.createElement("button"); btn.className = `tab-btn ${cat === "All" ? "active" : ""}`; btn.innerText = cat; btn.onclick = () => { document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active")); btn.classList.add("active"); currentCategory = cat; renderGames(); }; tabContainer.appendChild(btn); });
+    function getFilteredGames() { return gamesDB.filter(game => { const matchesCat = currentCategory === "All" || game.category === currentCategory; const matchesSearch = game.title.toLowerCase().includes(searchTerm.toLowerCase()) || game.tags.toLowerCase().includes(searchTerm.toLowerCase()); return matchesCat && matchesSearch; }); }
+    function openFullscreen(url) { if (document.querySelector(".fullscreen-overlay")) return; const overlay = document.createElement("div"); overlay.className = "fullscreen-overlay"; const iframe = document.createElement("iframe"); iframe.src = url; iframe.className = "fullscreen-iframe"; iframe.setAttribute("allowfullscreen", "true"); iframe.setAttribute("allow", "autoplay; fullscreen;"); const closeBtn = document.createElement("button"); closeBtn.innerText = "✕ Close Game"; closeBtn.className = "close-btn"; overlay.appendChild(iframe); overlay.appendChild(closeBtn); document.body.appendChild(overlay); document.body.style.overflow = "hidden"; const close = () => { overlay.remove(); document.body.style.overflow = ""; }; closeBtn.onclick = close; overlay.onclick = (e) => { if (e.target === overlay) close(); }; document.addEventListener("keydown", function escHandler(e) { if (e.key === "Escape") { close(); document.removeEventListener("keydown", escHandler); } }); }
+    function openGame(url) { if (ghostModeEnabled) { const ghostWindow = window.open(ghostLink, "_blank"); setTimeout(() => { if (ghostWindow) ghostWindow.close(); openFullscreen(url); }, 50); } else { openFullscreen(url); } }
+    function renderGames() { const filtered = getFilteredGames(); const grid = document.getElementById("gamesGrid"); if (filtered.length === 0) { grid.innerHTML = '<div style="text-align:center;padding:3rem;color:white;">⚠️ No Games Found. Try Another Search!</div>'; return; } grid.innerHTML = filtered.map((game, idx) => `<div class="game-card" data-url="${game.embed}" style="animation: fadeInUp 0.4s ease ${idx * 0.02}s backwards;"><img class="game-img" src="${game.image}" alt="${game.title}" onerror="this.src='https://placehold.co/200x140/0065B5/white?text=${encodeURIComponent(game.title.charAt(0))}'"><div class="game-info"><div class="game-title">${game.title}</div><div class="game-tags">${game.tags}</div></div></div>`).join(""); document.querySelectorAll(".game-card").forEach(card => { card.addEventListener("click", () => openGame(card.dataset.url)); }); }
+    document.getElementById("searchInput").addEventListener("input", (e) => { searchTerm = e.target.value; renderGames(); }); renderGames();
+    const settingsBtn = document.getElementById("settingsButton"), settingsPanel = document.getElementById("settingsPanel"), closeSettings = document.getElementById("closeSettings"), ghostLinkInput = document.getElementById("ghostLinkInput"), applyGhostBtn = document.getElementById("applyGhostBtn"), resetGhostBtn = document.getElementById("resetGhostBtn");
+    settingsBtn.onclick = () => { settingsPanel.style.display = "flex"; }; closeSettings.onclick = () => { settingsPanel.style.display = "none"; }; applyGhostBtn.onclick = () => { let link = ghostLinkInput.value.trim(); if (!link) link = "about:blank"; ghostLink = link; ghostModeEnabled = true; settingsPanel.style.display = "none"; alert(`Ghost Mode Enabled! Games will ghost through: ${ghostLink}`); }; resetGhostBtn.onclick = () => { ghostModeEnabled = false; ghostLink = "about:blank"; ghostLinkInput.value = ""; settingsPanel.style.display = "none"; alert("Ghost Mode Disabled. Games open directly."); };
+    function createStars() { const starfield = document.getElementById("starfield"); for (let i = 0; i < 300; i++) { const star = document.createElement("div"); star.className = "star"; const size = Math.random() * 3 + 1; star.style.width = `${size}px`; star.style.height = `${size}px`; star.style.left = `${Math.random() * 100}%`; star.style.top = `${Math.random() * 100}%`; star.style.animationDelay = `${Math.random() * 5}s`; star.style.animationDuration = `${Math.random() * 3 + 2}s`; starfield.appendChild(star); } for (let i = 0; i < 10; i++) { const shooting = document.createElement("div"); shooting.className = "shooting-star"; shooting.style.top = `${Math.random() * 50}%`; shooting.style.left = `${Math.random() * 50}%`; shooting.style.animationDelay = `${Math.random() * 8}s`; starfield.appendChild(shooting); } }
+    createStars(); setTimeout(() => { const splash = document.getElementById("welcomeSplash"); if (splash) splash.remove(); }, 5000);
 </script>
 </body>
 </html>
