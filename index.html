@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Slope Game Hub | Play Online</title>
+    <title>Game Hub | Slope + BioLyze Arcade</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,6 @@
             min-height: 100vh;
         }
 
-        /* main container */
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -50,7 +49,58 @@
             margin-right: auto;
         }
 
-        /* ========== 1. DIRECT LINK (BUTTON STYLE) ========== */
+        /* tab navigation */
+        .game-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            border-bottom: 1px solid #2d3a5e;
+            padding-bottom: 1rem;
+        }
+
+        .tab-btn {
+            background: rgba(15, 25, 45, 0.7);
+            border: 1px solid #2d3a5e;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #bbd7ff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            background: #1e2a4a;
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(95deg, #3b82f6, #2563eb);
+            color: white;
+            border-color: #6ee7ff;
+            box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+        }
+
+        /* tab content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active-tab {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* link card */
         .link-card {
             background: rgba(15, 25, 45, 0.7);
             backdrop-filter: blur(12px);
@@ -103,7 +153,7 @@
             box-shadow: 0 12px 22px rgba(59,130,246,0.4);
         }
 
-        /* ========== 2. IFRAME EMBED (try to embed if allowed) ========== */
+        /* embed section */
         .embed-section {
             background: #010414cc;
             border-radius: 2rem;
@@ -144,7 +194,7 @@
 
         .responsive-iframe {
             width: 100%;
-            height: 550px;
+            height: 600px;
             border: none;
             display: block;
         }
@@ -159,7 +209,11 @@
             border-left: 5px solid #facc15;
         }
 
-        /* ========== 3. THUMBNAIL PREVIEW CARD ========== */
+        .fallback-message a {
+            color: #60a5fa;
+        }
+
+        /* thumbnail card */
         .thumbnail-card {
             background: rgba(0, 0, 0, 0.45);
             border-radius: 1.8rem;
@@ -224,7 +278,7 @@
             transform: translateY(-2px);
         }
 
-        /* ========== 4. GAME GRID / LIBRARY ========== */
+        /* library section */
         .library-section {
             margin-top: 1rem;
         }
@@ -314,152 +368,241 @@
             .game-header h1 {
                 font-size: 2rem;
             }
+            .tab-btn {
+                padding: 8px 20px;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="game-header">
-        <h1>⚡ SLOPE GAME VAULT ⚡</h1>
-        <p>High-speed 3D rolling action · Endless tracks · Reflex challenge — now on your GitHub page</p>
+        <h1>🎮 GAME HUB ARCADE 🎮</h1>
+        <p>Slope Game + BioLyze Activities | High-speed reflex challenges & interactive content</p>
     </div>
 
-    <!-- 1️⃣ SIMPLE DIRECT LINK (opens new tab) -->
-    <div class="link-card">
-        <div class="link-info">
-            <h3>🎮 Play Slope Game <span class="badge">NEW TAB</span></h3>
-            <p>Official game link — opens in fullscreen-ready window. Best performance & no embed restrictions.</p>
-        </div>
-        <a href="https://slopeonline.online/" target="_blank" rel="noopener noreferrer" class="btn-game">
-            🕹️ Launch Game → 
-        </a>
+    <!-- TAB NAVIGATION -->
+    <div class="game-tabs">
+        <button class="tab-btn active" data-tab="slope">⚡ Slope Game</button>
+        <button class="tab-btn" data-tab="biolyze">🧬 BioLyze70</button>
     </div>
 
-    <!-- 2️⃣ IFRAME EMBED (Direct play within page if allowed) -->
-    <div class="embed-section">
-        <div class="embed-header">
-            <h2>🎬 Live Preview · In-Page Embed</h2>
-            <span class="note">⚠️ if blocked, use the direct link above</span>
+    <!-- ========== SLOPE GAME TAB ========== -->
+    <div id="slope-tab" class="tab-content active-tab">
+        <!-- Direct link -->
+        <div class="link-card">
+            <div class="link-info">
+                <h3>🎮 Play Slope Game <span class="badge">NEW TAB</span></h3>
+                <p>Official game link — opens in fullscreen-ready window. Best performance & no embed restrictions.</p>
+            </div>
+            <a href="https://slopeonline.online/" target="_blank" rel="noopener noreferrer" class="btn-game">
+                🕹️ Launch Game → 
+            </a>
         </div>
-        <div class="iframe-wrapper">
-            <iframe 
-                class="responsive-iframe"
-                src="https://slopeonline.online/" 
-                title="Slope Game Embedded"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                allowfullscreen>
-            </iframe>
+
+        <!-- iframe embed -->
+        <div class="embed-section">
+            <div class="embed-header">
+                <h2>🎬 Live Preview · In-Page Embed</h2>
+                <span class="note">⚠️ if blocked, use direct link above</span>
+            </div>
+            <div class="iframe-wrapper">
+                <iframe 
+                    class="responsive-iframe"
+                    src="https://slopeonline.online/" 
+                    title="Slope Game Embedded"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="fallback-message">
+                💡 <strong>Note:</strong> Some websites block iframe embedding due to security policies (X-Frame-Options).<br>
+                If the game doesn't load above, simply <a href="https://slopeonline.online/" target="_blank">click here to play directly on slopeonline.online</a> — best experience!
+            </div>
         </div>
-        <div class="fallback-message">
-            💡 <strong>Note:</strong> Some websites block iframe embedding due to security policies (X-Frame-Options).<br>
-            If the game doesn't load above, simply <a href="https://slopeonline.online/" target="_blank" style="color:#60a5fa;">click here to play directly on slopeonline.online</a> — best experience!
+
+        <!-- thumbnail preview -->
+        <div class="thumbnail-card">
+            <div class="preview-flex">
+                <div class="preview-img">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%230d111a'/%3E%3Cpath d='M50,200 L200,80 L350,200' stroke='%233b82f6' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='200' cy='100' r='18' fill='%23facc15'/%3E%3Cpolygon points='120,240 200,150 280,240' fill='%231e2a47' stroke='%2344aaff' stroke-width='2'/%3E%3Ctext x='90' y='280' fill='%23a5f3ff' font-size='16' font-family='monospace'%3ESLOPE RUNNER%3C/text%3E%3C/svg%3E"
+                         alt="Slope Game Preview Thumbnail">
+                </div>
+                <div class="preview-desc">
+                    <h3>🔥 Slope Unblocked · Global Hit</h3>
+                    <p>Endless 3D tunnel racing with neon visuals and dynamic difficulty. Control a rolling ball, dodge red barriers, and beat your high score. Perfect for quick reflex training.</p>
+                    <a href="https://slopeonline.online/" target="_blank" class="btn-thumb">
+                        🎯 PLAY FULL GAME → 
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- game library -->
+        <div class="library-section">
+            <h2>🎲 Similar Games</h2>
+            <div class="game-grid">
+                <div class="game-card">
+                    <div class="game-icon">🌀</div>
+                    <h3>Slope Game</h3>
+                    <p>Infinite rolling speed. Neon tracks, crazy obstacles.</p>
+                    <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Play Now →</a>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">⚡</div>
+                    <h3>Slope Game 2</h3>
+                    <p>Enhanced obstacles, shifting platforms & gaps.</p>
+                    <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Explore →</a>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">🏔️</div>
+                    <h3>Slope Rider 3D</h3>
+                    <p>Sled riding down snowy slopes.</p>
+                    <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Ride Now →</a>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">🏎️</div>
+                    <h3>Slippery Slope</h3>
+                    <p>Drive car on dynamic slopes.</p>
+                    <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Drive →</a>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- 3️⃣ THUMBNAIL PREVIEW + LINK (Stylish card) -->
-    <div class="thumbnail-card">
-        <div class="preview-flex">
-            <div class="preview-img">
-                <!-- Dynamic generated thumbnail / slope themed placeholder (data:image + svg game vibe) -->
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%230d111a'/%3E%3Cpath d='M50,200 L200,80 L350,200' stroke='%233b82f6' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='200' cy='100' r='18' fill='%23facc15'/%3E%3Cpolygon points='120,240 200,150 280,240' fill='%231e2a47' stroke='%2344aaff' stroke-width='2'/%3E%3Ctext x='90' y='280' fill='%23a5f3ff' font-size='16' font-family='monospace'%3ESLOPE RUNNER%3C/text%3E%3C/svg%3E"
-                     alt="Slope Game Preview Thumbnail"
-                     style="background:#090c15;">
+    <!-- ========== BIOLYZE70 TAB ========== -->
+    <div id="biolyze-tab" class="tab-content">
+        <!-- Direct link -->
+        <div class="link-card">
+            <div class="link-info">
+                <h3>🧬 BioLyze70 <span class="badge">NEW TAB</span></h3>
+                <p>Interactive activities, group notes, featured modules & more.</p>
             </div>
-            <div class="preview-desc">
-                <h3>🔥 Slope Unblocked · Global Hit</h3>
-                <p>Endless 3D tunnel racing with neon visuals and dynamic difficulty. Control a rolling ball, dodge red barriers, and beat your high score. Perfect for quick reflex training.</p>
-                <a href="https://slopeonline.online/" target="_blank" class="btn-thumb">
-                    🎯 PLAY FULL GAME → 
-                </a>
-            </div>
+            <a href="https://biolyze70.space/activity.php?id=37" target="_blank" rel="noopener noreferrer" class="btn-game">
+                🔬 Open BioLyze →
+            </a>
         </div>
-    </div>
 
-    <!-- 4️⃣ GAME GRID / LIBRARY (multiple style cards & similar games) using existing game link + extra recommended -->
-    <div class="library-section">
-        <h2>🎲 Game Library · Play More</h2>
-        <div class="game-grid">
-            <!-- Card 1: Main Slope Game (existing link) -->
-            <div class="game-card">
-                <div class="game-icon">🌀</div>
-                <h3>Slope Game</h3>
-                <p>Infinite rolling speed. Neon tracks, crazy obstacles, and pure addiction.</p>
-                <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Play Now →</a>
+        <!-- iframe embed -->
+        <div class="embed-section">
+            <div class="embed-header">
+                <h2>📚 BioLyze Activity Hub · Embedded</h2>
+                <span class="note">⚠️ if blocked, use direct link above</span>
             </div>
-            <!-- Card 2: Slope Game 2 (Sequel info based on site similar games) -->
-            <div class="game-card">
-                <div class="game-icon">⚡</div>
-                <h3>Slope Game 2</h3>
-                <p>Enhanced obstacles, shifting platforms & unpredictable gaps.</p>
-                <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Explore Sequel →</a>
+            <div class="iframe-wrapper">
+                <iframe 
+                    class="responsive-iframe"
+                    src="https://biolyze70.space/activity.php?id=37"
+                    title="BioLyze70 Activities"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                    allowfullscreen>
+                </iframe>
             </div>
-            <!-- Card 3: Slope Rider 3D (Snow vibe) -->
-            <div class="game-card">
-                <div class="game-icon">🏔️</div>
-                <h3>Slope Rider 3D</h3>
-                <p>Sled riding down snowy slopes. Collect gifts, avoid trees.</p>
-                <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Ride Now →</a>
-            </div>
-            <!-- Card 4: Slippery Slope (car racing) -->
-            <div class="game-card">
-                <div class="game-icon">🏎️</div>
-                <h3>Slippery Slope</h3>
-                <p>Drive car on dynamic slopes. 18 unique racetracks.</p>
-                <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Drive →</a>
-            </div>
-            <!-- Card 5: Cowboy Safari runner -->
-            <div class="game-card">
-                <div class="game-icon">🐎</div>
-                <h3>Cowboy Safari</h3>
-                <p>Endless runner, tame wild animals, build zoo.</p>
-                <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Ride Wild →</a>
-            </div>
-            <!-- Card 6: Traffic Road moto -->
-            <div class="game-card">
-                <div class="game-icon">🏍️</div>
-                <h3>Traffic Road</h3>
-                <p>Highway motorcycle racing, dodge traffic, unlock upgrades.</p>
-                <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Race →</a>
+            <div class="fallback-message">
+                💡 <strong>Note:</strong> Some websites block iframe embedding.<br>
+                If content doesn't load above, <a href="https://biolyze70.space/activity.php?id=37" target="_blank">click here to open BioLyze70 directly</a> — full access to all activities!
             </div>
         </div>
-        <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; opacity: 0.7;">🌟 All similar games are accessible via the main Slope portal — jump right into action!</p>
+
+        <!-- BioLyze preview card -->
+        <div class="thumbnail-card">
+            <div class="preview-flex">
+                <div class="preview-img">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%230d111a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2344aaff' font-size='28' font-family='monospace'%3E🧬 BioLyze%3C/text%3E%3Ccircle cx='100' cy='100' r='25' fill='%233b82f6' opacity='0.6'/%3E%3Ccircle cx='300' cy='200' r='35' fill='%239333ea' opacity='0.5'/%3E%3C/svg%3E"
+                         alt="BioLyze70 Preview">
+                </div>
+                <div class="preview-desc">
+                    <h3>🧬 BioLyze70 Platform</h3>
+                    <p>Interactive learning activities, group collaboration, featured modules, and focus mode tools. Access alternative web resources, activity modules, and educational content all in one place.</p>
+                    <a href="https://biolyze70.space/activity.php?id=37" target="_blank" class="btn-thumb">
+                        🔬 Explore Activities →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- BioLyze features grid -->
+        <div class="library-section">
+            <h2>📖 BioLyze Features</h2>
+            <div class="game-grid">
+                <div class="game-card">
+                    <div class="game-icon">📚</div>
+                    <h3>Group Notes</h3>
+                    <p>Collaborative note-taking and sharing.</p>
+                    <a href="https://biolyze70.space/activity.php?id=37" target="_blank" class="game-link-btn">View →</a>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">⭐</div>
+                    <h3>Featured Modules</h3>
+                    <p>Curated educational content.</p>
+                    <a href="https://biolyze70.space/activity.php?id=37" target="_blank" class="game-link-btn">Explore →</a>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">⛶</div>
+                    <h3>Focus Mode</h3>
+                    <p>Distraction-free learning environment.</p>
+                    <a href="https://biolyze70.space/activity.php?id=37" target="_blank" class="game-link-btn">Try →</a>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">🔥</div>
+                    <h3>All Activities</h3>
+                    <p>From BioLyze 20 to 100+ modules.</p>
+                    <a href="https://biolyze70.space/activity.php?id=37" target="_blank" class="game-link-btn">Browse →</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer>
-        <p>🎮 Slope Game official source: <strong>https://slopeonline.online/</strong> — optimized for GitHub Pages.<br>
-        ⚡ Use the <strong>direct link button</strong> for best compatibility. Iframe may be restricted by external site policies.<br>
-        🚀 High scores & endless fun. Add this page to your GitHub repository and share with friends.</p>
+        <p>🎮 <strong>Slope Game</strong> source: slopeonline.online &nbsp;|&nbsp; 🧬 <strong>BioLyze70</strong> source: biolyze70.space<br>
+        ⚡ Use <strong>direct link buttons</strong> for best compatibility. Iframes may be restricted by external site policies.<br>
+        🚀 All original branding and credits remain with their respective owners. Add this hub to your GitHub repository!</p>
     </footer>
 </div>
 
-<!-- small script to add extra dynamic note if iframe fails (optional) -->
 <script>
-    (function() {
-        // detect if iframe fails to load (optional graceful hint, but user already aware)
-        const iframe = document.querySelector('.responsive-iframe');
-        if(iframe) {
-            iframe.addEventListener('error', function() {
-                const wrapper = document.querySelector('.fallback-message');
-                if(wrapper) {
-                    wrapper.innerHTML = '⚠️ The game website blocked embedding (X-Frame-Options). <strong><a href="https://slopeonline.online/" target="_blank" style="color:#facc15;">Click HERE to play Slope Game in new tab →</a></strong> Full experience unlocked.';
-                }
-            });
-            // also iframe load timeout (some browsers may show empty)
-            setTimeout(() => {
-                try {
-                    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-                    if (!iframeDoc || iframeDoc.location.href === 'about:blank') {
-                        // not critical, just keep fallback message visible
-                        const msgDiv = document.querySelector('.fallback-message');
-                        if(msgDiv && !msgDiv.innerHTML.includes('directly')) {
-                            msgDiv.style.backgroundColor = '#1e1f2e';
-                        }
-                    }
-                } catch(e) { /* cross-origin limits but fine */ }
-            }, 2000);
-        }
-    })();
+    // Tab switching functionality
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabId = btn.getAttribute('data-tab');
+            
+            // Update active states for buttons
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Update active states for content
+            tabContents.forEach(content => content.classList.remove('active-tab'));
+            document.getElementById(`${tabId}-tab`).classList.add('active-tab');
+        });
+    });
+
+    // Detect iframe blocking (Slope)
+    const slopeIframe = document.querySelector('#slope-tab .responsive-iframe');
+    if(slopeIframe) {
+        slopeIframe.addEventListener('error', function() {
+            const msgDiv = document.querySelector('#slope-tab .fallback-message');
+            if(msgDiv && !msgDiv.innerHTML.includes('directly on slopeonline')) {
+                msgDiv.innerHTML = '⚠️ The game website blocked embedding. <strong><a href="https://slopeonline.online/" target="_blank" style="color:#facc15;">Click HERE to play Slope Game in new tab →</a></strong>';
+            }
+        });
+    }
+
+    // Detect iframe blocking (BioLyze)
+    const biolyzeIframe = document.querySelector('#biolyze-tab .responsive-iframe');
+    if(biolyzeIframe) {
+        biolyzeIframe.addEventListener('error', function() {
+            const msgDiv = document.querySelector('#biolyze-tab .fallback-message');
+            if(msgDiv && !msgDiv.innerHTML.includes('open BioLyze70 directly')) {
+                msgDiv.innerHTML = '⚠️ BioLyze70 blocked embedding. <strong><a href="https://biolyze70.space/activity.php?id=37" target="_blank" style="color:#facc15;">Click HERE to open BioLyze70 in new tab →</a></strong>';
+            }
+        });
+    }
 </script>
 </body>
 </html>
