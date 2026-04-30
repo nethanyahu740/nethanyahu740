@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Game Hub | Slope + BioLyze Arcade</title>
+    <title>🎮 GameHub Unblocked | HTML5 Games Portal</title>
     <style>
         * {
             margin: 0;
@@ -12,597 +12,370 @@
         }
 
         body {
-            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
+            background: linear-gradient(135deg, #0a0f1e 0%, #0c1225 100%);
             font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Inter', sans-serif;
-            color: #eef5ff;
-            padding: 2rem 1.5rem;
+            color: #eee;
             min-height: 100vh;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        /* Header similar to BioLyze70 style */
+        .header {
+            background: rgba(10, 20, 30, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        /* header section */
-        .game-header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
-
-        .game-header h1 {
-            font-size: 2.8rem;
-            background: linear-gradient(135deg, #FFFFFF, #6ee7ff);
-            background-clip: text;
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFD166, #EF476F);
             -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
             letter-spacing: -0.5px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        .game-header p {
-            font-size: 1.1rem;
-            opacity: 0.85;
-            margin-top: 0.5rem;
-            max-width: 650px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* tab navigation */
-        .game-tabs {
+        .nav-links {
             display: flex;
+            gap: 1.5rem;
             flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            justify-content: center;
-            border-bottom: 1px solid #2d3a5e;
-            padding-bottom: 1rem;
         }
 
-        .tab-btn {
-            background: rgba(15, 25, 45, 0.7);
-            border: 1px solid #2d3a5e;
-            padding: 12px 28px;
-            border-radius: 60px;
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
             font-size: 1rem;
-            font-weight: 600;
-            color: #bbd7ff;
-            cursor: pointer;
-            transition: all 0.2s ease;
         }
 
-        .tab-btn:hover {
-            background: #1e2a4a;
-            border-color: #3b82f6;
-            transform: translateY(-2px);
+        .nav-links a:hover {
+            color: #FFD166;
         }
 
-        .tab-btn.active {
-            background: linear-gradient(95deg, #3b82f6, #2563eb);
-            color: white;
-            border-color: #6ee7ff;
-            box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+        /* Main game grid style (like BioLyze cards) */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
         }
 
-        /* tab content */
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-content.active-tab {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* link card */
-        .link-card {
-            background: rgba(15, 25, 45, 0.7);
-            backdrop-filter: blur(12px);
-            border-radius: 2rem;
-            padding: 1.2rem 2rem;
-            margin-bottom: 2.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            border: 1px solid rgba(72, 187, 255, 0.3);
-            box-shadow: 0 12px 28px -8px rgba(0,0,0,0.4);
-        }
-
-        .link-info h3 {
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .badge {
-            background: #2b6ef0;
-            font-size: 0.7rem;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-weight: 500;
-        }
-
-        .btn-game {
-            background: linear-gradient(95deg, #3b82f6, #9333ea);
-            border: none;
-            padding: 12px 32px;
-            border-radius: 60px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: white;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.2s ease;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.3);
-        }
-
-        .btn-game:hover {
-            transform: scale(1.02);
-            background: linear-gradient(95deg, #2563eb, #7c3aed);
-            box-shadow: 0 12px 22px rgba(59,130,246,0.4);
-        }
-
-        /* embed section */
-        .embed-section {
-            background: #010414cc;
-            border-radius: 2rem;
-            margin-bottom: 2.8rem;
-            padding: 1rem;
-            border: 1px solid #2d3a5e;
-        }
-
-        .embed-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            flex-wrap: wrap;
-            padding: 0.5rem 1rem 0.8rem 1rem;
-        }
-
-        .embed-header h2 {
-            font-size: 1.6rem;
-            font-weight: 600;
-        }
-
-        .note {
-            font-size: 0.8rem;
-            background: #1e293b;
-            padding: 5px 12px;
-            border-radius: 50px;
-            color: #bbd7ff;
-        }
-
-        .iframe-wrapper {
-            position: relative;
-            width: 100%;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            background: #000000;
-            box-shadow: 0 20px 35px -10px black;
-        }
-
-        .responsive-iframe {
-            width: 100%;
-            height: 600px;
-            border: none;
-            display: block;
-        }
-
-        .fallback-message {
-            background: #0f172a;
-            padding: 1rem;
-            text-align: center;
-            border-radius: 1rem;
-            font-size: 0.9rem;
-            margin-top: 0.8rem;
-            border-left: 5px solid #facc15;
-        }
-
-        .fallback-message a {
-            color: #60a5fa;
-        }
-
-        /* thumbnail card */
-        .thumbnail-card {
-            background: rgba(0, 0, 0, 0.45);
-            border-radius: 1.8rem;
-            margin-bottom: 3rem;
-            padding: 1.6rem;
-            backdrop-filter: blur(4px);
-            border: 1px solid #31486c;
-            transition: 0.2s;
-        }
-
-        .preview-flex {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .preview-img {
-            flex: 1;
-            min-width: 200px;
-            text-align: center;
-        }
-
-        .preview-img img {
-            max-width: 100%;
-            width: 280px;
-            border-radius: 28px;
-            box-shadow: 0 18px 30px rgba(0,0,0,0.5);
-            border: 2px solid #3b82f680;
-            transition: transform 0.2s;
-        }
-
-        .preview-img img:hover {
-            transform: scale(1.02);
-        }
-
-        .preview-desc {
-            flex: 2;
-        }
-
-        .preview-desc h3 {
-            font-size: 1.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .btn-thumb {
-            display: inline-block;
-            background: #1e2a3e;
-            margin-top: 1rem;
-            padding: 10px 24px;
-            border-radius: 40px;
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.2s;
-            border: 1px solid #4791ff;
-        }
-
-        .btn-thumb:hover {
-            background: #2d3e5e;
-            transform: translateY(-2px);
-        }
-
-        /* library section */
-        .library-section {
-            margin-top: 1rem;
-        }
-
-        .library-section h2 {
+        .section-title {
             font-size: 1.8rem;
-            margin-bottom: 1.2rem;
-            display: inline-block;
-            border-left: 5px solid #3b82f6;
-            padding-left: 18px;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            border-left: 5px solid #EF476F;
+            padding-left: 1rem;
         }
 
         .game-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.8rem;
-            margin-top: 1.2rem;
+            margin-bottom: 3rem;
         }
 
+        /* Card style exactly as the vibe of biolyze70 */
         .game-card {
-            background: #0f172ae0;
+            background: rgba(20, 30, 45, 0.7);
             backdrop-filter: blur(4px);
             border-radius: 1.5rem;
             overflow: hidden;
             transition: all 0.25s ease;
-            border: 1px solid #2d3a5e;
-            text-align: center;
-            padding: 1.2rem 1rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
 
         .game-card:hover {
             transform: translateY(-6px);
-            border-color: #3b82f6;
-            box-shadow: 0 18px 28px -12px #000000aa;
+            border-color: #FFD166;
+            background: rgba(30, 45, 65, 0.8);
+            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.5);
         }
 
-        .game-icon {
-            font-size: 3rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .game-card h3 {
-            font-size: 1.4rem;
-            margin: 0.5rem 0;
-        }
-
-        .game-card p {
-            font-size: 0.85rem;
-            opacity: 0.8;
-            margin: 0.5rem 0 1rem;
-        }
-
-        .game-link-btn {
-            background: #2563eb;
-            padding: 10px 20px;
-            border-radius: 40px;
-            color: white;
-            text-decoration: none;
-            display: inline-flex;
+        .game-thumb {
+            background: #0f172a;
+            height: 150px;
+            display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-weight: 500;
-            transition: 0.2s;
+            justify-content: center;
+            font-size: 4rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .game-link-btn:hover {
-            background: #1d4ed8;
-            gap: 0.8rem;
+        .game-info {
+            padding: 1.2rem;
+        }
+
+        .game-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .game-desc {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 1rem;
+        }
+
+        .play-btn {
+            background: #EF476F;
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.85rem;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .play-btn:hover {
+            background: #FF8C42;
+            transform: scale(1.02);
+        }
+
+        /* Modal for playing embedded game */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: #0b1120;
+            width: 90%;
+            max-width: 1100px;
+            height: 80vh;
+            border-radius: 2rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #FFD166;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: #1e293b;
+        }
+
+        .modal-header h3 {
+            font-size: 1.3rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .game-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #000;
         }
 
         footer {
             text-align: center;
-            margin-top: 3.5rem;
-            padding-top: 1.8rem;
-            border-top: 1px solid #2d3a60;
-            font-size: 0.85rem;
-            color: #8aa3cc;
+            padding: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 2rem;
+            color: #6c7a8e;
         }
 
-        @media (max-width: 680px) {
-            body {
-                padding: 1rem;
+        @media (max-width: 700px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
             }
-            .responsive-iframe {
-                height: 400px;
-            }
-            .game-header h1 {
-                font-size: 2rem;
-            }
-            .tab-btn {
-                padding: 8px 20px;
-                font-size: 0.85rem;
+            .game-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
+
+<div class="header">
+    <div class="logo">🎮 GAMEHUB • UNBLOCKED</div>
+    <div class="nav-links">
+        <a href="#">🏠 Home</a>
+        <a href="#">🔥 New Games</a>
+        <a href="#">⚽ .io Games</a>
+        <a href="#">💎 Classics</a>
+        <a href="#">📚 Notes</a>
+    </div>
+</div>
+
 <div class="container">
-    <div class="game-header">
-        <h1>🎮 GAME HUB ARCADE 🎮</h1>
-        <p>Slope Game + BioLyze Activities | High-speed reflex challenges & interactive content</p>
+    <div class="section-title">✨ Featured HTML5 Games (Play inside page)</div>
+    <div class="game-grid" id="featuredGrid"></div>
+
+    <div class="section-title">🌐 External Unblocked Games (like BioLyze70 style)</div>
+    <div class="game-grid" id="externalGrid"></div>
+</div>
+
+<footer>
+    <p>🎮 GameHub Unblocked • Play directly or open external sites • No downloads needed</p>
+    <p style="font-size:0.75rem; margin-top:8px;">For educational/ personal use only. Games property of respective owners.</p>
+</footer>
+
+<div id="gameModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalGameTitle">Game</h3>
+            <button class="close-modal" id="closeModalBtn">&times;</button>
+        </div>
+        <iframe id="gameIframe" class="game-iframe" srcdoc="<html style='background:#000;color:white;display:flex;align-items:center;justify-content:center;height:100%'>Loading game...</html>"></iframe>
     </div>
-
-    <!-- TAB NAVIGATION -->
-    <div class="game-tabs">
-        <button class="tab-btn active" data-tab="slope">⚡ Slope Game</button>
-        <button class="tab-btn" data-tab="biolyze">🧬 BioLyze70</button>
-    </div>
-
-    <!-- ========== SLOPE GAME TAB ========== -->
-    <div id="slope-tab" class="tab-content active-tab">
-        <!-- Direct link -->
-        <div class="link-card">
-            <div class="link-info">
-                <h3>🎮 Play Slope Game <span class="badge">NEW TAB</span></h3>
-                <p>Official game link — opens in fullscreen-ready window. Best performance & no embed restrictions.</p>
-            </div>
-            <a href="https://slopeonline.online/" target="_blank" rel="noopener noreferrer" class="btn-game">
-                🕹️ Launch Game → 
-            </a>
-        </div>
-
-        <!-- iframe embed -->
-        <div class="embed-section">
-            <div class="embed-header">
-                <h2>🎬 Live Preview · In-Page Embed</h2>
-                <span class="note">⚠️ if blocked, use direct link above</span>
-            </div>
-            <div class="iframe-wrapper">
-                <iframe 
-                    class="responsive-iframe"
-                    src="https://slopeonline.online/" 
-                    title="Slope Game Embedded"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                    allowfullscreen>
-                </iframe>
-            </div>
-            <div class="fallback-message">
-                💡 <strong>Note:</strong> Some websites block iframe embedding due to security policies (X-Frame-Options).<br>
-                If the game doesn't load above, simply <a href="https://slopeonline.online/" target="_blank">click here to play directly on slopeonline.online</a> — best experience!
-            </div>
-        </div>
-
-        <!-- thumbnail preview -->
-        <div class="thumbnail-card">
-            <div class="preview-flex">
-                <div class="preview-img">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%230d111a'/%3E%3Cpath d='M50,200 L200,80 L350,200' stroke='%233b82f6' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='200' cy='100' r='18' fill='%23facc15'/%3E%3Cpolygon points='120,240 200,150 280,240' fill='%231e2a47' stroke='%2344aaff' stroke-width='2'/%3E%3Ctext x='90' y='280' fill='%23a5f3ff' font-size='16' font-family='monospace'%3ESLOPE RUNNER%3C/text%3E%3C/svg%3E"
-                         alt="Slope Game Preview Thumbnail">
-                </div>
-                <div class="preview-desc">
-                    <h3>🔥 Slope Unblocked · Global Hit</h3>
-                    <p>Endless 3D tunnel racing with neon visuals and dynamic difficulty. Control a rolling ball, dodge red barriers, and beat your high score. Perfect for quick reflex training.</p>
-                    <a href="https://slopeonline.online/" target="_blank" class="btn-thumb">
-                        🎯 PLAY FULL GAME → 
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- game library -->
-        <div class="library-section">
-            <h2>🎲 Similar Games</h2>
-            <div class="game-grid">
-                <div class="game-card">
-                    <div class="game-icon">🌀</div>
-                    <h3>Slope Game</h3>
-                    <p>Infinite rolling speed. Neon tracks, crazy obstacles.</p>
-                    <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Play Now →</a>
-                </div>
-                <div class="game-card">
-                    <div class="game-icon">⚡</div>
-                    <h3>Slope Game 2</h3>
-                    <p>Enhanced obstacles, shifting platforms & gaps.</p>
-                    <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Explore →</a>
-                </div>
-                <div class="game-card">
-                    <div class="game-icon">🏔️</div>
-                    <h3>Slope Rider 3D</h3>
-                    <p>Sled riding down snowy slopes.</p>
-                    <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Ride Now →</a>
-                </div>
-                <div class="game-card">
-                    <div class="game-icon">🏎️</div>
-                    <h3>Slippery Slope</h3>
-                    <p>Drive car on dynamic slopes.</p>
-                    <a href="https://slopeonline.online/" target="_blank" class="game-link-btn">Drive →</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ========== BIOLYZE70 TAB ========== -->
-    <div id="biolyze-tab" class="tab-content">
-        <!-- Direct link -->
-        <div class="link-card">
-            <div class="link-info">
-                <h3>🧬 BioLyze70 <span class="badge">NEW TAB</span></h3>
-                <p>Interactive activities, group notes, featured modules & more.</p>
-            </div>
-            <a href="https://biolyze70.space/activity.php?id=37" target="_blank" rel="noopener noreferrer" class="btn-game">
-                🔬 Open BioLyze →
-            </a>
-        </div>
-
-        <!-- iframe embed -->
-        <div class="embed-section">
-            <div class="embed-header">
-                <h2>📚 BioLyze Activity Hub · Embedded</h2>
-                <span class="note">⚠️ if blocked, use direct link above</span>
-            </div>
-            <div class="iframe-wrapper">
-                <iframe 
-                    class="responsive-iframe"
-                    src="https://biolyze70.space/activity.php?id=37"
-                    title="BioLyze70 Activities"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                    allowfullscreen>
-                </iframe>
-            </div>
-            <div class="fallback-message">
-                💡 <strong>Note:</strong> Some websites block iframe embedding.<br>
-                If content doesn't load above, <a href="https://biolyze70.space/activity.php?id=37" target="_blank">click here to open BioLyze70 directly</a> — full access to all activities!
-            </div>
-        </div>
-
-        <!-- BioLyze preview card -->
-        <div class="thumbnail-card">
-            <div class="preview-flex">
-                <div class="preview-img">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%230d111a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2344aaff' font-size='28' font-family='monospace'%3E🧬 BioLyze%3C/text%3E%3Ccircle cx='100' cy='100' r='25' fill='%233b82f6' opacity='0.6'/%3E%3Ccircle cx='300' cy='200' r='35' fill='%239333ea' opacity='0.5'/%3E%3C/svg%3E"
-                         alt="BioLyze70 Preview">
-                </div>
-                <div class="preview-desc">
-                    <h3>🧬 BioLyze70 Platform</h3>
-                    <p>Interactive learning activities, group collaboration, featured modules, and focus mode tools. Access alternative web resources, activity modules, and educational content all in one place.</p>
-                    <a href="https://biolyze70.space/activity.php?id=37" target="_blank" class="btn-thumb">
-                        🔬 Explore Activities →
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- BioLyze features grid -->
-        <div class="library-section">
-            <h2>📖 BioLyze Features</h2>
-            <div class="game-grid">
-                <div class="game-card">
-                    <div class="game-icon">📚</div>
-                    <h3>Group Notes</h3>
-                    <p>Collaborative note-taking and sharing.</p>
-                    <a href="https://biolyze70.space/activity.php?id=37" target="_blank" class="game-link-btn">View →</a>
-                </div>
-                <div class="game-card">
-                    <div class="game-icon">⭐</div>
-                    <h3>Featured Modules</h3>
-                    <p>Curated educational content.</p>
-                    <a href="https://biolyze70.space/activity.php?id=37" target="_blank" class="game-link-btn">Explore →</a>
-                </div>
-                <div class="game-card">
-                    <div class="game-icon">⛶</div>
-                    <h3>Focus Mode</h3>
-                    <p>Distraction-free learning environment.</p>
-                    <a href="https://biolyze70.space/activity.php?id=37" target="_blank" class="game-link-btn">Try →</a>
-                </div>
-                <div class="game-card">
-                    <div class="game-icon">🔥</div>
-                    <h3>All Activities</h3>
-                    <p>From BioLyze 20 to 100+ modules.</p>
-                    <a href="https://biolyze70.space/activity.php?id=37" target="_blank" class="game-link-btn">Browse →</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <p>🎮 <strong>Slope Game</strong> source: slopeonline.online &nbsp;|&nbsp; 🧬 <strong>BioLyze70</strong> source: biolyze70.space<br>
-        ⚡ Use <strong>direct link buttons</strong> for best compatibility. Iframes may be restricted by external site policies.<br>
-        🚀 All original branding and credits remain with their respective owners. Add this hub to your GitHub repository!</p>
-    </footer>
 </div>
 
 <script>
-    // Tab switching functionality
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
+    // ---------- REAL HTML5 GAMES (EMBEDDABLE) ----------
+    // These are actual unblocked HTML5 game files hosted on CDN / open repos.
+    // For self-hosting, replace with your local game.html files.
+    const embeddedGames = [
+        {
+            name: "🎾 2048",
+            desc: "Classic number merging puzzle",
+            icon: "🔢",
+            embedUrl: "https://play2048.co/",
+            isExternal: true   // 2048 works better external, but we'll embed in iframe
+        },
+        {
+            name: "🐍 Snake.io",
+            desc: "Classic snake game HTML5",
+            icon: "🐍",
+            embedUrl: "https://snake-5c0f1.web.app/",
+            isExternal: true
+        },
+        {
+            name: "🕹️ Flappy Bird",
+            desc: "Flappy style remake",
+            icon: "🐦",
+            embedUrl: "https://flappy-bird-ccb4f.web.app/",
+            isExternal: true
+        },
+        {
+            name: "⚽ Soccer Physics",
+            desc: "Funny ragdoll soccer",
+            icon: "⚽",
+            embedUrl: "https://soccerphysicsonline.com/",
+            isExternal: true
+        },
+        {
+            name: "🧩 Tiles Hop",
+            desc: "Rhythm ball game",
+            icon: "🎵",
+            embedUrl: "https://tilehop.github.io/",
+            isExternal: true
+        },
+        {
+            name: "🚀 Slope Unblocked",
+            desc: "Rolling ball geometry dash",
+            icon: "🏔️",
+            embedUrl: "https://slope-game.github.io/",
+            isExternal: true
+        }
+    ];
 
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tabId = btn.getAttribute('data-tab');
-            
-            // Update active states for buttons
-            tabBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            // Update active states for content
-            tabContents.forEach(content => content.classList.remove('active-tab'));
-            document.getElementById(`${tabId}-tab`).classList.add('active-tab');
+    // ---------- EXTERNAL LINKS (like BioLyze70 style) ----------
+    const externalLinks = [
+        { name: "🔥 Agar.io", icon: "⚽", url: "https://agar.io/", desc: "Classic .io game" },
+        { name: "💎 BioLyze 70", icon: "💎", url: "https://biolyze70.space/", desc: "Original portal" },
+        { name: "🎮 Krunker.io", icon: "🔫", url: "https://krunker.io/", desc: "FPS browser game" },
+        { name: "🧩 Paper.io 2", icon: "📄", url: "https://paper-io.com/", desc: "Territory war" },
+        { name: "🏎️ Drift Hunters", icon: "🏎️", url: "https://drift-hunters.io/", desc: "3D drifting" },
+        { name: "🎯 Shell Shockers", icon: "🥚", url: "https://shellshock.io/", desc: "Egg shooter" }
+    ];
+
+    // Render Embedded Games (play in modal)
+    const featuredGrid = document.getElementById("featuredGrid");
+    const externalGrid = document.getElementById("externalGrid");
+    const modal = document.getElementById("gameModal");
+    const gameIframe = document.getElementById("gameIframe");
+    const modalGameTitle = document.getElementById("modalGameTitle");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+
+    function openGame(url, title) {
+        modalGameTitle.innerText = title;
+        // For security but allowing external sites
+        gameIframe.src = url;
+        modal.style.display = "flex";
+    }
+
+    function closeModal() {
+        modal.style.display = "none";
+        gameIframe.src = "about:blank";
+    }
+
+    // Build embedded cards
+    embeddedGames.forEach(game => {
+        const card = document.createElement("div");
+        card.className = "game-card";
+        card.innerHTML = `
+            <div class="game-thumb">${game.icon}</div>
+            <div class="game-info">
+                <div class="game-title">${game.name}</div>
+                <div class="game-desc">${game.desc}</div>
+                <button class="play-btn" data-url="${game.embedUrl}" data-name="${game.name}">▶ Play Now</button>
+            </div>
+        `;
+        const btn = card.querySelector(".play-btn");
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            openGame(btn.dataset.url, btn.dataset.name);
         });
+        featuredGrid.appendChild(card);
     });
 
-    // Detect iframe blocking (Slope)
-    const slopeIframe = document.querySelector('#slope-tab .responsive-iframe');
-    if(slopeIframe) {
-        slopeIframe.addEventListener('error', function() {
-            const msgDiv = document.querySelector('#slope-tab .fallback-message');
-            if(msgDiv && !msgDiv.innerHTML.includes('directly on slopeonline')) {
-                msgDiv.innerHTML = '⚠️ The game website blocked embedding. <strong><a href="https://slopeonline.online/" target="_blank" style="color:#facc15;">Click HERE to play Slope Game in new tab →</a></strong>';
-            }
-        });
-    }
+    // Build external links (open in new tab, like BioLyze70)
+    externalLinks.forEach(link => {
+        const card = document.createElement("div");
+        card.className = "game-card";
+        card.innerHTML = `
+            <div class="game-thumb">${link.icon}</div>
+            <div class="game-info">
+                <div class="game-title">${link.name}</div>
+                <div class="game-desc">${link.desc}</div>
+                <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="play-btn">🔗 Open External</a>
+            </div>
+        `;
+        externalGrid.appendChild(card);
+    });
 
-    // Detect iframe blocking (BioLyze)
-    const biolyzeIframe = document.querySelector('#biolyze-tab .responsive-iframe');
-    if(biolyzeIframe) {
-        biolyzeIframe.addEventListener('error', function() {
-            const msgDiv = document.querySelector('#biolyze-tab .fallback-message');
-            if(msgDiv && !msgDiv.innerHTML.includes('open BioLyze70 directly')) {
-                msgDiv.innerHTML = '⚠️ BioLyze70 blocked embedding. <strong><a href="https://biolyze70.space/activity.php?id=37" target="_blank" style="color:#facc15;">Click HERE to open BioLyze70 in new tab →</a></strong>';
-            }
-        });
-    }
+    closeModalBtn.addEventListener("click", closeModal);
+    window.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+    });
 </script>
 </body>
 </html>
