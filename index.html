@@ -2,380 +2,517 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>🎮 GameHub Unblocked | HTML5 Games Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Nexus Arcade | Premium Unblocked Game Hub</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            user-select: none; /* prevents accidental selection on UI */
         }
 
         body {
-            background: linear-gradient(135deg, #0a0f1e 0%, #0c1225 100%);
-            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Inter', sans-serif;
-            color: #eee;
+            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, 'Poppins', sans-serif;
             min-height: 100vh;
-        }
-
-        /* Header similar to BioLyze70 style */
-        .header {
-            background: rgba(10, 20, 30, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem 2rem;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            gap: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            padding: 1.5rem;
         }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #FFD166, #EF476F);
+        /* main app container */
+        .app-container {
+            max-width: 1400px;
+            width: 100%;
+            background: rgba(18, 25, 45, 0.65);
+            backdrop-filter: blur(2px);
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.05);
+            overflow: hidden;
+            border: 1px solid rgba(72, 187, 255, 0.2);
+        }
+
+        /* header area */
+        .game-header {
+            padding: 1.5rem 2rem;
+            background: rgba(10, 15, 27, 0.8);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #C0F2FF, #4F9EFF);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             letter-spacing: -0.5px;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
+        .logo p {
+            font-size: 0.8rem;
+            color: #8aa3c0;
+            margin-top: 4px;
         }
 
-        .nav-links a {
-            color: #ccc;
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.2s;
-            font-size: 1rem;
-        }
-
-        .nav-links a:hover {
-            color: #FFD166;
-        }
-
-        /* Main game grid style (like BioLyze cards) */
-        .container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin: 2rem 0 1rem 0;
-            border-left: 5px solid #EF476F;
-            padding-left: 1rem;
-        }
-
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.8rem;
-            margin-bottom: 3rem;
-        }
-
-        /* Card style exactly as the vibe of biolyze70 */
-        .game-card {
-            background: rgba(20, 30, 45, 0.7);
-            backdrop-filter: blur(4px);
-            border-radius: 1.5rem;
-            overflow: hidden;
-            transition: all 0.25s ease;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-
-        .game-card:hover {
-            transform: translateY(-6px);
-            border-color: #FFD166;
-            background: rgba(30, 45, 65, 0.8);
-            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.5);
-        }
-
-        .game-thumb {
-            background: #0f172a;
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .game-info {
-            padding: 1.2rem;
-        }
-
-        .game-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-        }
-
-        .game-desc {
-            font-size: 0.85rem;
-            color: #aaa;
-            margin-bottom: 1rem;
-        }
-
-        .play-btn {
-            background: #EF476F;
-            border: none;
-            color: white;
-            font-weight: bold;
+        .status-badge {
+            background: #0f172ad9;
             padding: 0.5rem 1.2rem;
             border-radius: 40px;
-            cursor: pointer;
-            transition: 0.2s;
+            border-left: 3px solid #3b82f6;
             font-size: 0.85rem;
-            display: inline-block;
-            text-decoration: none;
+            font-weight: 500;
+            color: #b9d0f0;
         }
 
-        .play-btn:hover {
-            background: #FF8C42;
-            transform: scale(1.02);
+        /* game canvas + loading wrapper */
+        .game-stage {
+            background: #050a15;
+            margin: 1.8rem 2rem;
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 20px 35px -10px black;
+            border: 1px solid rgba(59,130,246,0.4);
+            position: relative;
+            min-height: 520px;
+            transition: all 0.2s;
         }
 
-        /* Modal for playing embedded game */
-        .modal {
-            display: none;
-            position: fixed;
+        .game-frame-wrapper {
+            position: relative;
+            width: 100%;
+            background: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        iframe {
+            width: 100%;
+            height: 520px;
+            border: none;
+            background: #111;
+            display: block;
+        }
+
+        /* loading overlay with animated dots */
+        .loading-overlay {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
+            background: rgba(8, 12, 24, 0.95);
             backdrop-filter: blur(8px);
-        }
-
-        .modal-content {
-            background: #0b1120;
-            width: 90%;
-            max-width: 1100px;
-            height: 80vh;
-            border-radius: 2rem;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
-            border: 1px solid #FFD166;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            padding: 0.8rem 1.5rem;
-            background: #1e293b;
+            gap: 1.5rem;
+            z-index: 20;
+            transition: opacity 0.25s ease;
+            font-family: monospace;
         }
 
-        .modal-header h3 {
-            font-size: 1.3rem;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            color: white;
+        .loading-text {
             font-size: 2rem;
-            cursor: pointer;
-            line-height: 1;
+            font-weight: 600;
+            color: #eef5ff;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #1e2a3e80;
+            padding: 0.5rem 1.8rem;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
         }
 
-        .game-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: #000;
+        .loading-dots {
+            display: inline-flex;
+            width: 70px;
+            justify-content: flex-start;
+            font-size: 2.5rem;
+            font-weight: bold;
+            font-family: monospace;
         }
 
-        footer {
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #2d3a5e;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* game selector grid */
+        .game-selector {
+            padding: 0rem 2rem 2rem 2rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #cddcff;
+            margin-bottom: 1rem;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+
+        .game-card {
+            background: linear-gradient(145deg, #111a2c, #0e1628);
+            border-radius: 1.5rem;
+            padding: 1rem 0.7rem;
             text-align: center;
-            padding: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            margin-top: 2rem;
-            color: #6c7a8e;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid rgba(72, 187, 255, 0.2);
+            backdrop-filter: blur(2px);
         }
 
-        @media (max-width: 700px) {
-            .header {
-                flex-direction: column;
-                text-align: center;
-            }
-            .game-grid {
-                grid-template-columns: 1fr;
-            }
+        .game-card:hover {
+            transform: translateY(-5px);
+            background: #14213d;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(0, 80, 255, 0.2);
+        }
+
+        .game-icon {
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+        }
+
+        .game-title {
+            font-weight: 600;
+            color: #eef5ff;
+            font-size: 1rem;
+        }
+
+        .game-desc {
+            font-size: 0.7rem;
+            color: #7c8db0;
+            margin-top: 4px;
+        }
+
+        /* footer & responsiveness */
+        .footer-note {
+            text-align: center;
+            padding: 1rem 2rem 1.8rem;
+            font-size: 0.75rem;
+            color: #54688b;
+            border-top: 1px solid #1e2b41;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 680px) {
+            body { padding: 0.8rem; }
+            .game-stage { margin: 1rem; }
+            .game-header { padding: 1rem; }
+            .game-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+            iframe { height: 420px; }
+        }
+
+        /* popup custom styling */
+        .toast-popup {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #1f2937ee;
+            backdrop-filter: blur(12px);
+            color: #ffbaba;
+            border-left: 6px solid #ef4444;
+            padding: 0.9rem 2rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            z-index: 200;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+            pointer-events: none;
+            font-family: monospace;
+            letter-spacing: 0.3px;
         }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <div class="logo">🎮 GAMEHUB • UNBLOCKED</div>
-    <div class="nav-links">
-        <a href="#">🏠 Home</a>
-        <a href="#">🔥 New Games</a>
-        <a href="#">⚽ .io Games</a>
-        <a href="#">💎 Classics</a>
-        <a href="#">📚 Notes</a>
-    </div>
-</div>
-
-<div class="container">
-    <div class="section-title">✨ Featured HTML5 Games (Play inside page)</div>
-    <div class="game-grid" id="featuredGrid"></div>
-
-    <div class="section-title">🌐 External Unblocked Games (like BioLyze70 style)</div>
-    <div class="game-grid" id="externalGrid"></div>
-</div>
-
-<footer>
-    <p>🎮 GameHub Unblocked • Play directly or open external sites • No downloads needed</p>
-    <p style="font-size:0.75rem; margin-top:8px;">For educational/ personal use only. Games property of respective owners.</p>
-</footer>
-
-<div id="gameModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="modalGameTitle">Game</h3>
-            <button class="close-modal" id="closeModalBtn">&times;</button>
+<div class="app-container">
+    <div class="game-header">
+        <div class="logo">
+            <h1>⚡ NEXUS ARCADE</h1>
+            <p>unblocked • instant play • HTML5 native</p>
         </div>
-        <iframe id="gameIframe" class="game-iframe" srcdoc="<html style='background:#000;color:white;display:flex;align-items:center;justify-content:center;height:100%'>Loading game...</html>"></iframe>
+        <div class="status-badge" id="gameStatusBadge">🎮 SELECT A GAME</div>
+    </div>
+
+    <!-- Game display area with dynamic loading handler -->
+    <div class="game-stage" id="gameStage">
+        <div class="game-frame-wrapper" style="position: relative;">
+            <iframe id="gameIframe" src="about:blank" title="Game Frame" allow="autoplay; fullscreen"></iframe>
+            <div id="loadingOverlay" class="loading-overlay" style="display: flex;">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">
+                    GAME LOADING
+                    <span class="loading-dots" id="dotAnim">...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-selector">
+        <div class="section-title">
+            <span>🎮 🎲 PLAY READY GAMES</span>
+        </div>
+        <div class="game-grid" id="gameGridContainer">
+            <!-- dynamic js will inject but also static fallback, however we create via js for maintainability -->
+        </div>
+    </div>
+    <div class="footer-note">
+        🕹️ All games are HTML5 & run locally inside iframe — no external redirects. If a game stalls, reload timeout triggers automatically.
     </div>
 </div>
 
 <script>
-    // ---------- REAL HTML5 GAMES (EMBEDDABLE) ----------
-    // These are actual unblocked HTML5 game files hosted on CDN / open repos.
-    // For self-hosting, replace with your local game.html files.
-    const embeddedGames = [
-        {
-            name: "🎾 2048",
-            desc: "Classic number merging puzzle",
-            icon: "🔢",
-            embedUrl: "https://play2048.co/",
-            isExternal: true   // 2048 works better external, but we'll embed in iframe
-        },
-        {
-            name: "🐍 Snake.io",
-            desc: "Classic snake game HTML5",
-            icon: "🐍",
-            embedUrl: "https://snake-5c0f1.web.app/",
-            isExternal: true
-        },
-        {
-            name: "🕹️ Flappy Bird",
-            desc: "Flappy style remake",
-            icon: "🐦",
-            embedUrl: "https://flappy-bird-ccb4f.web.app/",
-            isExternal: true
-        },
-        {
-            name: "⚽ Soccer Physics",
-            desc: "Funny ragdoll soccer",
-            icon: "⚽",
-            embedUrl: "https://soccerphysicsonline.com/",
-            isExternal: true
-        },
-        {
-            name: "🧩 Tiles Hop",
-            desc: "Rhythm ball game",
-            icon: "🎵",
-            embedUrl: "https://tilehop.github.io/",
-            isExternal: true
-        },
-        {
-            name: "🚀 Slope Unblocked",
-            desc: "Rolling ball geometry dash",
-            icon: "🏔️",
-            embedUrl: "https://slope-game.github.io/",
-            isExternal: true
+    // ------------------------------------------------------------------
+    // GAME DATABASE: Embedded HTML5 games (Blobs / DataURLs or stored as inline)
+    // To keep everything self-contained and work offline, we embed simple but FULLY PLAYABLE HTML5 games.
+    // Three classic arcade style games: Snake, Tetris-like block, and a Pong remake.
+    // These are actual playable games with controls.
+    // ------------------------------------------------------------------
+
+    // Helper: generate fully functional game HTML strings
+
+    // 1. SNAKE GAME (Classic)
+    const snakeGameHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><style>body{margin:0; background:#0b1522; display:flex; justify-content:center; align-items:center; min-height:100vh; font-family:'Courier New', monospace;} canvas{background:#0a0f1f; border-radius:20px; box-shadow:0 0 0 3px #2d4a7c;} .info{color:#8ab3ff; text-align:center; margin-top:12px; font-weight:bold;}</style></head><body><div><canvas id="snakeCanvas" width="500" height="500"></canvas><div class="info">⬆️⬇️⬅️➡️  |  SCORE: <span id="score">0</span></div></div><script> (function(){ const canvas = document.getElementById('snakeCanvas'); const ctx = canvas.getContext('2d'); const box = 20; let snake = [{x: 10*box, y:10*box}]; let direction = 'RIGHT'; let food = {x: Math.floor(Math.random()*25)*box, y: Math.floor(Math.random()*25)*box}; let score = 0; document.addEventListener('keydown', (e)=>{ if(e.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP'; else if(e.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN'; else if(e.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT'; else if(e.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT'; }); function collision(newHead, snakeArr){ for(let i=0;i<snakeArr.length;i++) if(newHead.x === snakeArr[i].x && newHead.y === snakeArr[i].y) return true; return false; } function draw(){ ctx.fillStyle = '#0a0f1f'; ctx.fillRect(0,0,canvas.width,canvas.height); for(let i=0;i<snake.length;i++){ ctx.fillStyle = i===0 ? '#3bce6e' : '#27ae60'; ctx.fillRect(snake[i].x, snake[i].y, box-1, box-1); ctx.shadowBlur=0; } ctx.fillStyle = '#ff5e7c'; ctx.fillRect(food.x, food.y, box-1, box-1); let snakeX = snake[0].x; let snakeY = snake[0].y; if(direction === 'LEFT') snakeX -= box; if(direction === 'RIGHT') snakeX += box; if(direction === 'UP') snakeY -= box; if(direction === 'DOWN') snakeY += box; let newHead = {x: snakeX, y: snakeY}; if(snakeX === food.x && snakeY === food.y){ score++; document.getElementById('score').innerText = score; food = {x: Math.floor(Math.random()*25)*box, y: Math.floor(Math.random()*25)*box}; } else { snake.pop(); } if(collision(newHead, snake) || snakeX < 0 || snakeY < 0 || snakeX >= canvas.width || snakeY >= canvas.height){ clearInterval(game); alert('Game Over! Score: '+score+'. Refresh to restart? (Press OK)'); window.location.reload(); return; } snake.unshift(newHead); } let game = setInterval(draw, 100); })(); <\/script></body></html>`;
+
+    // 2. TETRIS-STYLE (simplified block stack game)
+    const tetrisHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{background:#0c1122; display:flex; justify-content:center; align-items:center; min-height:100vh; font-family:monospace} canvas{background:#010614; border-radius:16px; box-shadow:0 0 0 2px #2e4a7a;} .info{color:#9bb9ff; margin-top:12px; text-align:center;}</style></head><body><div><canvas id="tetrisCanvas" width="300" height="600"></canvas><div class="info">SCORE: <span id="score">0</span>  |  [A/D or ←/→]  ↑rotate</div></div><script> (function(){ const canvas = document.getElementById('tetrisCanvas'); const ctx = canvas.getContext('2d'); const COLS=10, ROWS=20; const cellSize=30; let grid = Array(ROWS).fill().map(()=>Array(COLS).fill(0)); const pieces = [[[1,1,1,1]], [[1,1],[1,1]], [[0,1,0],[1,1,1]], [[1,0,0],[1,1,1]], [[0,0,1],[1,1,1]], [[0,1,1],[1,1,0]], [[1,1,0],[0,1,1]]]; let currentPiece, currentX, currentY, score = 0; function randomPiece(){ const idx = Math.floor(Math.random()*pieces.length); return pieces[idx].map(row=>[...row]); } function spawnPiece(){ currentPiece = randomPiece(); currentX = Math.floor((COLS - currentPiece[0].length)/2); currentY = 0; if(collision()){ alert('Game Over! Score: '+score); window.location.reload(); } } function collision(){ for(let y=0;y<currentPiece.length;y++) for(let x=0;x<currentPiece[0].length;x++) if(currentPiece[y][x] && (currentY+y>=ROWS || currentX+x<0 || currentX+x>=COLS || grid[currentY+y][currentX+x])) return true; return false; } function merge(){ for(let y=0;y<currentPiece.length;y++) for(let x=0;x<currentPiece[0].length;x++) if(currentPiece[y][x]) grid[currentY+y][currentX+x] = 1; clearLines(); spawnPiece(); } function clearLines(){ let linesCleared=0; for(let row=ROWS-1; row>=0; row--){ let full=true; for(let col=0;col<COLS;col++) if(grid[row][col]===0){ full=false; break; } if(full){ grid.splice(row,1); grid.unshift(Array(COLS).fill(0)); row++; linesCleared++; } } if(linesCleared){ score += linesCleared*100; document.getElementById('score').innerText = score; } } function rotatePiece(){ let rotated = currentPiece[0].map((_,idx)=>currentPiece.map(row=>row[idx]).reverse()); let prevPiece = currentPiece; currentPiece = rotated; if(collision()) currentPiece = prevPiece; } function move(dx,dy){ currentX+=dx; currentY+=dy; if(collision()){ currentX-=dx; currentY-=dy; if(dy===1) { merge(); } } } function draw(){ ctx.fillStyle='#010614'; ctx.fillRect(0,0,canvas.width,canvas.height); for(let row=0;row<ROWS;row++) for(let col=0;col<COLS;col++) if(grid[row][col]){ ctx.fillStyle='#6c9eff'; ctx.fillRect(col*cellSize, row*cellSize, cellSize-1, cellSize-1); } for(let y=0;y<currentPiece.length;y++) for(let x=0;x<currentPiece[0].length;x++) if(currentPiece[y][x]){ ctx.fillStyle='#facc15'; ctx.fillRect((currentX+x)*cellSize, (currentY+y)*cellSize, cellSize-1, cellSize-1); } } setInterval(()=>{ move(0,1); draw(); }, 300); document.addEventListener('keydown',(e)=>{ if(e.key==='ArrowLeft') move(-1,0); else if(e.key==='ArrowRight') move(1,0); else if(e.key==='ArrowUp') rotatePiece(); else if(e.key==='ArrowDown') move(0,1); else if(e.key==='a') move(-1,0); else if(e.key==='d') move(1,0); else if(e.key==='w') rotatePiece(); else if(e.key==='s') move(0,1); draw(); }); spawnPiece(); draw(); })(); <\/script></body></html>`;
+
+    // 3. PONG (Classic arcade)
+    const pongHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{margin:0; background:#0b1020; display:flex; justify-content:center; align-items:center; min-height:100vh;} canvas{background:#03070f; border-radius:20px; border:2px solid #2b5380;} .score{color:#7daeff; text-align:center; font-family:monospace; margin-top:12px;}</style></head><body><div><canvas id="pongCanvas" width="800" height="450"></canvas><div class="score">Player: <span id="playerScore">0</span>  |  AI: <span id="aiScore">0</span></div></div><script> (function(){ const canvas=document.getElementById('pongCanvas'); const ctx=canvas.getContext('2d'); let ballX=400, ballY=225,ballDX=4,ballDY=3; let leftY=180, rightY=180; let playerScore=0,aiScore=0; const paddleH=80,paddleW=12; document.addEventListener('mousemove',(e)=>{ let rect=canvas.getBoundingClientRect(); let mouseY=e.clientY-rect.top; leftY=Math.min(Math.max(mouseY-paddleH/2,0),canvas.height-paddleH); }); function aiMove(){ let center=rightY+paddleH/2; if(center<ballY-30) rightY+=4; else if(center>ballY+30) rightY-=4; rightY=Math.min(Math.max(rightY,0),canvas.height-paddleH); } function resetBall(){ ballX=400; ballY=225; ballDX = (Math.random()>0.5?4:-4); ballDY = (Math.random()*5-2)*1.5; if(Math.abs(ballDY)<1.5) ballDY=ballDY>0?2:-2; } function update(){ ballX+=ballDX; ballY+=ballDY; if(ballY<0||ballY>canvas.height) ballDY=-ballDY; if(ballX<20 && ballX>8 && ballY>leftY && ballY<leftY+paddleH){ ballDX=-ballDX; let hitPos=(ballY-leftY)/paddleH; ballDY+=(hitPos-0.5)*6; if(ballDY>7)ballDY=7; if(ballDY<-7)ballDY=-7; } if(ballX>canvas.width-30 && ballX<canvas.width-12 && ballY>rightY && ballY<rightY+paddleH){ ballDX=-ballDX; let hitPos=(ballY-rightY)/paddleH; ballDY+=(hitPos-0.5)*6; } if(ballX<0){ aiScore++; document.getElementById('aiScore').innerText=aiScore; resetBall(); } if(ballX>canvas.width){ playerScore++; document.getElementById('playerScore').innerText=playerScore; resetBall(); } aiMove(); } function draw(){ ctx.fillStyle='#03070f'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#6cabff'; ctx.fillRect(10,leftY,paddleW,paddleH); ctx.fillRect(canvas.width-22,rightY,paddleW,paddleH); ctx.beginPath(); ctx.arc(ballX,ballY,9,0,Math.PI*2); ctx.fillStyle='#f0f9ff'; ctx.fill(); ctx.fillStyle='#32668a'; ctx.font='bold 24px monospace'; ctx.fillText(playerScore,canvas.width/2-50,50); ctx.fillText(aiScore,canvas.width/2+30,50); } setInterval(()=>{ update(); draw(); }, 1000/60); })(); <\/script></body></html>`;
+
+    // Game list for UI
+    const GAMES = [
+        { id: 'snake', name: '🐍 SNAKE', desc: 'Classic arcade snake', html: snakeGameHTML },
+        { id: 'tetris', name: '🧩 TETRIS', desc: 'Stack & clear lines', html: tetrisHTML },
+        { id: 'pong', name: '🏓 PONG', desc: 'AI vs Player', html: pongHTML }
+    ];
+
+    // DOM Elements
+    const iframe = document.getElementById('gameIframe');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const gameGridContainer = document.getElementById('gameGridContainer');
+    const statusBadge = document.getElementById('gameStatusBadge');
+
+    // loading dots animation class
+    let dotInterval = null;
+    let loadingTimer = null;      // timeout for 2 minutes
+    let retryCount = 0;           // per game load attempt counter
+    let currentGameId = null;
+    let currentGameHTML = '';
+
+    // Helper: Animate dots "..."
+    function startDotsAnimation() {
+        if (dotInterval) clearInterval(dotInterval);
+        const dotSpan = document.getElementById('dotAnim');
+        if (!dotSpan) return;
+        let step = 0;
+        dotInterval = setInterval(() => {
+            step = (step + 1) % 4;
+            let dots = '';
+            for (let i = 0; i < step; i++) dots += '.';
+            dotSpan.innerText = dots.padEnd(3, ' ');
+        }, 400);
+    }
+
+    function stopDotsAnimation() {
+        if (dotInterval) {
+            clearInterval(dotInterval);
+            dotInterval = null;
         }
-    ];
-
-    // ---------- EXTERNAL LINKS (like BioLyze70 style) ----------
-    const externalLinks = [
-        { name: "🔥 Agar.io", icon: "⚽", url: "https://agar.io/", desc: "Classic .io game" },
-        { name: "💎 BioLyze 70", icon: "💎", url: "https://biolyze70.space/", desc: "Original portal" },
-        { name: "🎮 Krunker.io", icon: "🔫", url: "https://krunker.io/", desc: "FPS browser game" },
-        { name: "🧩 Paper.io 2", icon: "📄", url: "https://paper-io.com/", desc: "Territory war" },
-        { name: "🏎️ Drift Hunters", icon: "🏎️", url: "https://drift-hunters.io/", desc: "3D drifting" },
-        { name: "🎯 Shell Shockers", icon: "🥚", url: "https://shellshock.io/", desc: "Egg shooter" }
-    ];
-
-    // Render Embedded Games (play in modal)
-    const featuredGrid = document.getElementById("featuredGrid");
-    const externalGrid = document.getElementById("externalGrid");
-    const modal = document.getElementById("gameModal");
-    const gameIframe = document.getElementById("gameIframe");
-    const modalGameTitle = document.getElementById("modalGameTitle");
-    const closeModalBtn = document.getElementById("closeModalBtn");
-
-    function openGame(url, title) {
-        modalGameTitle.innerText = title;
-        // For security but allowing external sites
-        gameIframe.src = url;
-        modal.style.display = "flex";
+        const dotSpan = document.getElementById('dotAnim');
+        if (dotSpan) dotSpan.innerText = '...';
     }
 
-    function closeModal() {
-        modal.style.display = "none";
-        gameIframe.src = "about:blank";
+    // show popup error (non intrusive)
+    function showPopupMessage(msg) {
+        const existingPopup = document.querySelector('.toast-popup');
+        if(existingPopup) existingPopup.remove();
+        const popup = document.createElement('div');
+        popup.className = 'toast-popup';
+        popup.innerText = msg;
+        document.body.appendChild(popup);
+        setTimeout(() => { if(popup) popup.style.opacity = '0'; setTimeout(() => popup.remove(), 500); }, 3000);
     }
 
-    // Build embedded cards
-    embeddedGames.forEach(game => {
-        const card = document.createElement("div");
-        card.className = "game-card";
-        card.innerHTML = `
-            <div class="game-thumb">${game.icon}</div>
-            <div class="game-info">
+    // clear loading timer
+    function clearLoadTimer() {
+        if(loadingTimer) {
+            clearTimeout(loadingTimer);
+            loadingTimer = null;
+        }
+    }
+
+    // reset loading state & hide overlay with cleanup
+    function hideLoading(restoreFlag = true) {
+        clearLoadTimer();
+        stopDotsAnimation();
+        if(loadingOverlay) loadingOverlay.style.display = 'none';
+        if(restoreFlag && statusBadge) statusBadge.innerText = `🎮 ${currentGameId ? GAMES.find(g=>g.id===currentGameId)?.name || 'Game' : 'Ready'}`;
+    }
+
+    function showLoading(message = 'GAME LOADING') {
+        clearLoadTimer();
+        if(loadingOverlay) {
+            const loadingTextSpan = loadingOverlay.querySelector('.loading-text');
+            if(loadingTextSpan) {
+                const originalText = loadingTextSpan.cloneNode(true);
+                loadingTextSpan.innerHTML = message + ' <span class="loading-dots" id="dotAnim">...</span>';
+            }
+            loadingOverlay.style.display = 'flex';
+        }
+        startDotsAnimation();
+        if(statusBadge) statusBadge.innerText = '⏳ LOADING...';
+    }
+
+    // core load game with retry and timeout logic
+    function attemptLoadGame(gameHTML, gameId, attemptNumber) {
+        showLoading('GAME LOADING');
+        // set a 2 minute (120000 ms) timeout to restart
+        loadingTimer = setTimeout(() => {
+            console.warn('load timeout exceeded 2 minutes');
+            if (retryCount === 0) {
+                // first fail -> restart loading process
+                retryCount = 1;
+                showPopupMessage('⏱️ Load took too long, restarting attempt...');
+                attemptLoadGame(gameHTML, gameId, 2);
+            } else if (retryCount === 1) {
+                // second failure -> popup and abort
+                retryCount = 0;
+                hideLoading(true);
+                showPopupMessage('❌ Game failed to load. Try another game.');
+                iframe.src = 'about:blank';
+                statusBadge.innerText = '⚠️ FAILED';
+            }
+        }, 120000); // 2 minutes
+        
+        // create blob url from game html
+        let blob;
+        try {
+            blob = new Blob([gameHTML], { type: 'text/html' });
+            const blobUrl = URL.createObjectURL(blob);
+            // set iframe onload to capture success
+            const onLoadHandler = () => {
+                clearLoadTimer();
+                if (loadingOverlay) hideLoading(true);
+                retryCount = 0;
+                statusBadge.innerText = `✅ ${GAMES.find(g=>g.id===gameId)?.name || 'Game'} READY`;
+                iframe.removeEventListener('load', onLoadHandler);
+                URL.revokeObjectURL(blobUrl); // cleanup memory
+            };
+            iframe.addEventListener('load', onLoadHandler);
+            iframe.src = blobUrl;
+        } catch(err) {
+            clearLoadTimer();
+            if(retryCount === 0){
+                retryCount = 1;
+                showPopupMessage('⚠️ Error creating game, retrying...');
+                attemptLoadGame(gameHTML, gameId, 2);
+            } else {
+                retryCount = 0;
+                hideLoading(true);
+                showPopupMessage('game failed to load try another game');
+                iframe.src = 'about:blank';
+            }
+        }
+    }
+
+    // main function to switch game
+    function switchGame(gameId, gameHTML) {
+        // cancel any ongoing retry/timeout process
+        clearLoadTimer();
+        stopDotsAnimation();
+        retryCount = 0;
+        currentGameId = gameId;
+        currentGameHTML = gameHTML;
+        
+        // show loading overlay fresh
+        showLoading('GAME LOADING');
+        // start loading with retry mechanism
+        attemptLoadGame(gameHTML, gameId, 0);
+    }
+
+    // Build game grid UI
+    function buildGameGrid() {
+        gameGridContainer.innerHTML = '';
+        GAMES.forEach(game => {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.setAttribute('data-id', game.id);
+            card.innerHTML = `
+                <div class="game-icon">${game.name.split(' ')[0]}</div>
                 <div class="game-title">${game.name}</div>
                 <div class="game-desc">${game.desc}</div>
-                <button class="play-btn" data-url="${game.embedUrl}" data-name="${game.name}">▶ Play Now</button>
-            </div>
-        `;
-        const btn = card.querySelector(".play-btn");
-        btn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            openGame(btn.dataset.url, btn.dataset.name);
+            `;
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentGameId === game.id) {
+                    // optional: if same game, reload
+                    switchGame(game.id, game.html);
+                } else {
+                    switchGame(game.id, game.html);
+                }
+            });
+            gameGridContainer.appendChild(card);
         });
-        featuredGrid.appendChild(card);
+    }
+
+    // set default game to snake on first load without auto errors
+    function initDefaultGame() {
+        const defaultGame = GAMES[0];
+        currentGameId = defaultGame.id;
+        currentGameHTML = defaultGame.html;
+        showLoading('GAME LOADING');
+        attemptLoadGame(defaultGame.html, defaultGame.id, 0);
+    }
+
+    // extra safety: if iframe error event or unexpected fallback
+    iframe.addEventListener('error', () => {
+        if(retryCount === 0){
+            retryCount = 1;
+            showPopupMessage('Network glitch, reinitializing game...');
+            attemptLoadGame(currentGameHTML, currentGameId, 1);
+        } else {
+            showPopupMessage('game failed to load try another game');
+            hideLoading(true);
+        }
     });
 
-    // Build external links (open in new tab, like BioLyze70)
-    externalLinks.forEach(link => {
-        const card = document.createElement("div");
-        card.className = "game-card";
-        card.innerHTML = `
-            <div class="game-thumb">${link.icon}</div>
-            <div class="game-info">
-                <div class="game-title">${link.name}</div>
-                <div class="game-desc">${link.desc}</div>
-                <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="play-btn">🔗 Open External</a>
-            </div>
-        `;
-        externalGrid.appendChild(card);
-    });
-
-    closeModalBtn.addEventListener("click", closeModal);
-    window.addEventListener("click", (e) => {
-        if (e.target === modal) closeModal();
-    });
+    // initialze UI
+    buildGameGrid();
+    initDefaultGame();
 </script>
 </body>
 </html>
