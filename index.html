@@ -3,107 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Crossy Road Clone - Frogger Style 3D Game</title>
+    <title>Crossy Road Clone - 1:1 Replica</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            font-family: 'Press Start 2P', 'Courier New', monospace;
+            font-family: 'Segoe UI', 'Courier New', monospace;
+            background-color: #1a472a; /* deep country green */
         }
         #info {
             position: absolute;
             top: 20px;
             left: 20px;
-            color: white;
             background: rgba(0,0,0,0.7);
-            padding: 10px 15px;
+            color: #ffd966;
+            padding: 8px 16px;
             border-radius: 8px;
             pointer-events: none;
             z-index: 10;
+            font-weight: bold;
             font-size: 14px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            border-left: 4px solid #ffaa33;
         }
         #score {
             position: absolute;
             top: 20px;
             right: 20px;
-            color: gold;
             background: rgba(0,0,0,0.7);
-            padding: 10px 20px;
-            border-radius: 8px;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
             font-size: 24px;
             font-weight: bold;
+            font-family: monospace;
             pointer-events: none;
             z-index: 10;
-            font-family: monospace;
             letter-spacing: 2px;
-            backdrop-filter: blur(5px);
-            border: 1px solid gold;
-        }
-        #game-over {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: red;
-            background: black;
-            padding: 30px 50px;
-            font-size: 48px;
-            font-weight: bold;
-            text-align: center;
-            z-index: 20;
-            display: none;
-            border: 3px solid red;
-            border-radius: 20px;
-            white-space: nowrap;
-            font-family: monospace;
-            backdrop-filter: blur(8px);
-            background: rgba(0,0,0,0.85);
-            pointer-events: none;
+            backdrop-filter: blur(4px);
         }
         #restart-btn {
-            margin-top: 20px;
-            font-size: 24px;
-            background: gold;
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff9900;
+            color: #2c2c2c;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 40px;
             cursor: pointer;
             font-family: monospace;
-            font-weight: bold;
-            border-radius: 10px;
+            z-index: 20;
+            box-shadow: 0 4px 0 #b45f06;
+            transition: 0.05s linear;
             pointer-events: auto;
         }
-        #controls {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            color: white;
-            background: rgba(0,0,0,0.6);
-            padding: 5px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-family: monospace;
-            pointer-events: none;
-            z-index: 10;
+        #restart-btn:active {
+            transform: translateX(-50%) translateY(2px);
+            box-shadow: 0 2px 0 #b45f06;
         }
         @media (max-width: 600px) {
-            #score { font-size: 18px; top: 10px; right: 10px; }
-            #info { font-size: 10px; top: 10px; left: 10px; }
-            #game-over { font-size: 28px; padding: 20px 30px; white-space: normal; width: 80%; }
-            #restart-btn { font-size: 18px; }
+            #score { font-size: 18px; top: 12px; right: 12px; padding: 4px 12px; }
+            #info { font-size: 10px; top: 12px; left: 12px; }
         }
     </style>
 </head>
 <body>
-    <div id="info">🐸 CROSSY ROAD CLONE | Avoid Cars & Trucks | Reach Top</div>
+    <div id="info">🐔 CROSSY ROAD [ORIGINAL REPLICA]</div>
     <div id="score">SCORE: 0</div>
-    <div id="game-over">
-        GAME OVER<br>
-        <button id="restart-btn">RESTART</button>
-    </div>
-    <div id="controls">⬆️ ⬇️ ⬅️ ➡️  or  WASD</div>
+    <button id="restart-btn">🚗 RESTART 🚛</button>
 
     <!-- Import Three.js core and add-ons -->
     <script type="importmap">
@@ -120,23 +91,24 @@
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 
-        // --- Setup Scene, Camera, Renderers ---
+        // --- setup scene, camera, renderers ---
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0a4c2a); // forest green
-        scene.fog = new THREE.Fog(0x0a4c2a, 30, 50);
+        scene.background = new THREE.Color(0x87CEEB); // sky blue
+        scene.fog = new THREE.Fog(0x87CEEB, 30, 60);
 
-        // Camera: Top-down angled isometric style
+        // Camera: exact classic Crossy Road isometric-ish top-down but angled 45 degrees
+        // Replicating the classic angle: 45 degrees from horizontal, looking at the player from above and front
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(12, 10, 12);
+        camera.position.set(8, 12, 10);
         camera.lookAt(0, 0, 0);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true; // shadows add depth
+        renderer.shadowMap.enabled = true; // shadows for depth
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         document.body.appendChild(renderer.domElement);
 
-        // CSS2 Renderer for simple text labels
+        // CSS2DRenderer for floating score and labels (optional, but for that "arcade" charm)
         const labelRenderer = new CSS2DRenderer();
         labelRenderer.setSize(window.innerWidth, window.innerHeight);
         labelRenderer.domElement.style.position = 'absolute';
@@ -145,469 +117,491 @@
         labelRenderer.domElement.style.pointerEvents = 'none';
         document.body.appendChild(labelRenderer.domElement);
 
-        // --- Lights ---
-        // Ambient
-        const ambientLight = new THREE.AmbientLight(0x404060);
+        // --- Lighting to match bright original ---
+        // Ambient light
+        const ambientLight = new THREE.AmbientLight(0x4c4c4c);
         scene.add(ambientLight);
-        // Directional Light (sun)
-        const dirLight = new THREE.DirectionalLight(0xfff5d1, 1.2);
-        dirLight.position.set(10, 20, 5);
-        dirLight.castShadow = true;
-        dirLight.receiveShadow = true;
-        dirLight.shadow.mapSize.width = 1024;
-        dirLight.shadow.mapSize.height = 1024;
-        dirLight.shadow.camera.near = 0.5;
-        dirLight.shadow.camera.far = 30;
-        dirLight.shadow.camera.left = -10;
-        dirLight.shadow.camera.right = 10;
-        dirLight.shadow.camera.top = 10;
-        dirLight.shadow.camera.bottom = -10;
-        scene.add(dirLight);
-        // Fill light from below
-        const fillLight = new THREE.PointLight(0x4466cc, 0.3);
-        fillLight.position.set(0, -5, 0);
+        // Main directional light (sun)
+        const sunLight = new THREE.DirectionalLight(0xfff5d1, 1.2);
+        sunLight.position.set(5, 12, 3);
+        sunLight.castShadow = true;
+        sunLight.receiveShadow = true;
+        sunLight.shadow.mapSize.width = 1024;
+        sunLight.shadow.mapSize.height = 1024;
+        sunLight.shadow.camera.near = 0.5;
+        sunLight.shadow.camera.far = 30;
+        sunLight.shadow.camera.left = -8;
+        sunLight.shadow.camera.right = 8;
+        sunLight.shadow.camera.top = 8;
+        sunLight.shadow.camera.bottom = -8;
+        scene.add(sunLight);
+        // Fill light from below / rim
+        const fillLight = new THREE.PointLight(0xccaa88, 0.4);
+        fillLight.position.set(0, 3, 0);
         scene.add(fillLight);
-        // Rim light
+        // Back rim light
         const rimLight = new THREE.PointLight(0xffaa66, 0.5);
-        rimLight.position.set(-5, 8, -6);
+        rimLight.position.set(-2, 5, -5);
         scene.add(rimLight);
 
-        // --- Ground Grid (retro feel) ---
-        const gridHelper = new THREE.GridHelper(30, 20, 0x88aa88, 0x446644);
-        gridHelper.position.y = -0.5;
+        // --- ground grid reference (optional decorative) but we have actual road tiles
+        const gridHelper = new THREE.GridHelper(50, 20, 0x88aaff, 0x88aaff);
+        gridHelper.position.y = -0.2;
         gridHelper.material.transparent = true;
-        gridHelper.material.opacity = 0.4;
+        gridHelper.material.opacity = 0.25;
         scene.add(gridHelper);
-        
-        // Base ground plane (invisible but catches shadows)
-        const groundPlane = new THREE.Mesh(
-            new THREE.PlaneGeometry(25, 25),
-            new THREE.ShadowMaterial({ opacity: 0.4, color: 0x000000, transparent: true, side: THREE.DoubleSide })
-        );
-        groundPlane.rotation.x = -Math.PI / 2;
-        groundPlane.position.y = -0.6;
-        groundPlane.receiveShadow = true;
-        scene.add(groundPlane);
 
-        // --- Define Road Lanes (Y positions, direction, speed, type) ---
-        // Lanes from bottom (negative Z) to top (positive Z)
-        // player starts at Z = -5, goal at Z = 7
-        const lanes = [
-            { y: -4.0, direction: 1, speed: 2.2, type: 'car', color: 0xcc3333, width: 1.2 },   // red car
-            { y: -2.5, direction: -1, speed: 2.5, type: 'truck', color: 0x886622, width: 2.0 }, // truck
-            { y: -1.0, direction: 1, speed: 2.0, type: 'car', color: 0x33cc33, width: 1.2 },
-            { y: 0.5, direction: -1, speed: 2.8, type: 'car', color: 0x3399ff, width: 1.2 },
-            { y: 2.0, direction: 1, speed: 2.3, type: 'truck', color: 0xaa6644, width: 2.0 },
-            { y: 3.5, direction: -1, speed: 3.0, type: 'car', color: 0xffaa33, width: 1.2 },
-            { y: 5.0, direction: 1, speed: 2.7, type: 'car', color: 0xdd44aa, width: 1.2 },
-            { y: 6.5, direction: -1, speed: 2.4, type: 'truck', color: 0x8b5a2b, width: 2.0 }
+        // --- World Generation: 9 rows, each row type (road, grass, water? but classic crossy road replica has roads and grass/train? but to be identical: roads with moving logs? Actually original Crossy Road has roads with cars, then rivers with logs. But to make it 1:1 with "the same map" I'll create alternating lanes: some with cars, some with trucks. And for the top part a river simulation? But to avoid overcomplication but keep exact feel: I will make 3 grass safe zones, 4 road lanes with vehicles, and a final finish zone (river with logs) to replicate the classic goal. But original replica must include the chicken crossing to the top. I'll implement river with logs and lilypads to match iconic feel.
+        
+        // Define world layout (rows from z = -4 to z = +4)
+        // each lane type: 'grass', 'road', 'river'
+        const laneDefs = [
+            { type: 'grass', y: 0, direction: 0, speed: 0, color: 0x6aab5a, startZ: -4.5 },
+            { type: 'road', y: 0, direction: 1, speed: 2.5, color: 0x3a3a3a, startZ: -3.0 }, // cars right
+            { type: 'road', y: 0, direction: -1, speed: 2.2, color: 0x3a3a3a, startZ: -1.5 }, // cars left
+            { type: 'grass', y: 0, direction: 0, speed: 0, color: 0x7cb518, startZ: 0.0 },
+            { type: 'road', y: 0, direction: 1, speed: 3.0, color: 0x2e2e2e, startZ: 1.5 }, // trucks fast
+            { type: 'road', y: 0, direction: -1, speed: 2.8, color: 0x2e2e2e, startZ: 3.0 },
+            { type: 'grass', y: 0, direction: 0, speed: 0, color: 0x8bc34a, startZ: 4.5 },
+            { type: 'river', y: 0, direction: 1, speed: 2.0, color: 0x2a6f8f, startZ: 6.0 }, // logs moving right
+            { type: 'river', y: 0, direction: -1, speed: 2.3, color: 0x2a6f8f, startZ: 7.5 }, // logs left
+            { type: 'goal_grass', y: 0, direction: 0, speed: 0, color: 0x4caf50, startZ: 9.0 }  // finish zone
         ];
+
+        const LANE_WIDTH = 1.5;
+        const TILE_SIZE = 1.2;
         
-        // Store moving vehicles: each { mesh, laneIndex, offsetX, width, speed, direction }
-        const vehicles = [];
+        // Store moving objects per lane
+        const movingObjects = []; // each { mesh, laneIndex, speed, direction, rangeMin, rangeMax }
         
-        // Road markings: add white dashed lines on each lane
-        lanes.forEach((lane, idx) => {
-            const lineMat = new THREE.MeshStandardMaterial({ color: 0xffdd99, emissive: 0x442200 });
-            for (let x = -12; x <= 12; x += 2.5) {
-                const dash = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.1, 0.8), lineMat);
-                dash.position.set(x, lane.y - 0.2, 0);
-                dash.castShadow = false;
-                dash.receiveShadow = false;
-                scene.add(dash);
+        // Helper: create road tile with asphalt texture variation
+        function createRoadTile(x, z, laneColor) {
+            const geometry = new THREE.BoxGeometry(TILE_SIZE, 0.2, TILE_SIZE);
+            const material = new THREE.MeshStandardMaterial({ color: laneColor, roughness: 0.7, metalness: 0.1 });
+            const tile = new THREE.Mesh(geometry, material);
+            tile.position.set(x, -0.1, z);
+            tile.receiveShadow = true;
+            tile.castShadow = false;
+            return tile;
+        }
+        
+        function createGrassTile(x, z, color) {
+            const geometry = new THREE.BoxGeometry(TILE_SIZE, 0.15, TILE_SIZE);
+            const material = new THREE.MeshStandardMaterial({ color: color, roughness: 0.9 });
+            const tile = new THREE.Mesh(geometry, material);
+            tile.position.set(x, -0.1, z);
+            tile.receiveShadow = true;
+            return tile;
+        }
+        
+        function createRiverTile(x, z, color) {
+            const geometry = new THREE.BoxGeometry(TILE_SIZE, 0.1, TILE_SIZE);
+            const material = new THREE.MeshStandardMaterial({ color: color, roughness: 0.2, metalness: 0.6, emissive: 0x114455 });
+            const tile = new THREE.Mesh(geometry, material);
+            tile.position.set(x, -0.15, z);
+            tile.receiveShadow = true;
+            return tile;
+        }
+        
+        // Build world grid: from x = -5 to 5, and z from -5 to 10
+        const laneStartZ = -4.5;
+        for (let laneIdx = 0; laneIdx < laneDefs.length; laneIdx++) {
+            const lane = laneDefs[laneIdx];
+            const zCenter = lane.startZ;
+            for (let x = -5; x <= 5; x++) {
+                let tile;
+                if (lane.type === 'road') {
+                    tile = createRoadTile(x, zCenter, lane.color);
+                } else if (lane.type === 'river') {
+                    tile = createRiverTile(x, zCenter, lane.color);
+                } else if (lane.type === 'goal_grass') {
+                    const geom = new THREE.BoxGeometry(TILE_SIZE, 0.2, TILE_SIZE);
+                    const mat = new THREE.MeshStandardMaterial({ color: 0xf9e076, emissive: 0x442200 });
+                    tile = new THREE.Mesh(geom, mat);
+                    tile.position.set(x, -0.05, zCenter);
+                    tile.receiveShadow = true;
+                } else {
+                    tile = createGrassTile(x, zCenter, lane.color);
+                }
+                scene.add(tile);
             }
-            // lane borders
-            const borderMat = new THREE.MeshStandardMaterial({ color: 0xccaa77 });
-            const leftBorder = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 7.5), borderMat);
-            leftBorder.position.set(-5.8, lane.y - 0.15, 0);
-            const rightBorder = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 7.5), borderMat);
-            rightBorder.position.set(5.8, lane.y - 0.15, 0);
-            scene.add(leftBorder);
-            scene.add(rightBorder);
-        });
+        }
         
-        // --- Create Vehicles function ---
-        function createVehicle(type, color, widthVal) {
+        // Add decorative sidewalk edges and details: small flowers on grass
+        const grassDeco = () => {
+            const flowerMat = new THREE.MeshStandardMaterial({ color: 0xffaa66 });
+            for (let i = -4; i <= 4; i++) {
+                const randZ = [-4.5, 0, 4.5, 9.0];
+                randZ.forEach(z => {
+                    const flower = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.15, 0.2, 6), flowerMat);
+                    flower.position.set(i + 0.3, -0.05, z + 0.4);
+                    flower.castShadow = true;
+                    scene.add(flower);
+                    const flower2 = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.15, 0.2, 6), new THREE.MeshStandardMaterial({ color: 0xdd8844 }));
+                    flower2.position.set(i - 0.2, -0.05, z - 0.3);
+                    flower2.castShadow = true;
+                    scene.add(flower2);
+                });
+            }
+        };
+        grassDeco();
+        
+        // --- VEHICLES & LOGS creation with classic low-poly style ---
+        function createCar(color, xOffset = 0) {
             const group = new THREE.Group();
-            let bodyGeo, cabinGeo;
-            if (type === 'truck') {
-                bodyGeo = new THREE.BoxGeometry(widthVal, 0.6, 1.4);
-                const bodyMat = new THREE.MeshStandardMaterial({ color: color, roughness: 0.4, metalness: 0.7 });
-                const body = new THREE.Mesh(bodyGeo, bodyMat);
-                body.castShadow = true;
-                body.receiveShadow = true;
-                body.position.y = 0;
-                group.add(body);
-                // cabin
-                cabinGeo = new THREE.BoxGeometry(0.9, 0.7, 1.2);
-                const cabinMat = new THREE.MeshStandardMaterial({ color: 0x4466aa, roughness: 0.2 });
-                const cabin = new THREE.Mesh(cabinGeo, cabinMat);
-                cabin.position.x = -widthVal/2 + 0.5;
-                cabin.position.y = 0.35;
-                cabin.castShadow = true;
-                group.add(cabin);
-                // wheels (black cylinders)
-                const wheelMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.8, roughness: 0.5 });
-                const wheelGeo = new THREE.CylinderGeometry(0.25, 0.25, 0.3, 12);
-                const positions = [[-0.7, -0.2, 0.6], [0.7, -0.2, 0.6], [-0.7, -0.2, -0.6], [0.7, -0.2, -0.6]];
-                positions.forEach(pos => {
-                    const wheel = new THREE.Mesh(wheelGeo, wheelMat);
-                    wheel.rotation.z = Math.PI/2;
-                    wheel.position.set(pos[0], pos[1], pos[2]);
-                    wheel.castShadow = true;
-                    group.add(wheel);
-                });
-            } else { // car
-                bodyGeo = new THREE.BoxGeometry(widthVal, 0.4, 1.2);
-                const bodyMat = new THREE.MeshStandardMaterial({ color: color, roughness: 0.3, metalness: 0.6 });
-                const body = new THREE.Mesh(bodyGeo, bodyMat);
-                body.castShadow = true;
-                group.add(body);
-                const roofGeo = new THREE.BoxGeometry(widthVal*0.7, 0.3, 0.9);
-                const roofMat = new THREE.MeshStandardMaterial({ color: 0x222222 });
-                const roof = new THREE.Mesh(roofGeo, roofMat);
-                roof.position.y = 0.35;
-                roof.castShadow = true;
-                group.add(roof);
-                const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.7 });
-                const wheelGeo = new THREE.CylinderGeometry(0.22, 0.22, 0.25, 12);
-                const pos = [[-0.6, -0.1, 0.55], [0.6, -0.1, 0.55], [-0.6, -0.1, -0.55], [0.6, -0.1, -0.55]];
-                pos.forEach(p => {
-                    const wheel = new THREE.Mesh(wheelGeo, wheelMat);
-                    wheel.rotation.z = Math.PI/2;
-                    wheel.position.set(p[0], p[1], p[2]);
-                    wheel.castShadow = true;
-                    group.add(wheel);
-                });
-            }
+            const bodyGeo = new THREE.BoxGeometry(0.9, 0.4, 0.6);
+            const bodyMat = new THREE.MeshStandardMaterial({ color: color, roughness: 0.3 });
+            const body = new THREE.Mesh(bodyGeo, bodyMat);
+            body.position.y = 0.2;
+            body.castShadow = true;
+            group.add(body);
+            const roofGeo = new THREE.BoxGeometry(0.6, 0.3, 0.6);
+            const roofMat = new THREE.MeshStandardMaterial({ color: 0xccccdd });
+            const roof = new THREE.Mesh(roofGeo, roofMat);
+            roof.position.y = 0.5;
+            roof.castShadow = true;
+            group.add(roof);
+            // wheels
+            const wheelMat = new THREE.MeshStandardMaterial({ color: 0x222222 });
+            const positions = [[-0.4, 0.05, 0.35], [0.4, 0.05, 0.35], [-0.4, 0.05, -0.35], [0.4, 0.05, -0.35]];
+            positions.forEach(pos => {
+                const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.1, 12), wheelMat);
+                wheel.rotation.z = Math.PI/2;
+                wheel.position.set(pos[0], pos[1], pos[2]);
+                wheel.castShadow = true;
+                group.add(wheel);
+            });
             return group;
         }
         
-        // Populate lanes with vehicles at random offsets
-        lanes.forEach((lane, idx) => {
-            const numVehicles = 5; // per lane, enough for continuous flow
-            for (let i = 0; i < numVehicles; i++) {
-                const vehicleGroup = createVehicle(lane.type, lane.color, lane.width);
-                const startX = (i / numVehicles) * 24 - 12; // spread across -12 to 12
-                vehicleGroup.position.x = startX;
-                vehicleGroup.position.z = lane.y;
-                vehicleGroup.position.y = 0.1;
-                scene.add(vehicleGroup);
-                vehicles.push({
-                    mesh: vehicleGroup,
-                    laneIndex: idx,
-                    offsetX: startX,
-                    width: lane.width,
-                    speed: lane.speed,
-                    direction: lane.direction,
-                    laneY: lane.y
-                });
+        function createTruck(color) {
+            const group = new THREE.Group();
+            const cab = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.5, 0.7), new THREE.MeshStandardMaterial({ color: color }));
+            cab.position.set(-0.5, 0.25, 0);
+            cab.castShadow = true;
+            group.add(cab);
+            const cargo = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.5, 0.9), new THREE.MeshStandardMaterial({ color: 0xaa9977 }));
+            cargo.position.set(0.5, 0.25, 0);
+            cargo.castShadow = true;
+            group.add(cargo);
+            const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111 });
+            const wPos = [[-0.9, 0.05, 0.5], [0.9, 0.05, 0.5], [-0.9, 0.05, -0.5], [0.9, 0.05, -0.5]];
+            wPos.forEach(pos => {
+                const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.12, 12), wheelMat);
+                wheel.rotation.z = Math.PI/2;
+                wheel.position.set(pos[0], pos[1], pos[2]);
+                wheel.castShadow = true;
+                group.add(wheel);
+            });
+            return group;
+        }
+        
+        function createLog() {
+            const log = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.2, 0.7), new THREE.MeshStandardMaterial({ color: 0xbc9a6c, roughness: 0.8 }));
+            log.castShadow = true;
+            log.receiveShadow = false;
+            return log;
+        }
+        
+        // Populate lanes
+        laneDefs.forEach((lane, idx) => {
+            if (lane.type === 'road') {
+                const vehicleCount = 6;
+                const spawnRange = [-5.5, 5.5];
+                for (let i = 0; i < vehicleCount; i++) {
+                    let vehicle;
+                    const isTruck = idx === 4 || idx === 5; // heavy lanes
+                    if (isTruck) vehicle = createTruck(0xc95a3a);
+                    else vehicle = createCar(Math.random() > 0.5 ? 0xdd3333 : 0x44aa44);
+                    const startX = (Math.random() * (spawnRange[1] - spawnRange[0]) + spawnRange[0]);
+                    vehicle.position.set(startX, 0.05, lane.startZ);
+                    scene.add(vehicle);
+                    movingObjects.push({
+                        mesh: vehicle,
+                        laneIdx: idx,
+                        speed: lane.speed,
+                        direction: lane.direction,
+                        laneZ: lane.startZ,
+                        rangeX: [-6, 6],
+                        width: 1.2
+                    });
+                }
+            } else if (lane.type === 'river') {
+                const logCount = 5;
+                for (let i = 0; i < logCount; i++) {
+                    const logMesh = createLog();
+                    const startX = (Math.random() * 10) - 5;
+                    logMesh.position.set(startX, 0.05, lane.startZ);
+                    scene.add(logMesh);
+                    movingObjects.push({
+                        mesh: logMesh,
+                        laneIdx: idx,
+                        speed: lane.speed,
+                        direction: lane.direction,
+                        laneZ: lane.startZ,
+                        rangeX: [-6.5, 6.5],
+                        isLog: true
+                    });
+                }
             }
         });
         
-        // --- Player (Frog / Chicken character) ---
-        const playerGroup = new THREE.Group();
-        // Body
-        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x7ec850, emissive: 0x226622, roughness: 0.2 });
-        const bodyGeo = new THREE.SphereGeometry(0.5, 24, 24);
-        const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
-        bodyMesh.scale.set(1.2, 0.7, 0.9);
-        bodyMesh.position.y = 0;
-        bodyMesh.castShadow = true;
-        playerGroup.add(bodyMesh);
-        // Eyes
-        const eyeMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
-        const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.18, 24, 24), eyeMat);
-        leftEye.position.set(-0.35, 0.35, 0.55);
-        leftEye.castShadow = true;
-        const rightEye = new THREE.Mesh(new THREE.SphereGeometry(0.18, 24, 24), eyeMat);
-        rightEye.position.set(0.35, 0.35, 0.55);
-        rightEye.castShadow = true;
-        playerGroup.add(leftEye);
-        playerGroup.add(rightEye);
-        // Pupils
+        // --- CHICKEN MODEL (iconic with red comb and tail feathers) ---
+        const chickenGroup = new THREE.Group();
+        // body (yellow)
+        const bodyGeo = new THREE.SphereGeometry(0.45, 16, 16);
+        const bodyMat = new THREE.MeshStandardMaterial({ color: 0xffcc44, roughness: 0.2 });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        body.scale.set(1, 0.9, 0.8);
+        body.position.y = 0.2;
+        body.castShadow = true;
+        chickenGroup.add(body);
+        // head
+        const headGeo = new THREE.SphereGeometry(0.35, 16, 16);
+        const headMat = new THREE.MeshStandardMaterial({ color: 0xffaa33 });
+        const head = new THREE.Mesh(headGeo, headMat);
+        head.position.set(0, 0.55, 0.35);
+        head.castShadow = true;
+        chickenGroup.add(head);
+        // beak (orange)
+        const beakGeo = new THREE.ConeGeometry(0.12, 0.2, 8);
+        const beakMat = new THREE.MeshStandardMaterial({ color: 0xdd6622 });
+        const beak = new THREE.Mesh(beakGeo, beakMat);
+        beak.position.set(0, 0.52, 0.68);
+        beak.rotation.x = 0.2;
+        chickenGroup.add(beak);
+        // eyes (white + black)
+        const eyeWhiteGeo = new THREE.SphereGeometry(0.09, 12, 12);
+        const eyeWhiteMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
+        const leftEye = new THREE.Mesh(eyeWhiteGeo, eyeWhiteMat);
+        leftEye.position.set(-0.18, 0.7, 0.62);
+        const rightEye = new THREE.Mesh(eyeWhiteGeo, eyeWhiteMat);
+        rightEye.position.set(0.18, 0.7, 0.62);
+        chickenGroup.add(leftEye);
+        chickenGroup.add(rightEye);
+        const pupilGeo = new THREE.SphereGeometry(0.05, 8, 8);
         const pupilMat = new THREE.MeshStandardMaterial({ color: 0x000000 });
-        const leftPupil = new THREE.Mesh(new THREE.SphereGeometry(0.1, 24, 24), pupilMat);
-        leftPupil.position.set(-0.35, 0.3, 0.72);
-        const rightPupil = new THREE.Mesh(new THREE.SphereGeometry(0.1, 24, 24), pupilMat);
-        rightPupil.position.set(0.35, 0.3, 0.72);
-        playerGroup.add(leftPupil);
-        playerGroup.add(rightPupil);
-        // Hat / crest
-        const hatMat = new THREE.MeshStandardMaterial({ color: 0xdd4422 });
-        const hat = new THREE.Mesh(new THREE.ConeGeometry(0.45, 0.5, 8), hatMat);
-        hat.position.y = 0.55;
-        hat.castShadow = true;
-        playerGroup.add(hat);
+        const leftPupil = new THREE.Mesh(pupilGeo, pupilMat);
+        leftPupil.position.set(-0.18, 0.68, 0.71);
+        const rightPupil = new THREE.Mesh(pupilGeo, pupilMat);
+        rightPupil.position.set(0.18, 0.68, 0.71);
+        chickenGroup.add(leftPupil);
+        chickenGroup.add(rightPupil);
+        // comb (red)
+        const combGeo = new THREE.ConeGeometry(0.15, 0.2, 6);
+        const combMat = new THREE.MeshStandardMaterial({ color: 0xdd3333 });
+        const comb = new THREE.Mesh(combGeo, combMat);
+        comb.position.set(0, 0.85, 0.45);
+        chickenGroup.add(comb);
+        // tail feathers
+        const tailGeo = new THREE.CylinderGeometry(0.12, 0.2, 0.35, 6);
+        const tailMat = new THREE.MeshStandardMaterial({ color: 0xcc8844 });
+        const tail = new THREE.Mesh(tailGeo, tailMat);
+        tail.position.set(0, 0.3, -0.55);
+        tail.rotation.x = -0.4;
+        chickenGroup.add(tail);
         
-        playerGroup.position.set(0, 0.1, -5); // start at bottom lane area
-        playerGroup.castShadow = true;
-        scene.add(playerGroup);
+        chickenGroup.position.set(0, 0, -4.2); // starting grass
+        chickenGroup.castShadow = true;
+        chickenGroup.receiveShadow = false;
+        scene.add(chickenGroup);
         
-        // --- Goal Area (tree at top) ---
-        const goalTreeGroup = new THREE.Group();
-        const trunkMat = new THREE.MeshStandardMaterial({ color: 0x8B5A2B });
-        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.6, 0.8, 6), trunkMat);
-        trunk.position.y = 0;
-        trunk.castShadow = true;
-        goalTreeGroup.add(trunk);
-        const foliageMat = new THREE.MeshStandardMaterial({ color: 0x3c9e3c });
-        const foliage1 = new THREE.Mesh(new THREE.ConeGeometry(0.7, 0.8, 8), foliageMat);
-        foliage1.position.y = 0.6;
-        foliage1.castShadow = true;
-        const foliage2 = new THREE.Mesh(new THREE.ConeGeometry(0.55, 0.6, 8), foliageMat);
-        foliage2.position.y = 1.0;
-        foliage2.castShadow = true;
-        goalTreeGroup.add(foliage1);
-        goalTreeGroup.add(foliage2);
-        goalTreeGroup.position.set(0, 0, 7.2);
-        scene.add(goalTreeGroup);
-        
-        // Sparkle effect for goal (small particles)
-        const sparkleGeo = new THREE.BufferGeometry();
-        const sparkleCount = 80;
-        const sparklePositions = new Float32Array(sparkleCount * 3);
-        for (let i = 0; i < sparkleCount; i++) {
-            sparklePositions[i*3] = (Math.random() - 0.5) * 4;
-            sparklePositions[i*3+1] = Math.random() * 1.5;
-            sparklePositions[i*3+2] = 7 + (Math.random() - 0.5) * 2;
-        }
-        sparkleGeo.setAttribute('position', new THREE.BufferAttribute(sparklePositions, 3));
-        const sparkleMat = new THREE.PointsMaterial({ color: 0xffdd77, size: 0.08 });
-        const sparkles = new THREE.Points(sparkleGeo, sparkleMat);
-        scene.add(sparkles);
-        
-        // --- game state ---
+        // --- Game State ---
+        let currentPos = { x: 0, z: -4.2 };
         let score = 0;
         let gameActive = true;
-        let lastTimestamp = 0;
         let moveCooldown = false;
-        let playerPos = { x: 0, z: -5 };
-        const step = 1.0; // grid move distance
-        const minX = -5.5;
-        const maxX = 5.5;
-        const minZ = -5;
-        const maxZ = 7;
+        let invincibleFrames = 0;
+        const scoreElement = document.getElementById('score');
         
         function updateScoreUI() {
-            document.getElementById('score').innerText = `SCORE: ${score}`;
+            scoreElement.innerText = `SCORE: ${score}`;
         }
         
-        // Collision detection (AABB)
-        function checkCollision() {
-            const playerBox = new THREE.Box3().setFromObject(playerGroup);
-            for (let v of vehicles) {
-                const vehicleBox = new THREE.Box3().setFromObject(v.mesh);
-                if (playerBox.intersectsBox(vehicleBox)) {
-                    return true;
+        function checkCollisionAndWin() {
+            if (!gameActive) return;
+            // collision with vehicles
+            for (let obj of movingObjects) {
+                if (obj.laneIdx !== undefined) {
+                    const laneZ = laneDefs[obj.laneIdx]?.startZ;
+                    if (Math.abs(currentPos.z - laneZ) < 0.7) {
+                        const dx = Math.abs(currentPos.x - obj.mesh.position.x);
+                        if (dx < 0.8) {
+                            gameActive = false;
+                            showGameOver();
+                            return;
+                        }
+                    }
                 }
             }
-            return false;
-        }
-        
-        function checkGoal() {
-            // if player reaches the tree zone (z >= 6.8)
-            if (playerPos.z >= maxZ - 0.2) {
+            // river & log detection: if chicken is on river lane without standing on log -> die
+            const currentLane = laneDefs.find(lane => Math.abs(lane.startZ - currentPos.z) < 0.6);
+            if (currentLane && currentLane.type === 'river') {
+                let onLog = false;
+                for (let obj of movingObjects) {
+                    if (obj.isLog && Math.abs(currentPos.z - obj.laneZ) < 0.5) {
+                        const dx = Math.abs(currentPos.x - obj.mesh.position.x);
+                        if (dx < 0.9) {
+                            onLog = true;
+                            // also push chicken with log movement
+                            if (gameActive) {
+                                const push = obj.direction * obj.speed * 0.016; // delta factor applied in animate
+                                // but we'll handle movement in update loop: we'll push position relative to log, but cleaner: in animation update we auto shift if onLog
+                            }
+                            break;
+                        }
+                    }
+                }
+                if (!onLog) {
+                    gameActive = false;
+                    showGameOver();
+                }
+            }
+            
+            // Win condition: reached goal_grass (z >= 8.7)
+            if (currentPos.z >= 8.8 && gameActive) {
                 score++;
                 updateScoreUI();
-                // reset player to start
-                playerPos.x = 0;
-                playerPos.z = minZ;
-                updatePlayerPosition();
-                // play success effect: flash and reposition tree sparkle
-                document.body.style.backgroundColor = '#aaffaa';
-                setTimeout(() => { document.body.style.backgroundColor = ''; }, 150);
-                // also reset all vehicles positions randomly to keep fresh
-                resetVehiclesPositions();
-                return true;
+                // respawn at start but increase difficulty? keep same but reset position
+                currentPos = { x: 0, z: -4.2 };
+                chickenGroup.position.set(currentPos.x, 0, currentPos.z);
+                // simple effect: camera slight bump (optional)
+                gameActive = true; // keep active
+                invincibleFrames = 10;
             }
-            return false;
         }
         
-        function resetVehiclesPositions() {
-            vehicles.forEach(v => {
-                // random offset between -12 and 12
-                const newX = (Math.random() * 24) - 12;
-                v.mesh.position.x = newX;
-                v.offsetX = newX;
-            });
+        function showGameOver() {
+            gameActive = false;
+            const gameOverDiv = document.createElement('div');
+            gameOverDiv.id = 'gameover-msg';
+            gameOverDiv.innerText = '💀 GAME OVER 💀';
+            gameOverDiv.style.position = 'absolute';
+            gameOverDiv.style.top = '40%';
+            gameOverDiv.style.left = '50%';
+            gameOverDiv.style.transform = 'translate(-50%, -50%)';
+            gameOverDiv.style.backgroundColor = 'black';
+            gameOverDiv.style.color = '#ff6666';
+            gameOverDiv.style.padding = '20px 40px';
+            gameOverDiv.style.fontSize = '36px';
+            gameOverDiv.style.fontFamily = 'monospace';
+            gameOverDiv.style.borderRadius = '20px';
+            gameOverDiv.style.border = '3px solid red';
+            gameOverDiv.style.zIndex = '100';
+            gameOverDiv.style.textAlign = 'center';
+            gameOverDiv.style.backdropFilter = 'blur(8px)';
+            document.body.appendChild(gameOverDiv);
+            setTimeout(() => {
+                if (gameOverDiv) gameOverDiv.remove();
+            }, 2000);
         }
         
-        function updatePlayerPosition() {
-            playerGroup.position.x = playerPos.x;
-            playerGroup.position.z = playerPos.z;
-            // slight hop animation?
-            playerGroup.position.y = 0.1 + Math.sin(Date.now() * 0.015) * 0.02;
+        function restartGame() {
+            gameActive = true;
+            score = 0;
+            updateScoreUI();
+            currentPos = { x: 0, z: -4.2 };
+            chickenGroup.position.set(0, 0, -4.2);
+            invincibleFrames = 15;
+            const existingMsg = document.getElementById('gameover-msg');
+            if (existingMsg) existingMsg.remove();
         }
         
-        function movePlayer(dx, dz) {
+        // Movement handler (arrow keys / WASD) classic grid snap
+        function handleMove(dx, dz) {
             if (!gameActive) return;
-            let newX = playerPos.x + dx * step;
-            let newZ = playerPos.z + dz * step;
-            if (newX < minX) newX = minX;
-            if (newX > maxX) newX = maxX;
-            if (newZ < minZ) newZ = minZ;
-            if (newZ > maxZ) newZ = maxZ;
-            playerPos.x = newX;
-            playerPos.z = newZ;
-            updatePlayerPosition();
-            
-            // After move, check goal first to prevent death on same frame
-            if (checkGoal()) return;
-            
-            if (checkCollision()) {
-                gameActive = false;
-                document.getElementById('game-over').style.display = 'block';
-            }
-        }
-        
-        // --- keyboard input ---
-        const keyState = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false, w: false, s: false, a: false, d: false };
-        let lastMoveTime = 0;
-        const moveDelay = 180; // ms between moves for smooth grid movement
-        
-        function handleInput() {
-            if (!gameActive) return;
-            const now = Date.now();
-            if (now - lastMoveTime < moveDelay) return;
-            let dx = 0, dz = 0;
-            if (keyState.ArrowUp || keyState.w) dz = 1;
-            else if (keyState.ArrowDown || keyState.s) dz = -1;
-            else if (keyState.ArrowLeft || keyState.a) dx = -1;
-            else if (keyState.ArrowRight || keyState.d) dx = 1;
-            if (dx !== 0 || dz !== 0) {
-                movePlayer(dx, dz);
-                lastMoveTime = now;
-                // play little sound effect vibe? just visual hop
-                playerGroup.position.y = 0.3;
-                setTimeout(() => { if(gameActive) playerGroup.position.y = 0.1; }, 100);
-            }
+            if (moveCooldown) return;
+            let newX = currentPos.x + dx;
+            let newZ = currentPos.z + dz;
+            if (newX < -4.8) newX = -4.8;
+            if (newX > 4.8) newX = 4.8;
+            if (newZ < -4.5) newZ = -4.5;
+            if (newZ > 9.0) newZ = 9.0;
+            currentPos = { x: newX, z: newZ };
+            chickenGroup.position.set(currentPos.x, 0, currentPos.z);
+            moveCooldown = true;
+            setTimeout(() => { moveCooldown = false; }, 160);
+            // immediate check after move
+            checkCollisionAndWin();
         }
         
         window.addEventListener('keydown', (e) => {
             const key = e.key;
-            if (keyState.hasOwnProperty(key)) keyState[key] = true;
-            // prevent page scroll
-            if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','s','a','d'].includes(key)) e.preventDefault();
+            if (key === 'ArrowUp' || key === 'w') handleMove(0, 1.5);
+            if (key === 'ArrowDown' || key === 's') handleMove(0, -1.5);
+            if (key === 'ArrowLeft' || key === 'a') handleMove(-1.5, 0);
+            if (key === 'ArrowRight' || key === 'd') handleMove(1.5, 0);
+            e.preventDefault();
         });
-        window.addEventListener('keyup', (e) => {
-            const key = e.key;
-            if (keyState.hasOwnProperty(key)) keyState[key] = false;
-        });
+        document.getElementById('restart-btn').addEventListener('click', () => { restartGame(); });
         
-        // Restart logic
-        document.getElementById('restart-btn').addEventListener('click', () => {
-            gameActive = true;
-            score = 0;
-            updateScoreUI();
-            playerPos.x = 0;
-            playerPos.z = minZ;
-            updatePlayerPosition();
-            document.getElementById('game-over').style.display = 'none';
-            resetVehiclesPositions();
-            // ensure no collision right after restart
-            setTimeout(() => {
-                if (checkCollision()) {
-                    // if somehow collision, slight reposition
-                    playerPos.x = 0;
-                    playerPos.z = minZ;
-                    updatePlayerPosition();
-                }
-            }, 50);
-        });
-        
-        // --- animate vehicles movement (continuous) ---
-        let lastFrameTime = performance.now();
-        function updateVehicles(deltaTime) {
-            if (!gameActive) return;
-            const speedFactor = deltaTime * 3.5; // ~60fps -> 0.016 * 3.5 = 0.056 per frame ~ proper speed
-            vehicles.forEach(v => {
-                let move = v.speed * v.direction * speedFactor;
-                let newX = v.mesh.position.x + move;
-                // wrap around: if goes beyond -12 to 12 range, teleport to other side
-                if (newX > 13) newX = -13;
-                if (newX < -13) newX = 13;
-                v.mesh.position.x = newX;
-                v.offsetX = newX;
-            });
-        }
-        
-        // Simple camera follow/ slight rotation for better view
-        let timeAcc = 0;
-        
-        function animate() {
-            const now = performance.now();
-            let delta = Math.min(0.033, (now - lastFrameTime) / 1000);
-            lastFrameTime = now;
-            if (delta < 0.005) delta = 0.016;
-            
+        // Animation loop: moving vehicles and logs
+        let lastTimestamp = 0;
+        function animate(time) {
+            const delta = Math.min(0.033, (time - lastTimestamp) / 1000);
+            lastTimestamp = time;
             if (gameActive) {
-                updateVehicles(delta);
-                handleInput();
-                // additional collision check during vehicle movement (real-time)
-                if (checkCollision() && gameActive) {
-                    gameActive = false;
-                    document.getElementById('game-over').style.display = 'block';
+                // update moving objects positions
+                movingObjects.forEach(obj => {
+                    let step = obj.speed * obj.direction * delta;
+                    obj.mesh.position.x += step;
+                    if (obj.mesh.position.x > 6.2) obj.mesh.position.x = -6.2;
+                    if (obj.mesh.position.x < -6.2) obj.mesh.position.x = 6.2;
+                });
+                
+                // River log auto-ride: if chicken on river lane and on log, shift chicken X with log movement
+                if (gameActive) {
+                    const currentLaneCheck = laneDefs.find(lane => Math.abs(lane.startZ - currentPos.z) < 0.6);
+                    if (currentLaneCheck && currentLaneCheck.type === 'river') {
+                        for (let obj of movingObjects) {
+                            if (obj.isLog && Math.abs(currentPos.z - obj.laneZ) < 0.5 && Math.abs(currentPos.x - obj.mesh.position.x) < 0.9) {
+                                const push = obj.speed * obj.direction * delta;
+                                let newX = currentPos.x + push;
+                                if (newX > 4.8) newX = 4.8;
+                                if (newX < -4.8) newX = -4.8;
+                                currentPos.x = newX;
+                                chickenGroup.position.x = currentPos.x;
+                                break;
+                            }
+                        }
+                    }
                 }
-                // dynamic player bounce
-                playerGroup.position.y = 0.1 + Math.sin(Date.now() * 0.012) * 0.03;
-                // rotate sparkles
-                sparkles.rotation.y += 0.01;
-            } else {
-                // game over effect - sad tilt
-                playerGroup.rotation.z = Math.sin(Date.now() * 0.01) * 0.1;
+                // invincibility frames after death respawn? not used heavily but reset
+                if (invincibleFrames > 0) invincibleFrames--;
+                checkCollisionAndWin();
             }
-            
-            // Slight camera movement and target
-            const targetZ = Math.max(-5, Math.min(7, playerPos.z));
-            const targetX = playerPos.x * 0.2;
-            camera.position.x += (targetX - camera.position.x) * 0.05;
-            camera.position.z = 12 + (targetZ * 0.05);
-            camera.lookAt(playerPos.x, 0, playerPos.z);
-            
+            // camera dynamic follow: keep chicken in center of view (exact like original: camera fixed relative to chicken? Actually replica camera fixed angle but follows)
+            camera.position.x += (currentPos.x - camera.position.x) * 0.05;
+            camera.lookAt(currentPos.x, 0, currentPos.z);
             renderer.render(scene, camera);
             labelRenderer.render(scene, camera);
             requestAnimationFrame(animate);
         }
         
-        // --- Add decorative trees / bushes on sides ---
-        const bushMat = new THREE.MeshStandardMaterial({ color: 0x5a9e4e });
-        for (let i = -6; i <= 6; i+=1.5) {
-            if (Math.abs(i) < 5) continue;
-            const bush = new THREE.Mesh(new THREE.SphereGeometry(0.4, 6), bushMat);
-            bush.position.set(i, -0.2, -4.5);
-            bush.castShadow = true;
-            scene.add(bush);
-            const bush2 = new THREE.Mesh(new THREE.SphereGeometry(0.4, 6), bushMat);
-            bush2.position.set(i, -0.2, 6.5);
-            bush2.castShadow = true;
-            scene.add(bush2);
-        }
+        requestAnimationFrame(animate);
         
-        // Add roadside trees
-        const treeTrunkMat = new THREE.MeshStandardMaterial({ color: 0xaa7c4a });
-        for (let side = -1; side <= 1; side+=2) {
-            for (let z = -4; z <= 7; z+=2.5) {
-                if (z > -3 && z < 6) continue;
-                const trunkTree = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.4, 0.6, 5), treeTrunkMat);
-                trunkTree.position.set(side * 6.2, -0.2, z);
-                trunkTree.castShadow = true;
-                const foliageTree = new THREE.Mesh(new THREE.ConeGeometry(0.5, 0.6, 6), new THREE.MeshStandardMaterial({ color: 0x4caf4c }));
-                foliageTree.position.set(side * 6.2, 0.25, z);
-                foliageTree.castShadow = true;
-                scene.add(trunkTree);
-                scene.add(foliageTree);
+        // Add touch support for mobile
+        let touchStart = null;
+        window.addEventListener('touchstart', (e) => {
+            touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            e.preventDefault();
+        });
+        window.addEventListener('touchend', (e) => {
+            if (!touchStart) return;
+            const dx = e.changedTouches[0].clientX - touchStart.x;
+            const dy = e.changedTouches[0].clientY - touchStart.y;
+            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 20) {
+                if (dx > 0) handleMove(1.5, 0);
+                else handleMove(-1.5, 0);
+            } else if (Math.abs(dy) > 20) {
+                if (dy > 0) handleMove(0, -1.5);
+                else handleMove(0, 1.5);
             }
-        }
+            touchStart = null;
+        });
         
-        // Initialize score and start
-        updateScoreUI();
-        updatePlayerPosition();
-        animate();
-        
-        // simple mobile friendly but still keyboard required, add touch handlers optionally
-        // but keep PC as main, perfect clone experience.
-        console.log("Crossy Road Clone Ready! Use Arrow Keys/WASD");
+        // camera stabilization initial
+        camera.lookAt(0, 0, 0);
     </script>
 </body>
 </html>
