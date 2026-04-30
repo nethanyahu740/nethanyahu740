@@ -2,575 +2,612 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Game Hub: Sky Rush + Frogger Frenzy (Crossy Road Knockoff)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Crossy Road Clone - Frogger Style 3D Game</title>
     <style>
-        * {
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            box-sizing: border-box;
-        }
-
         body {
             margin: 0;
-            min-height: 100vh;
-            background: radial-gradient(circle at 20% 30%, #1a3f2c, #0a1f1a);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Courier New', 'Press Start 2P', monospace, system-ui;
-            touch-action: manipulation;
-            padding: 16px;
+            overflow: hidden;
+            font-family: 'Press Start 2P', 'Courier New', monospace;
         }
-
-        /* hub container */
-        .game-hub {
-            max-width: 1000px;
-            width: 100%;
-            background: #0f2a22dd;
-            backdrop-filter: blur(12px);
-            border-radius: 56px;
-            padding: 18px 20px 25px;
-            box-shadow: 0 25px 45px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,200,0.2);
-            border: 1px solid #f9e0a0;
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 15px;
+            border-radius: 8px;
+            pointer-events: none;
+            z-index: 10;
+            font-size: 14px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-
-        /* game selector buttons */
-        .game-selector {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 25px;
-        }
-        .game-btn {
-            background: #f3b33d;
-            border: none;
-            font-size: 1.2rem;
+        #score {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: gold;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 24px;
             font-weight: bold;
+            pointer-events: none;
+            z-index: 10;
             font-family: monospace;
-            padding: 12px 28px;
-            border-radius: 60px;
-            color: #232b1b;
-            box-shadow: 0 7px 0 #8b5a2b;
-            transition: 0.07s linear;
-            cursor: pointer;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            backdrop-filter: blur(5px);
+            border: 1px solid gold;
         }
-        .game-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #8b5a2b; }
-        .game-btn.active {
-            background: #ffdd88;
-            box-shadow: 0 3px 0 #b96f20;
-            transform: translateY(4px);
-            border: 1px solid white;
-        }
-
-        .canvas-area {
-            background: #00000033;
-            border-radius: 32px;
-            padding: 12px;
-            display: flex;
-            justify-content: center;
-        }
-        canvas {
-            display: block;
-            margin: 0 auto;
-            border-radius: 24px;
-            box-shadow: 0 12px 28px black;
-            background-color: #2c5a3e;
-            width: 100%;
-            height: auto;
-            cursor: pointer;
-        }
-
-        .info-panel {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #1e2d26;
-            margin-top: 18px;
-            padding: 10px 24px;
-            border-radius: 60px;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-        }
-        .score-card {
-            background: #000000aa;
-            backdrop-filter: blur(4px);
-            padding: 5px 20px;
-            border-radius: 40px;
+        #game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: red;
+            background: black;
+            padding: 30px 50px;
+            font-size: 48px;
             font-weight: bold;
-            color: #f7ecc7;
-        }
-        .score-card span {
-            background: #f3b33d;
-            display: inline-block;
-            padding: 4px 14px;
-            border-radius: 32px;
-            margin-left: 10px;
-            color: #121f0e;
-        }
-        button.small-restart {
-            background: #ffe1a0;
-            border: none;
-            font-family: monospace;
-            font-weight: bold;
-            font-size: 1rem;
-            padding: 6px 20px;
-            border-radius: 40px;
-            box-shadow: 0 4px 0 #b1621a;
-            transition: 0.07s linear;
-        }
-        button.small-restart:active { transform: translateY(2px); box-shadow: 0 1px 0 #b1621a;}
-
-        .controls-tip {
-            background: #00000077;
-            backdrop-filter: blur(4px);
-            padding: 6px 18px;
-            border-radius: 44px;
-            font-size: 0.7rem;
-            color: #e9f0cf;
             text-align: center;
-            margin-top: 12px;
+            z-index: 20;
+            display: none;
+            border: 3px solid red;
+            border-radius: 20px;
+            white-space: nowrap;
+            font-family: monospace;
+            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.85);
+            pointer-events: none;
+        }
+        #restart-btn {
+            margin-top: 20px;
+            font-size: 24px;
+            background: gold;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: monospace;
+            font-weight: bold;
+            border-radius: 10px;
+            pointer-events: auto;
+        }
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0,0,0,0.6);
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: monospace;
+            pointer-events: none;
+            z-index: 10;
         }
         @media (max-width: 600px) {
-            .game-btn { font-size: 0.9rem; padding: 8px 18px;}
-            .score-card { font-size: 0.9rem;}
+            #score { font-size: 18px; top: 10px; right: 10px; }
+            #info { font-size: 10px; top: 10px; left: 10px; }
+            #game-over { font-size: 28px; padding: 20px 30px; white-space: normal; width: 80%; }
+            #restart-btn { font-size: 18px; }
         }
     </style>
 </head>
 <body>
-<div class="game-hub">
-    <div class="game-selector">
-        <button class="game-btn" id="btnSkyRush">✈️ SKY RUSH</button>
-        <button class="game-btn" id="btnCrossy">🐸 FROGGER FRENZY</button>
+    <div id="info">🐸 CROSSY ROAD CLONE | Avoid Cars & Trucks | Reach Top</div>
+    <div id="score">SCORE: 0</div>
+    <div id="game-over">
+        GAME OVER<br>
+        <button id="restart-btn">RESTART</button>
     </div>
-    <div class="canvas-area">
-        <canvas id="gameCanvas" width="800" height="500"></canvas>
-    </div>
-    <div class="info-panel">
-        <div class="score-card">🏆 SCORE <span id="scoreDisplay">0</span></div>
-        <div class="score-card">⭐ BEST <span id="bestDisplay">0</span></div>
-        <button class="small-restart" id="globalRestartBtn">🔄 RESTART GAME</button>
-    </div>
-    <div class="controls-tip" id="controlsMsg">⬅️  MOVE: MOUSE / TOUCH & DRAG  ➡️  |  Dodge & Survive!</div>
-</div>
+    <div id="controls">⬆️ ⬇️ ⬅️ ➡️  or  WASD</div>
 
-<script>
-    (function(){
-        // ---------- CANVAS ----------
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const CANVAS_W = 800, CANVAS_H = 500;
-        canvas.width = CANVAS_W;
-        canvas.height = CANVAS_H;
+    <!-- Import Three.js core and add-ons -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
 
-        // ---------- Game state ----------
-        let currentGame = "SKYRUSH";   // "SKYRUSH" or "CROSSY"
-        let gameRunning = true;
-        let score = 0;
-        let highScore = 0;
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+        // --- Setup Scene, Camera, Renderers ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a4c2a); // forest green
+        scene.fog = new THREE.Fog(0x0a4c2a, 30, 50);
+
+        // Camera: Top-down angled isometric style
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(12, 10, 12);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true; // shadows add depth
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.body.appendChild(renderer.domElement);
+
+        // CSS2 Renderer for simple text labels
+        const labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '0px';
+        labelRenderer.domElement.style.left = '0px';
+        labelRenderer.domElement.style.pointerEvents = 'none';
+        document.body.appendChild(labelRenderer.domElement);
+
+        // --- Lights ---
+        // Ambient
+        const ambientLight = new THREE.AmbientLight(0x404060);
+        scene.add(ambientLight);
+        // Directional Light (sun)
+        const dirLight = new THREE.DirectionalLight(0xfff5d1, 1.2);
+        dirLight.position.set(10, 20, 5);
+        dirLight.castShadow = true;
+        dirLight.receiveShadow = true;
+        dirLight.shadow.mapSize.width = 1024;
+        dirLight.shadow.mapSize.height = 1024;
+        dirLight.shadow.camera.near = 0.5;
+        dirLight.shadow.camera.far = 30;
+        dirLight.shadow.camera.left = -10;
+        dirLight.shadow.camera.right = 10;
+        dirLight.shadow.camera.top = 10;
+        dirLight.shadow.camera.bottom = -10;
+        scene.add(dirLight);
+        // Fill light from below
+        const fillLight = new THREE.PointLight(0x4466cc, 0.3);
+        fillLight.position.set(0, -5, 0);
+        scene.add(fillLight);
+        // Rim light
+        const rimLight = new THREE.PointLight(0xffaa66, 0.5);
+        rimLight.position.set(-5, 8, -6);
+        scene.add(rimLight);
+
+        // --- Ground Grid (retro feel) ---
+        const gridHelper = new THREE.GridHelper(30, 20, 0x88aa88, 0x446644);
+        gridHelper.position.y = -0.5;
+        gridHelper.material.transparent = true;
+        gridHelper.material.opacity = 0.4;
+        scene.add(gridHelper);
         
-        // load global highscore (shared)
-        try {
-            const saved = localStorage.getItem('gameHubHigh');
-            if(saved && !isNaN(parseInt(saved))) highScore = parseInt(saved);
-        } catch(e){}
+        // Base ground plane (invisible but catches shadows)
+        const groundPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(25, 25),
+            new THREE.ShadowMaterial({ opacity: 0.4, color: 0x000000, transparent: true, side: THREE.DoubleSide })
+        );
+        groundPlane.rotation.x = -Math.PI / 2;
+        groundPlane.position.y = -0.6;
+        groundPlane.receiveShadow = true;
+        scene.add(groundPlane);
+
+        // --- Define Road Lanes (Y positions, direction, speed, type) ---
+        // Lanes from bottom (negative Z) to top (positive Z)
+        // player starts at Z = -5, goal at Z = 7
+        const lanes = [
+            { y: -4.0, direction: 1, speed: 2.2, type: 'car', color: 0xcc3333, width: 1.2 },   // red car
+            { y: -2.5, direction: -1, speed: 2.5, type: 'truck', color: 0x886622, width: 2.0 }, // truck
+            { y: -1.0, direction: 1, speed: 2.0, type: 'car', color: 0x33cc33, width: 1.2 },
+            { y: 0.5, direction: -1, speed: 2.8, type: 'car', color: 0x3399ff, width: 1.2 },
+            { y: 2.0, direction: 1, speed: 2.3, type: 'truck', color: 0xaa6644, width: 2.0 },
+            { y: 3.5, direction: -1, speed: 3.0, type: 'car', color: 0xffaa33, width: 1.2 },
+            { y: 5.0, direction: 1, speed: 2.7, type: 'car', color: 0xdd44aa, width: 1.2 },
+            { y: 6.5, direction: -1, speed: 2.4, type: 'truck', color: 0x8b5a2b, width: 2.0 }
+        ];
         
-        // UI elements
-        const scoreSpan = document.getElementById('scoreDisplay');
-        const bestSpan = document.getElementById('bestDisplay');
-        const controlsMsgDiv = document.getElementById('controlsMsg');
+        // Store moving vehicles: each { mesh, laneIndex, offsetX, width, speed, direction }
+        const vehicles = [];
         
-        function updateUI() {
-            scoreSpan.innerText = Math.floor(score);
-            bestSpan.innerText = highScore;
-        }
-        function saveHigh() {
-            if(Math.floor(score) > highScore) {
-                highScore = Math.floor(score);
-                updateUI();
-                try{ localStorage.setItem('gameHubHigh', highScore); } catch(e){}
+        // Road markings: add white dashed lines on each lane
+        lanes.forEach((lane, idx) => {
+            const lineMat = new THREE.MeshStandardMaterial({ color: 0xffdd99, emissive: 0x442200 });
+            for (let x = -12; x <= 12; x += 2.5) {
+                const dash = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.1, 0.8), lineMat);
+                dash.position.set(x, lane.y - 0.2, 0);
+                dash.castShadow = false;
+                dash.receiveShadow = false;
+                scene.add(dash);
             }
-        }
+            // lane borders
+            const borderMat = new THREE.MeshStandardMaterial({ color: 0xccaa77 });
+            const leftBorder = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 7.5), borderMat);
+            leftBorder.position.set(-5.8, lane.y - 0.15, 0);
+            const rightBorder = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 7.5), borderMat);
+            rightBorder.position.set(5.8, lane.y - 0.15, 0);
+            scene.add(leftBorder);
+            scene.add(rightBorder);
+        });
         
-        // --------------------------------------------------------------
-        // 1) SKY RUSH (dodge red enemies)
-        // --------------------------------------------------------------
-        let skyPlayerX = CANVAS_W/2 - 18;
-        const SKY_PLAYER_W = 36, SKY_PLAYER_H = 36;
-        let skyObstacles = [];
-        let skyFrame = 0;
-        let skySpawnDelay = 38;
-        
-        function resetSkyRush() {
-            skyPlayerX = CANVAS_W/2 - SKY_PLAYER_W/2;
-            skyObstacles = [];
-            skyFrame = 0;
-            skySpawnDelay = 38;
-        }
-        
-        function spawnSkyObstacle() {
-            let randX = Math.random() * (CANVAS_W - 34);
-            skyObstacles.push({
-                x: randX, y: -34, w: 34, h: 34,
-                speed: 3.0 + Math.min(4.2, score / 420)
-            });
-        }
-        
-        function updateSkyRush() {
-            if(!gameRunning) return;
-            // dynamic spawn
-            let dynDelay = Math.max(18, 38 - Math.floor(score / 280));
-            if(skyFrame >= dynDelay) {
-                skyFrame = 0;
-                spawnSkyObstacle();
-                if(score > 400 && Math.random()<0.3) spawnSkyObstacle();
-            } else skyFrame++;
-            
-            // move obstacles
-            for(let i=0; i<skyObstacles.length; i++) {
-                let obs = skyObstacles[i];
-                let speedBonus = Math.min(2.8, score / 500);
-                obs.y += obs.speed + speedBonus * 0.4;
-                // collision
-                if(skyPlayerX < obs.x+obs.w && skyPlayerX+SKY_PLAYER_W > obs.x &&
-                   CANVAS_H-70 < obs.y+obs.h && CANVAS_H-70+SKY_PLAYER_H > obs.y) {
-                    gameRunning = false;
-                    saveHigh();
-                    return;
-                }
-            }
-            // remove offscreen & add score for passing enemies
-            let before = skyObstacles.length;
-            skyObstacles = skyObstacles.filter(obs => obs.y < CANVAS_H + 80);
-            let passed = before - skyObstacles.length;
-            if(passed > 0) score += passed * 2.2;
-            // survival points
-            score += 0.12;
-            updateUI();
-            if(Math.floor(score) > highScore) { highScore = Math.floor(score); updateUI(); saveHigh(); }
-        }
-        
-        function drawSkyRush() {
-            // sky gradient
-            const grad = ctx.createLinearGradient(0,0,0,CANVAS_H);
-            grad.addColorStop(0,"#4aa3df");
-            grad.addColorStop(1,"#b2e0fa");
-            ctx.fillStyle=grad;
-            ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
-            // clouds
-            ctx.fillStyle="#ffffffcc";
-            ctx.beginPath(); ctx.ellipse(120,60,45,35,0,0,Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.ellipse(620,90,55,40,0,0,Math.PI*2); ctx.fill();
-            // ground
-            ctx.fillStyle="#8B5A2B"; ctx.fillRect(0,CANVAS_H-28,CANVAS_W,28);
-            ctx.fillStyle="#D4A373";
-            for(let i=0;i<12;i++) ctx.fillRect(i*70,CANVAS_H-20,35,10);
-            // enemies
-            for(let obs of skyObstacles) {
-                ctx.fillStyle="#e34d2b"; ctx.shadowBlur=4;
-                ctx.fillRect(obs.x,obs.y,obs.w,obs.h);
-                ctx.fillStyle="#FFF7E8";
-                ctx.fillRect(obs.x+6,obs.y+8,7,8); ctx.fillRect(obs.x+obs.w-13,obs.y+8,7,8);
-                ctx.fillStyle="#020202";
-                ctx.fillRect(obs.x+7,obs.y+9,4,5); ctx.fillRect(obs.x+obs.w-12,obs.y+9,4,5);
-            }
-            // player jet
-            ctx.fillStyle="#FFAA44cc";
-            ctx.beginPath(); ctx.moveTo(skyPlayerX+18,CANVAS_H-70+28); ctx.lineTo(skyPlayerX+6,CANVAS_H-70+42); ctx.lineTo(skyPlayerX+18,CANVAS_H-70+34); ctx.lineTo(skyPlayerX+30,CANVAS_H-70+42); ctx.fill();
-            ctx.fillStyle="#4FC3F7";
-            ctx.beginPath(); ctx.roundRect(skyPlayerX,CANVAS_H-70,SKY_PLAYER_W,SKY_PLAYER_H,10); ctx.fill();
-            ctx.fillStyle="#C0E0FF";
-            ctx.beginPath(); ctx.ellipse(skyPlayerX+18,CANVAS_H-70+12,11,9,0,0,Math.PI*2); ctx.fill();
-            ctx.fillStyle="#101820"; ctx.fillRect(skyPlayerX+14,CANVAS_H-70+10,8,5);
-        }
-        
-        // --------------------------------------------------------------
-        // 2) FROGGER FRENZY (Crossy Road knockoff: identical lanes)
-        // --------------------------------------------------------------
-        // Grid system: 50px tile size, 16 columns x 10 rows approx (800/50=16, 500/50=10)
-        const TILE = 50;
-        const COLS = 16, ROWS = 10;
-        let frogX = 7, frogY = 8;   // start near bottom (y index 8 = 9th row)
-        let crossyObstacles = [];    // {x, y, type, dir, speed}
-        let crossyFrame = 0;
-        let crossySpawnCounter = 0;
-        let lanes = [];    // store lane data: y row (index), direction, speed, pattern
-        
-        function initLanes() {
-            // lanes: row indices 1 to 6 (active roads), row 0 top grass, row 7 start grass, row 8-9 safe
-            // Classic crossy: cars move left/right
-            lanes = [
-                {row:1, dir:-1, speed:1.5, color:"#6a4e2e"},   // left
-                {row:2, dir:1, speed:1.8, color:"#5a6e4a"},
-                {row:3, dir:-1, speed:2.2, color:"#8b5a2b"},
-                {row:4, dir:1, speed:2.6, color:"#4a6e3a"},
-                {row:5, dir:-1, speed:3.0, color:"#95734a"},
-                {row:6, dir:1, speed:3.4, color:"#6b4e2a"}
-            ];
-        }
-        
-        function resetCrossyFrenzy() {
-            frogX = 7; frogY = 8;
-            crossyObstacles = [];
-            crossyFrame = 0;
-            crossySpawnCounter = 0;
-            initLanes();
-            // pre-spawn obstacles on each lane to look busy
-            for(let L of lanes) {
-                for(let i=0;i<4;i++) {
-                    let randX = Math.random() * (CANVAS_W - TILE);
-                    crossyObstacles.push({
-                        x: randX, y: L.row * TILE, w: TILE-4, h: TILE-6,
-                        dir: L.dir, speed: L.speed,
-                        laneRow: L.row
-                    });
-                }
-            }
-        }
-        
-        function updateCrossy() {
-            if(!gameRunning) return;
-            // move existing obstacles
-            for(let obs of crossyObstacles) {
-                obs.x += obs.dir * obs.speed;
-                // wrap around
-                if(obs.x > CANVAS_W) obs.x = -obs.w;
-                if(obs.x + obs.w < 0) obs.x = CANVAS_W;
-            }
-            // spawn new obstacles occasionally (to keep density)
-            if(Math.random()<0.02 && crossyObstacles.length<40) {
-                let laneChoice = lanes[Math.floor(Math.random()*lanes.length)];
-                let startX = laneChoice.dir === 1 ? -TILE : CANVAS_W;
-                crossyObstacles.push({
-                    x: startX, y: laneChoice.row * TILE, w: TILE-4, h: TILE-6,
-                    dir: laneChoice.dir, speed: laneChoice.speed,
-                    laneRow: laneChoice.row
+        // --- Create Vehicles function ---
+        function createVehicle(type, color, widthVal) {
+            const group = new THREE.Group();
+            let bodyGeo, cabinGeo;
+            if (type === 'truck') {
+                bodyGeo = new THREE.BoxGeometry(widthVal, 0.6, 1.4);
+                const bodyMat = new THREE.MeshStandardMaterial({ color: color, roughness: 0.4, metalness: 0.7 });
+                const body = new THREE.Mesh(bodyGeo, bodyMat);
+                body.castShadow = true;
+                body.receiveShadow = true;
+                body.position.y = 0;
+                group.add(body);
+                // cabin
+                cabinGeo = new THREE.BoxGeometry(0.9, 0.7, 1.2);
+                const cabinMat = new THREE.MeshStandardMaterial({ color: 0x4466aa, roughness: 0.2 });
+                const cabin = new THREE.Mesh(cabinGeo, cabinMat);
+                cabin.position.x = -widthVal/2 + 0.5;
+                cabin.position.y = 0.35;
+                cabin.castShadow = true;
+                group.add(cabin);
+                // wheels (black cylinders)
+                const wheelMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.8, roughness: 0.5 });
+                const wheelGeo = new THREE.CylinderGeometry(0.25, 0.25, 0.3, 12);
+                const positions = [[-0.7, -0.2, 0.6], [0.7, -0.2, 0.6], [-0.7, -0.2, -0.6], [0.7, -0.2, -0.6]];
+                positions.forEach(pos => {
+                    const wheel = new THREE.Mesh(wheelGeo, wheelMat);
+                    wheel.rotation.z = Math.PI/2;
+                    wheel.position.set(pos[0], pos[1], pos[2]);
+                    wheel.castShadow = true;
+                    group.add(wheel);
+                });
+            } else { // car
+                bodyGeo = new THREE.BoxGeometry(widthVal, 0.4, 1.2);
+                const bodyMat = new THREE.MeshStandardMaterial({ color: color, roughness: 0.3, metalness: 0.6 });
+                const body = new THREE.Mesh(bodyGeo, bodyMat);
+                body.castShadow = true;
+                group.add(body);
+                const roofGeo = new THREE.BoxGeometry(widthVal*0.7, 0.3, 0.9);
+                const roofMat = new THREE.MeshStandardMaterial({ color: 0x222222 });
+                const roof = new THREE.Mesh(roofGeo, roofMat);
+                roof.position.y = 0.35;
+                roof.castShadow = true;
+                group.add(roof);
+                const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.7 });
+                const wheelGeo = new THREE.CylinderGeometry(0.22, 0.22, 0.25, 12);
+                const pos = [[-0.6, -0.1, 0.55], [0.6, -0.1, 0.55], [-0.6, -0.1, -0.55], [0.6, -0.1, -0.55]];
+                pos.forEach(p => {
+                    const wheel = new THREE.Mesh(wheelGeo, wheelMat);
+                    wheel.rotation.z = Math.PI/2;
+                    wheel.position.set(p[0], p[1], p[2]);
+                    wheel.castShadow = true;
+                    group.add(wheel);
                 });
             }
-            
-            // COLLISION: frog vs obstacles on same row
-            let frogRect = {x: frogX*TILE, y: frogY*TILE, w: TILE-6, h: TILE-8};
-            for(let obs of crossyObstacles) {
-                if(obs.laneRow === frogY) {
-                    let obsRect = {x: obs.x, y: obs.y, w: obs.w, h: obs.h};
-                    if(frogRect.x < obsRect.x+obsRect.w && frogRect.x+frogRect.w > obsRect.x &&
-                       frogRect.y < obsRect.y+obsRect.h && frogRect.y+frogRect.h > obsRect.y) {
-                        gameRunning = false;
-                        saveHigh();
-                        return;
-                    }
-                }
-            }
-            
-            // Check if frog reached top (row 0)
-            if(frogY === 0) {
-                // score big and reset frog position, increase score
-                score += 100;
-                frogX = 7; frogY = 8;
-                updateUI();
-                saveHigh();
-                // also increase difficulty slightly: speeds increment
-                for(let L of lanes) {
-                    L.speed += 0.12;
-                }
-            }
-            // bounds: frog within canvas columns
-            if(frogX<0) frogX=0;
-            if(frogX>=COLS) frogX=COLS-1;
-            if(frogY<0) frogY=0;
-            if(frogY>=ROWS) frogY=ROWS-1;
-            
-            // passive score for surviving
-            score += 0.07;
-            updateUI();
-            if(Math.floor(score) > highScore) { highScore = Math.floor(score); updateUI(); saveHigh();}
+            return group;
         }
         
-        function drawCrossy() {
-            // grass background with road stripes
-            for(let row=0; row<ROWS; row++) {
-                let isRoad = lanes.some(l => l.row === row);
-                if(isRoad) {
-                    ctx.fillStyle = "#3c5e2b";
-                    ctx.fillRect(0, row*TILE, CANVAS_W, TILE);
-                    ctx.fillStyle = "#f5e6a0";
-                    for(let i=0;i<10;i++) {
-                        ctx.fillRect(i*80 + (Date.now()*0.01)%80, row*TILE+22, 35, 6);
-                    }
-                } else {
-                    let grad = ctx.createLinearGradient(0,row*TILE,0,row*TILE+TILE);
-                    grad.addColorStop(0,"#5b8c50");
-                    grad.addColorStop(1,"#3f6840");
-                    ctx.fillStyle=grad;
-                    ctx.fillRect(0, row*TILE, CANVAS_W, TILE);
-                    // grass details
-                    ctx.fillStyle = "#b9d48b";
-                    for(let i=0;i<12;i++) ctx.fillRect(i*67+10, row*TILE+12, 4, 8);
-                }
-            }
-            // draw moving obstacles (cars , logs style)
-            for(let obs of crossyObstacles) {
-                ctx.shadowBlur=0;
-                ctx.fillStyle = "#c94f2c";
-                ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
-                ctx.fillStyle = "#f2c55e";
-                ctx.fillRect(obs.x+5, obs.y+8, obs.w-10, 10);
-                ctx.fillStyle = "#2e1f0a";
-                ctx.fillRect(obs.x+12, obs.y+20, 8, 8);
-                // wheels
-                ctx.fillStyle = "#000";
-                ctx.fillRect(obs.x+4, obs.y+obs.h-8, 8, 6);
-                ctx.fillRect(obs.x+obs.w-12, obs.y+obs.h-8, 8, 6);
-            }
-            // Draw frog (cute amphibian)
-            let fx = frogX*TILE, fy = frogY*TILE;
-            ctx.fillStyle = "#56b349";
-            ctx.beginPath(); ctx.ellipse(fx+TILE/2, fy+TILE/2-4, 16, 14, 0, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = "#b3ffa7";
-            ctx.beginPath(); ctx.ellipse(fx+TILE/2-5, fy+TILE/2-8, 4, 5, 0, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.ellipse(fx+TILE/2+5, fy+TILE/2-8, 4, 5, 0, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle="#000";
-            ctx.fillRect(fx+TILE/2-7, fy+TILE/2-6, 3, 3);
-            ctx.fillRect(fx+TILE/2+4, fy+TILE/2-6, 3, 3);
-            // smile
-            ctx.beginPath(); ctx.arc(fx+TILE/2, fy+TILE/2-1, 8, 0.05, Math.PI-0.05); ctx.stroke();
-            // legs
-            ctx.fillStyle="#3f8a32";
-            ctx.fillRect(fx+4, fy+TILE-12, 10, 6);
-            ctx.fillRect(fx+TILE-14, fy+TILE-12, 10, 6);
-            // win particles if top row reached: drawn after
-            if(frogY===0) {
-                ctx.font="bold 24px monospace"; ctx.fillStyle="#FFD966"; ctx.shadowBlur=6;
-                ctx.fillText("+100!", fx+10, fy-8);
-            }
-        }
-        
-        // --------------------------------------------------------------
-        // Input handler (mouse + touch unified) for both games
-        // --------------------------------------------------------------
-        let targetX = CANVAS_W/2;
-        let activeTouchId = null;
-        
-        function getCanvasRelativeX(clientX) {
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            let val = (clientX - rect.left) * scaleX;
-            return Math.min(Math.max(val, 0), CANVAS_W);
-        }
-        
-        function handleMove(clientX) {
-            let rawX = getCanvasRelativeX(clientX);
-            if(currentGame === "SKYRUSH") {
-                let newX = rawX - SKY_PLAYER_W/2;
-                newX = Math.min(Math.max(newX, 0), CANVAS_W - SKY_PLAYER_W);
-                skyPlayerX = newX;
-            } 
-            else if (currentGame === "CROSSY") {
-                // we use horizontal swipes: but we only map left/right relative moves
-                // Better to convert into relative cell shift? classic Crossy uses 1 tile per swipe.
-                // For smooth mouse/touch, we do "drag to move cell" with delta.
-                // Simpler but feel identical: treat mouse coordinate to snap cell?
-                // For authentic identical knockoff, we implement "mouse relative cell" but we also keep keys virtual: 
-                // To feel perfect: we'll use relative position to change columns.
-                let targetCol = Math.floor(rawX / TILE);
-                if(targetCol !== frogX && gameRunning) {
-                    frogX = targetCol;
-                    if(frogX<0) frogX=0;
-                    if(frogX>=COLS) frogX=COLS-1;
-                }
-            }
-        }
-        
-        function onMouseMove(e) { if(gameRunning) { handleMove(e.clientX); e.preventDefault();} }
-        function onTouchStart(e) { e.preventDefault(); if(!gameRunning) return; const t=e.touches[0]; if(t){ activeTouchId=t.identifier; handleMove(t.clientX);} }
-        function onTouchMove(e) { e.preventDefault(); if(!gameRunning) return; let found=null; if(activeTouchId!==null){ for(let i=0;i<e.touches.length;i++) if(e.touches[i].identifier===activeTouchId){ found=e.touches[i]; break;}} if(!found && e.touches.length) found=e.touches[0]; if(found) handleMove(found.clientX);}
-        function onTouchEnd(e){ e.preventDefault(); activeTouchId=null; }
-        
-        canvas.addEventListener('mousemove', onMouseMove);
-        canvas.addEventListener('touchstart', onTouchStart, {passive:false});
-        canvas.addEventListener('touchmove', onTouchMove, {passive:false});
-        canvas.addEventListener('touchend', onTouchEnd);
-        canvas.addEventListener('touchcancel', onTouchEnd);
-        canvas.addEventListener('contextmenu', e=>e.preventDefault());
-        
-        // Also support keyboard for PC (arrow keys for crossy moves)
-        window.addEventListener('keydown', (e) => {
-            if(!gameRunning) return;
-            if(currentGame === "CROSSY") {
-                if(e.key === 'ArrowLeft') { frogX--; if(frogX<0) frogX=0; e.preventDefault();}
-                else if(e.key === 'ArrowRight') { frogX++; if(frogX>=COLS) frogX=COLS-1; e.preventDefault();}
-                else if(e.key === 'ArrowUp') { frogY--; if(frogY<0) frogY=0; e.preventDefault();}
-                else if(e.key === 'ArrowDown') { frogY++; if(frogY>=ROWS) frogY=ROWS-1; e.preventDefault();}
-            } else if(currentGame === "SKYRUSH") {
-                if(e.key === 'ArrowLeft') { skyPlayerX -= 32; if(skyPlayerX<0) skyPlayerX=0; e.preventDefault();}
-                if(e.key === 'ArrowRight') { skyPlayerX += 32; if(skyPlayerX+SKY_PLAYER_W>CANVAS_W) skyPlayerX=CANVAS_W-SKY_PLAYER_W; e.preventDefault();}
+        // Populate lanes with vehicles at random offsets
+        lanes.forEach((lane, idx) => {
+            const numVehicles = 5; // per lane, enough for continuous flow
+            for (let i = 0; i < numVehicles; i++) {
+                const vehicleGroup = createVehicle(lane.type, lane.color, lane.width);
+                const startX = (i / numVehicles) * 24 - 12; // spread across -12 to 12
+                vehicleGroup.position.x = startX;
+                vehicleGroup.position.z = lane.y;
+                vehicleGroup.position.y = 0.1;
+                scene.add(vehicleGroup);
+                vehicles.push({
+                    mesh: vehicleGroup,
+                    laneIndex: idx,
+                    offsetX: startX,
+                    width: lane.width,
+                    speed: lane.speed,
+                    direction: lane.direction,
+                    laneY: lane.y
+                });
             }
         });
         
-        // --------------------------------------------------------------
-        // Game switching & reset logic
-        // --------------------------------------------------------------
-        function resetCurrentGame() {
-            gameRunning = true;
-            if(currentGame === "SKYRUSH") {
-                resetSkyRush();
-                score = 0;
-                updateUI();
-            } else if(currentGame === "CROSSY") {
-                resetCrossyFrenzy();
-                score = 0;
-                updateUI();
-            }
+        // --- Player (Frog / Chicken character) ---
+        const playerGroup = new THREE.Group();
+        // Body
+        const bodyMat = new THREE.MeshStandardMaterial({ color: 0x7ec850, emissive: 0x226622, roughness: 0.2 });
+        const bodyGeo = new THREE.SphereGeometry(0.5, 24, 24);
+        const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+        bodyMesh.scale.set(1.2, 0.7, 0.9);
+        bodyMesh.position.y = 0;
+        bodyMesh.castShadow = true;
+        playerGroup.add(bodyMesh);
+        // Eyes
+        const eyeMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
+        const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.18, 24, 24), eyeMat);
+        leftEye.position.set(-0.35, 0.35, 0.55);
+        leftEye.castShadow = true;
+        const rightEye = new THREE.Mesh(new THREE.SphereGeometry(0.18, 24, 24), eyeMat);
+        rightEye.position.set(0.35, 0.35, 0.55);
+        rightEye.castShadow = true;
+        playerGroup.add(leftEye);
+        playerGroup.add(rightEye);
+        // Pupils
+        const pupilMat = new THREE.MeshStandardMaterial({ color: 0x000000 });
+        const leftPupil = new THREE.Mesh(new THREE.SphereGeometry(0.1, 24, 24), pupilMat);
+        leftPupil.position.set(-0.35, 0.3, 0.72);
+        const rightPupil = new THREE.Mesh(new THREE.SphereGeometry(0.1, 24, 24), pupilMat);
+        rightPupil.position.set(0.35, 0.3, 0.72);
+        playerGroup.add(leftPupil);
+        playerGroup.add(rightPupil);
+        // Hat / crest
+        const hatMat = new THREE.MeshStandardMaterial({ color: 0xdd4422 });
+        const hat = new THREE.Mesh(new THREE.ConeGeometry(0.45, 0.5, 8), hatMat);
+        hat.position.y = 0.55;
+        hat.castShadow = true;
+        playerGroup.add(hat);
+        
+        playerGroup.position.set(0, 0.1, -5); // start at bottom lane area
+        playerGroup.castShadow = true;
+        scene.add(playerGroup);
+        
+        // --- Goal Area (tree at top) ---
+        const goalTreeGroup = new THREE.Group();
+        const trunkMat = new THREE.MeshStandardMaterial({ color: 0x8B5A2B });
+        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.6, 0.8, 6), trunkMat);
+        trunk.position.y = 0;
+        trunk.castShadow = true;
+        goalTreeGroup.add(trunk);
+        const foliageMat = new THREE.MeshStandardMaterial({ color: 0x3c9e3c });
+        const foliage1 = new THREE.Mesh(new THREE.ConeGeometry(0.7, 0.8, 8), foliageMat);
+        foliage1.position.y = 0.6;
+        foliage1.castShadow = true;
+        const foliage2 = new THREE.Mesh(new THREE.ConeGeometry(0.55, 0.6, 8), foliageMat);
+        foliage2.position.y = 1.0;
+        foliage2.castShadow = true;
+        goalTreeGroup.add(foliage1);
+        goalTreeGroup.add(foliage2);
+        goalTreeGroup.position.set(0, 0, 7.2);
+        scene.add(goalTreeGroup);
+        
+        // Sparkle effect for goal (small particles)
+        const sparkleGeo = new THREE.BufferGeometry();
+        const sparkleCount = 80;
+        const sparklePositions = new Float32Array(sparkleCount * 3);
+        for (let i = 0; i < sparkleCount; i++) {
+            sparklePositions[i*3] = (Math.random() - 0.5) * 4;
+            sparklePositions[i*3+1] = Math.random() * 1.5;
+            sparklePositions[i*3+2] = 7 + (Math.random() - 0.5) * 2;
+        }
+        sparkleGeo.setAttribute('position', new THREE.BufferAttribute(sparklePositions, 3));
+        const sparkleMat = new THREE.PointsMaterial({ color: 0xffdd77, size: 0.08 });
+        const sparkles = new THREE.Points(sparkleGeo, sparkleMat);
+        scene.add(sparkles);
+        
+        // --- game state ---
+        let score = 0;
+        let gameActive = true;
+        let lastTimestamp = 0;
+        let moveCooldown = false;
+        let playerPos = { x: 0, z: -5 };
+        const step = 1.0; // grid move distance
+        const minX = -5.5;
+        const maxX = 5.5;
+        const minZ = -5;
+        const maxZ = 7;
+        
+        function updateScoreUI() {
+            document.getElementById('score').innerText = `SCORE: ${score}`;
         }
         
-        function switchGame(gameId) {
-            currentGame = gameId;
-            resetCurrentGame();
-            gameRunning = true;
-            // update controls text
-            if(currentGame === "SKYRUSH") controlsMsgDiv.innerText = "✈️ SKY RUSH: MOVE MOUSE / DRAG LEFT-RIGHT | Arrow keys / Dodge red blocks!";
-            else controlsMsgDiv.innerText = "🐸 FROGGER FRENZY: MOVE MOUSE (SWIPE LEFT/RIGHT) or Arrow keys | Reach TOP lane +100!";
+        // Collision detection (AABB)
+        function checkCollision() {
+            const playerBox = new THREE.Box3().setFromObject(playerGroup);
+            for (let v of vehicles) {
+                const vehicleBox = new THREE.Box3().setFromObject(v.mesh);
+                if (playerBox.intersectsBox(vehicleBox)) {
+                    return true;
+                }
+            }
+            return false;
         }
         
-        // buttons & restart
-        document.getElementById('btnSkyRush').addEventListener('click',()=>{ switchGame("SKYRUSH"); });
-        document.getElementById('btnCrossy').addEventListener('click',()=>{ switchGame("CROSSY"); });
-        document.getElementById('globalRestartBtn').addEventListener('click',()=>{ resetCurrentGame(); gameRunning=true; });
-        
-        // initial setup
-        initLanes();
-        resetCrossyFrenzy();
-        resetSkyRush();
-        updateUI();
-        
-        // main loop
-        function gameLoop() {
-            if(gameRunning) {
-                if(currentGame === "SKYRUSH") updateSkyRush();
-                else updateCrossy();
+        function checkGoal() {
+            // if player reaches the tree zone (z >= 6.8)
+            if (playerPos.z >= maxZ - 0.2) {
+                score++;
+                updateScoreUI();
+                // reset player to start
+                playerPos.x = 0;
+                playerPos.z = minZ;
+                updatePlayerPosition();
+                // play success effect: flash and reposition tree sparkle
+                document.body.style.backgroundColor = '#aaffaa';
+                setTimeout(() => { document.body.style.backgroundColor = ''; }, 150);
+                // also reset all vehicles positions randomly to keep fresh
+                resetVehiclesPositions();
+                return true;
             }
-            // DRAW
-            if(currentGame === "SKYRUSH") drawSkyRush();
-            else drawCrossy();
+            return false;
+        }
+        
+        function resetVehiclesPositions() {
+            vehicles.forEach(v => {
+                // random offset between -12 and 12
+                const newX = (Math.random() * 24) - 12;
+                v.mesh.position.x = newX;
+                v.offsetX = newX;
+            });
+        }
+        
+        function updatePlayerPosition() {
+            playerGroup.position.x = playerPos.x;
+            playerGroup.position.z = playerPos.z;
+            // slight hop animation?
+            playerGroup.position.y = 0.1 + Math.sin(Date.now() * 0.015) * 0.02;
+        }
+        
+        function movePlayer(dx, dz) {
+            if (!gameActive) return;
+            let newX = playerPos.x + dx * step;
+            let newZ = playerPos.z + dz * step;
+            if (newX < minX) newX = minX;
+            if (newX > maxX) newX = maxX;
+            if (newZ < minZ) newZ = minZ;
+            if (newZ > maxZ) newZ = maxZ;
+            playerPos.x = newX;
+            playerPos.z = newZ;
+            updatePlayerPosition();
             
-            if(!gameRunning) {
-                ctx.fillStyle = "#000000aa";
-                ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
-                ctx.font = "bold 28px monospace";
-                ctx.fillStyle = "#FFD966";
-                ctx.textAlign = "center";
-                ctx.fillText("💀 GAME OVER 💀", CANVAS_W/2, CANVAS_H/2-25);
-                ctx.font = "18px monospace";
-                ctx.fillStyle = "#FFF2B5";
-                ctx.fillText("tap RESTART or switch game", CANVAS_W/2, CANVAS_H/2+40);
+            // After move, check goal first to prevent death on same frame
+            if (checkGoal()) return;
+            
+            if (checkCollision()) {
+                gameActive = false;
+                document.getElementById('game-over').style.display = 'block';
             }
-            requestAnimationFrame(gameLoop);
         }
-        gameLoop();
-    })();
-</script>
+        
+        // --- keyboard input ---
+        const keyState = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false, w: false, s: false, a: false, d: false };
+        let lastMoveTime = 0;
+        const moveDelay = 180; // ms between moves for smooth grid movement
+        
+        function handleInput() {
+            if (!gameActive) return;
+            const now = Date.now();
+            if (now - lastMoveTime < moveDelay) return;
+            let dx = 0, dz = 0;
+            if (keyState.ArrowUp || keyState.w) dz = 1;
+            else if (keyState.ArrowDown || keyState.s) dz = -1;
+            else if (keyState.ArrowLeft || keyState.a) dx = -1;
+            else if (keyState.ArrowRight || keyState.d) dx = 1;
+            if (dx !== 0 || dz !== 0) {
+                movePlayer(dx, dz);
+                lastMoveTime = now;
+                // play little sound effect vibe? just visual hop
+                playerGroup.position.y = 0.3;
+                setTimeout(() => { if(gameActive) playerGroup.position.y = 0.1; }, 100);
+            }
+        }
+        
+        window.addEventListener('keydown', (e) => {
+            const key = e.key;
+            if (keyState.hasOwnProperty(key)) keyState[key] = true;
+            // prevent page scroll
+            if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','s','a','d'].includes(key)) e.preventDefault();
+        });
+        window.addEventListener('keyup', (e) => {
+            const key = e.key;
+            if (keyState.hasOwnProperty(key)) keyState[key] = false;
+        });
+        
+        // Restart logic
+        document.getElementById('restart-btn').addEventListener('click', () => {
+            gameActive = true;
+            score = 0;
+            updateScoreUI();
+            playerPos.x = 0;
+            playerPos.z = minZ;
+            updatePlayerPosition();
+            document.getElementById('game-over').style.display = 'none';
+            resetVehiclesPositions();
+            // ensure no collision right after restart
+            setTimeout(() => {
+                if (checkCollision()) {
+                    // if somehow collision, slight reposition
+                    playerPos.x = 0;
+                    playerPos.z = minZ;
+                    updatePlayerPosition();
+                }
+            }, 50);
+        });
+        
+        // --- animate vehicles movement (continuous) ---
+        let lastFrameTime = performance.now();
+        function updateVehicles(deltaTime) {
+            if (!gameActive) return;
+            const speedFactor = deltaTime * 3.5; // ~60fps -> 0.016 * 3.5 = 0.056 per frame ~ proper speed
+            vehicles.forEach(v => {
+                let move = v.speed * v.direction * speedFactor;
+                let newX = v.mesh.position.x + move;
+                // wrap around: if goes beyond -12 to 12 range, teleport to other side
+                if (newX > 13) newX = -13;
+                if (newX < -13) newX = 13;
+                v.mesh.position.x = newX;
+                v.offsetX = newX;
+            });
+        }
+        
+        // Simple camera follow/ slight rotation for better view
+        let timeAcc = 0;
+        
+        function animate() {
+            const now = performance.now();
+            let delta = Math.min(0.033, (now - lastFrameTime) / 1000);
+            lastFrameTime = now;
+            if (delta < 0.005) delta = 0.016;
+            
+            if (gameActive) {
+                updateVehicles(delta);
+                handleInput();
+                // additional collision check during vehicle movement (real-time)
+                if (checkCollision() && gameActive) {
+                    gameActive = false;
+                    document.getElementById('game-over').style.display = 'block';
+                }
+                // dynamic player bounce
+                playerGroup.position.y = 0.1 + Math.sin(Date.now() * 0.012) * 0.03;
+                // rotate sparkles
+                sparkles.rotation.y += 0.01;
+            } else {
+                // game over effect - sad tilt
+                playerGroup.rotation.z = Math.sin(Date.now() * 0.01) * 0.1;
+            }
+            
+            // Slight camera movement and target
+            const targetZ = Math.max(-5, Math.min(7, playerPos.z));
+            const targetX = playerPos.x * 0.2;
+            camera.position.x += (targetX - camera.position.x) * 0.05;
+            camera.position.z = 12 + (targetZ * 0.05);
+            camera.lookAt(playerPos.x, 0, playerPos.z);
+            
+            renderer.render(scene, camera);
+            labelRenderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+        
+        // --- Add decorative trees / bushes on sides ---
+        const bushMat = new THREE.MeshStandardMaterial({ color: 0x5a9e4e });
+        for (let i = -6; i <= 6; i+=1.5) {
+            if (Math.abs(i) < 5) continue;
+            const bush = new THREE.Mesh(new THREE.SphereGeometry(0.4, 6), bushMat);
+            bush.position.set(i, -0.2, -4.5);
+            bush.castShadow = true;
+            scene.add(bush);
+            const bush2 = new THREE.Mesh(new THREE.SphereGeometry(0.4, 6), bushMat);
+            bush2.position.set(i, -0.2, 6.5);
+            bush2.castShadow = true;
+            scene.add(bush2);
+        }
+        
+        // Add roadside trees
+        const treeTrunkMat = new THREE.MeshStandardMaterial({ color: 0xaa7c4a });
+        for (let side = -1; side <= 1; side+=2) {
+            for (let z = -4; z <= 7; z+=2.5) {
+                if (z > -3 && z < 6) continue;
+                const trunkTree = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.4, 0.6, 5), treeTrunkMat);
+                trunkTree.position.set(side * 6.2, -0.2, z);
+                trunkTree.castShadow = true;
+                const foliageTree = new THREE.Mesh(new THREE.ConeGeometry(0.5, 0.6, 6), new THREE.MeshStandardMaterial({ color: 0x4caf4c }));
+                foliageTree.position.set(side * 6.2, 0.25, z);
+                foliageTree.castShadow = true;
+                scene.add(trunkTree);
+                scene.add(foliageTree);
+            }
+        }
+        
+        // Initialize score and start
+        updateScoreUI();
+        updatePlayerPosition();
+        animate();
+        
+        // simple mobile friendly but still keyboard required, add touch handlers optionally
+        // but keep PC as main, perfect clone experience.
+        console.log("Crossy Road Clone Ready! Use Arrow Keys/WASD");
+    </script>
 </body>
 </html>
