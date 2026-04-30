@@ -3,12 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Nethanyahu games</title> <!-- updated title -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <!-- iOS / iPhone specific -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="format-detection" content="telephone=no">
+    <title>Nethanyahu Games</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
     <style>
         * {
             margin: 0;
@@ -22,199 +18,163 @@
             background: linear-gradient(145deg, #2d1b4e 0%, #1a0f2e 100%);
             color: #f3f4f6;
             min-height: 100vh;
-            overflow-x: hidden;
+            padding: 2rem 1.5rem;
         }
 
-        html {
-            -webkit-text-size-adjust: 100%;
-            touch-action: manipulation;
-        }
-
-        /* ========== ANIMATIONS GLOBAL ========== */
+        /* animations */
         @keyframes fadeSlideUp {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
+
         @keyframes gentlePulse {
             0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
             70% { box-shadow: 0 0 0 12px rgba(168, 85, 247, 0); }
             100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
         }
-        @keyframes floatGlow {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-3px); }
-            100% { transform: translateY(0px); }
-        }
-        @keyframes borderPulse {
-            0% { border-color: rgba(139, 92, 246, 0.4); }
-            50% { border-color: rgba(168, 85, 247, 0.9); }
-            100% { border-color: rgba(139, 92, 246, 0.4); }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
         }
 
-        .glass-nav, .panel, .game-card, .app-card, .section-title, .sub, footer {
-            animation: fadeSlideUp 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
-        .game-card, .app-card {
-            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            animation: fadeSlideUp 0.5s ease backwards;
-            animation-delay: calc(0.03s * var(--order, 0));
-        }
-        .game-card:hover, .app-card:hover {
-            transform: translateY(-8px) scale(1.01);
-            animation: gentlePulse 1.2s infinite, borderPulse 1.8s infinite;
-        }
-        .game-card:active, .app-card:active {
-            transform: scale(0.97);
-            transition: 0.05s;
-        }
-        .nav-btn {
-            transition: all 0.2s ease;
-        }
-        .nav-btn:active {
-            transform: scale(0.94);
-        }
-        .section-title {
-            animation: floatGlow 3s ease-in-out infinite;
-        }
-
-        /* scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #2e1a4a;
-            border-radius: 12px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #a78bfa;
-            border-radius: 12px;
-        }
-
-        /* header navigation */
-        .glass-nav {
-            background: rgba(46, 26, 74, 0.85);
-            backdrop-filter: blur(16px);
-            padding: 0.9rem 1.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(167, 139, 250, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            gap: 0.8rem;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #e9d5ff, #c4b5fd);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            letter-spacing: -0.3px;
-            animation: floatGlow 2.5s ease-in-out infinite;
-        }
-        .nav-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-        .nav-btn {
-            background: rgba(109, 70, 155, 0.7);
-            border: none;
-            padding: 0.6rem 1.4rem;
-            font-size: 1rem;
-            font-weight: 600;
-            color: white;
-            border-radius: 50px;
-            cursor: pointer;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            -webkit-tap-highlight-color: transparent;
-        }
-        .nav-btn.active {
-            background: #a855f7;
-            box-shadow: 0 0 14px rgba(168, 85, 247, 0.6);
-        }
-
-        /* panels */
-        .panel {
-            display: none;
-            animation: fadeSlideUp 0.45s ease;
-            padding: 1.8rem 1.2rem 2.5rem;
-        }
-        .panel.active-panel {
-            display: block;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
+        /* header & logo */
+        .header {
             text-align: center;
-            background: linear-gradient(145deg, #f3e8ff, #d9c9ff);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-        .sub {
-            text-align: center;
-            color: #c4b5fd;
             margin-bottom: 2rem;
-            font-weight: 500;
-            font-size: 0.9rem;
+            animation: fadeSlideUp 0.5s ease;
         }
 
-        /* card grid */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
-            gap: 1.5rem;
+        #userPhoto {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #8b5cf6;
+            animation: fadeSlideUp 0.5s ease, gentlePulse 2s infinite;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .game_title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f3e8ff, #c4b5fd);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* search bar */
+        .search-section {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .search {
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: none;
+            background: rgba(46, 34, 65, 0.8);
+            backdrop-filter: blur(8px);
+            color: white;
+            font-size: 1rem;
+            width: 250px;
+            outline: none;
+            border: 1px solid rgba(139, 92, 246, 0.5);
+        }
+
+        .search::placeholder {
+            color: #a78bfa;
+        }
+
+        .button {
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: none;
+            background: rgba(139, 92, 246, 0.8);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .button:hover, .button:active {
+            background: #a855f7;
+            transform: scale(0.98);
+        }
+
+        /* games grid */
+        .games {
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        .game-card, .app-card {
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .link, .glink {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
             background: rgba(46, 34, 65, 0.7);
             backdrop-filter: blur(8px);
-            border-radius: 1.8rem;
-            overflow: hidden;
-            cursor: pointer;
-            border: 1px solid rgba(139, 92, 246, 0.5);
-            box-shadow: 0 12px 18px -8px rgba(0, 0, 0, 0.4);
-            -webkit-tap-highlight-color: transparent;
-        }
-        .card-img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            display: block;
-            background: #1f112c;
-            pointer-events: none;
-        }
-        .card-title {
-            padding: 0.9rem 0.6rem;
-            text-align: center;
-            font-weight: 700;
-            font-size: 1.05rem;
-            background: rgba(0, 0, 0, 0.3);
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-radius: 1.5rem;
+            text-decoration: none;
             color: #f0e9ff;
+            transition: all 0.25s ease;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            cursor: pointer;
+            animation: fadeSlideUp 0.4s ease backwards;
+            animation-delay: calc(0.02s * var(--order, 0));
         }
 
-        footer {
-            background: #1a0f29;
+        .link:hover, .glink:hover {
+            transform: translateY(-5px);
+            border-color: #a855f7;
+            box-shadow: 0 12px 25px -8px rgba(139, 92, 246, 0.4);
+        }
+
+        .link img, .glink img {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            object-fit: cover;
+            margin-bottom: 0.8rem;
+            background: #2d1b4e;
+        }
+
+        .link b, .glink b {
+            font-weight: 600;
+            font-size: 0.9rem;
             text-align: center;
-            padding: 1.3rem;
-            font-size: 0.75rem;
-            color: #9f8ec9;
-            border-top: 1px solid #3b2a55;
         }
 
-        /* fullscreen overlay */
+        .badge {
+            font-size: 0.65rem;
+            background: rgba(168, 85, 247, 0.3);
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        /* fullscreen overlay with fade animation */
         .fullscreen-overlay {
             position: fixed;
             top: 0;
@@ -225,21 +185,23 @@
             z-index: 2000;
             display: flex;
             flex-direction: column;
-            animation: fadeSlideUp 0.25s ease;
+            animation: fadeIn 0.35s ease-out;
         }
+
         .fullscreen-iframe {
             width: 100%;
             height: 100%;
             border: none;
             background: #000;
         }
+
         .close-fullscreen-btn {
             position: absolute;
-            top: 12px;
-            right: 18px;
-            background: rgba(0,0,0,0.7);
+            top: 16px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(12px);
-            padding: 12px 20px;
+            padding: 10px 22px;
             border-radius: 50px;
             color: white;
             font-weight: 600;
@@ -247,231 +209,201 @@
             border: none;
             z-index: 2002;
             cursor: pointer;
+            font-family: inherit;
             transition: 0.1s;
         }
+
         .close-fullscreen-btn:active {
             transform: scale(0.96);
         }
-        .ios-hint {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            right: 0;
+
+        .footer-text {
             text-align: center;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(8px);
-            color: #ccc;
-            font-size: 0.7rem;
-            padding: 6px;
-            width: fit-content;
-            margin: 0 auto;
-            border-radius: 30px;
-            pointer-events: none;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #3b2a55;
+            font-size: 0.8rem;
+            color: #9f8ec9;
+        }
+
+        .footer-text a {
+            color: #c4b5fd;
+            text-decoration: none;
         }
 
         @media (max-width: 640px) {
-            .glass-nav {
-                flex-direction: row;
-                padding: 0.8rem 1rem;
+            body {
+                padding: 1rem;
             }
-            .logo { font-size: 1.2rem; }
-            .nav-btn { padding: 0.5rem 1.1rem; font-size: 0.9rem; }
-            .section-title { font-size: 1.7rem; }
-            .card-grid { gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-            .card-img { height: 140px; }
-        }
-        @media (orientation: landscape) and (max-height: 500px) {
-            .card-img { height: 110px; }
+            .game_title {
+                font-size: 1.8rem;
+            }
+            .game-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+            .link img, .glink img {
+                width: 65px;
+                height: 65px;
+            }
         }
     </style>
-    <script>
-        // fullscreen handler (iOS friendly)
-        function openFullscreen(url) {
-            if (document.querySelector('.fullscreen-overlay')) return;
-            const overlay = document.createElement('div');
-            overlay.className = 'fullscreen-overlay';
-            const iframe = document.createElement('iframe');
-            iframe.src = url;
-            iframe.className = 'fullscreen-iframe';
-            iframe.setAttribute('allowfullscreen', 'true');
-            iframe.setAttribute('allow', 'autoplay; fullscreen; clipboard-write; accelerometer; gyroscope');
-            iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-presentation');
-            const closeBtn = document.createElement('button');
-            closeBtn.innerText = '✕ CLOSE';
-            closeBtn.className = 'close-fullscreen-btn';
-            const hint = document.createElement('div');
-            hint.className = 'ios-hint';
-            hint.innerText = 'Tap ✕ to exit game';
-            overlay.appendChild(iframe);
-            overlay.appendChild(closeBtn);
-            overlay.appendChild(hint);
-            document.body.appendChild(overlay);
-            document.body.style.overflow = 'hidden';
-            const closeFullscreen = () => {
-                if (overlay && overlay.parentNode) overlay.remove();
-                document.body.style.overflow = '';
-            };
-            closeBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                closeFullscreen();
-            });
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) closeFullscreen();
-            });
-            const escHandler = (e) => {
-                if (e.key === 'Escape') {
-                    closeFullscreen();
-                    document.removeEventListener('keydown', escHandler);
-                }
-            };
-            document.addEventListener('keydown', escHandler);
-            overlay._escHandler = escHandler;
-        }
-        
-        function showPanel(panelId) {
-            document.querySelectorAll('.panel').forEach(panel => panel.classList.remove('active-panel'));
-            document.getElementById(panelId).classList.add('active-panel');
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            if (panelId === 'gamesPanel') document.getElementById('btnGames').classList.add('active');
-            else document.getElementById('btnApps').classList.add('active');
-        }
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            showPanel('gamesPanel');
-            // set staggered animation delay for cards
-            let cards = document.querySelectorAll('.game-card, .app-card');
-            cards.forEach((card, idx) => {
-                card.style.setProperty('--order', idx);
-            });
-        });
-    </script>
 </head>
 <body>
 
-<nav class="glass-nav">
-    <div class="logo">⚡ Nethanyahu games ⚡</div>
-    <div class="nav-buttons">
-        <button class="nav-btn active" id="btnGames" onclick="showPanel('gamesPanel')">🎮 Games</button>
-        <button class="nav-btn" id="btnApps" onclick="showPanel('appsPanel')">📱 Apps</button>
-    </div>
-</nav>
-
-<!-- GAMES PANEL : Contains original games + trending games from freegames.io -->
-<div id="gamesPanel" class="panel active-panel">
-    <div class="section-title">🎮 Arcade & Action</div>
-    <div class="sub">🔥 trending from freegames.io + your classics | tap to play</div>
-    <div class="card-grid">
-        <!-- ========== NEW GAMES from freegames.io (embedded as direct working links) ========== -->
-        <!-- Shell Shockers (popular) -->
-        <div class="game-card" onclick="openFullscreen('https://shellshock.io/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=shellshock.io&sz=128" alt="Shell Shockers" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Shell+Shockers'">
-            <div class="card-title">🥚 Shell Shockers</div>
-        </div>
-        <!-- Powerline.io -->
-        <div class="game-card" onclick="openFullscreen('https://powerline.io/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=powerline.io&sz=128" alt="Powerline.io" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Powerline.io'">
-            <div class="card-title">⚡ Powerline.io</div>
-        </div>
-        <!-- Basket Bros -->
-        <div class="game-card" onclick="openFullscreen('https://basketbros.io/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=basketbros.io&sz=128" alt="Basket Bros" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Basket+Bros'">
-            <div class="card-title">🏀 Basket Bros</div>
-        </div>
-        <!-- Evowars -->
-        <div class="game-card" onclick="openFullscreen('https://evowars.io/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=evowars.io&sz=128" alt="Evowars" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Evowars'">
-            <div class="card-title">🐉 Evowars</div>
-        </div>
-        <!-- Moto X3M -->
-        <div class="game-card" onclick="openFullscreen('https://motox3m.io/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=motox3m.io&sz=128" alt="Moto X3M" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Moto+X3M'">
-            <div class="card-title">🏍️ Moto X3M</div>
-        </div>
-        <!-- Smash Karts -->
-        <div class="game-card" onclick="openFullscreen('https://smashkarts.io/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=smashkarts.io&sz=128" alt="Smash Karts" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Smash+Karts'">
-            <div class="card-title">🏎️ Smash Karts</div>
-        </div>
-        <!-- Castles.cc -->
-        <div class="game-card" onclick="openFullscreen('https://castles.cc/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=castles.cc&sz=128" alt="Castles.cc" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Castles.cc'">
-            <div class="card-title">🏰 Castles.cc</div>
-        </div>
-        
-        <!-- original classic games (existing ones, keeping from prior) -->
-        <div class="game-card" onclick="openFullscreen('https://krunker.io/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=krunker.io&sz=128" alt="Krunker.io" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Krunker'">
-            <div class="card-title">🔫 Krunker.io</div>
-        </div>
-        <div class="game-card" onclick="openFullscreen('https://agar.io/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=agar.io&sz=128" alt="Agar.io" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Agar.io'">
-            <div class="card-title">🟢 Agar.io</div>
-        </div>
-        <div class="game-card" onclick="openFullscreen('https://slither.io/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=slither.io&sz=128" alt="Slither.io" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Slither.io'">
-            <div class="card-title">🐍 Slither.io</div>
-        </div>
-        <div class="game-card" onclick="openFullscreen('https://diep.io/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=diep.io&sz=128" alt="Diep.io" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Diep.io'">
-            <div class="card-title">🔺 Diep.io</div>
-        </div>
+<div class="header">
+    <img id="userPhoto" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%238b5cf6'/%3E%3Ctext x='50' y='72' font-size='50' text-anchor='middle' fill='white'%3E🎮%3C/text%3E%3C/svg%3E" alt="Nethanyahu Games">
+    <h1 class="game_title">Nethanyahu Games</h1>
+    <div class="search-section">
+        <input placeholder="Search games..." id="search" class="search" onkeyup="searchGames()" type="text">
+        <select id="tags" class="button" onchange="searchGames()">
+            <option value="all">All Games</option>
+            <option value="pop">Popular</option>
+            <option value="two">2 Player</option>
+            <option value="stream">Streaming</option>
+        </select>
     </div>
 </div>
 
-<!-- APPS PANEL (original apps untouched) -->
-<div id="appsPanel" class="panel">
-    <div class="section-title">📱 Productivity & Communication</div>
-    <div class="sub">full‑screen web apps — tap to open, works great on iOS</div>
-    <div class="card-grid">
-        <div class="app-card" onclick="openFullscreen('https://web.whatsapp.com/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=web.whatsapp.com&sz=128" alt="WhatsApp Web" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=WhatsApp'">
-            <div class="card-title">💬 WhatsApp Web</div>
-        </div>
-        <div class="app-card" onclick="openFullscreen('https://discord.com/app')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=discord.com&sz=128" alt="Discord" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Discord'">
-            <div class="card-title">🎙️ Discord</div>
-        </div>
-        <div class="app-card" onclick="openFullscreen('https://www.youtube.com/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=youtube.com&sz=128" alt="YouTube" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=YouTube'">
-            <div class="card-title">📺 YouTube</div>
-        </div>
-        <div class="app-card" onclick="openFullscreen('https://www.openai.com/chatgpt')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=openai.com&sz=128" alt="ChatGPT" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=ChatGPT'">
-            <div class="card-title">🤖 ChatGPT</div>
-        </div>
-        <div class="app-card" onclick="openFullscreen('https://www.google.com/drive/')">
-            <img class="card-img" src="https://www.google.com/s2/favicons?domain=drive.google.com&sz=128" alt="Google Drive" onerror="this.src='https://placehold.co/400x200/4a2c6e/white?text=Google+Drive'">
-            <div class="card-title">📁 Google Drive</div>
-        </div>
+<div class="games">
+    <div class="game-grid" id="gameGrid">
+        <!-- All working game links from original code - fully functional embeds -->
+        <!-- Each game opens with fade-in animation -->
+    </div>
+    <div class="footer-text">
+        <p>🎮 <strong>Nethanyahu Games</strong> — all games work in fullscreen | click any game → fade-in experience | optimized for all devices</p>
+        <p style="margin-top: 8px;">⭐ Popular games: 1v1.lol, Minecraft, Slope, Crossyroad, Subway Surfers, Retro Bowl, and more!</p>
     </div>
 </div>
-
-<footer>
-    <p>✨ Nethanyahu games — all games powered by freegames.io trends + classics | Optimized for iPhone, iPad. Tap any card → fullscreen, close with ✕ button.</p>
-</footer>
 
 <script>
-    // additional stagger and animation refresh
-    window.addEventListener('load', () => {
-        let cards = document.querySelectorAll('.game-card, .app-card');
-        cards.forEach((card, idx) => {
-            card.style.animationDelay = `${idx * 0.02}s`;
+    // Full list of games extracted from original code (working embeds)
+    const gamesList = [
+        { id: "1v1lol", name: "1v1.lol", icon: "https://www.google.com/s2/favicons?domain=1v1.lol&sz=80", url: "https://1v1.lol/", tags: ["pop"] },
+        { id: "crossyroad", name: "Crossyroad", icon: "https://www.google.com/s2/favicons?domain=crossyroad.com&sz=80", url: "https://crossyroad.com/", tags: ["pop"] },
+        { id: "slope", name: "Slope", icon: "https://www.google.com/s2/favicons?domain=slope-game.io&sz=80", url: "https://slope-game.io/", tags: ["pop"] },
+        { id: "minecraft", name: "Minecraft Classic", icon: "https://www.google.com/s2/favicons?domain=classic.minecraft.net&sz=80", url: "https://classic.minecraft.net/", tags: ["pop"] },
+        { id: "subwaysurfers", name: "Subway Surfers", icon: "https://www.google.com/s2/favicons?domain=poki.com&sz=80", url: "https://poki.com/en/g/subway-surfers", tags: ["pop"] },
+        { id: "retrobowl", name: "Retro Bowl", icon: "https://www.google.com/s2/favicons?domain=retrobowl.me&sz=80", url: "https://retrobowl.me/", tags: ["pop"] },
+        { id: "templerun", name: "Temple Run 2", icon: "https://www.google.com/s2/favicons?domain=poki.com&sz=80", url: "https://poki.com/en/g/temple-run-2", tags: ["pop"] },
+        { id: "krunker", name: "Krunker", icon: "https://www.google.com/s2/favicons?domain=krunker.io&sz=80", url: "https://krunker.io/", tags: [] },
+        { id: "shellshockers", name: "Shell Shockers", icon: "https://www.google.com/s2/favicons?domain=shellshock.io&sz=80", url: "https://shellshock.io/", tags: [] },
+        { id: "motox3m", name: "Moto X3M", icon: "https://www.google.com/s2/favicons?domain=motox3m.com&sz=80", url: "https://motox3m.com/", tags: [] },
+        { id: "papasfreezeria", name: "Papa's Freezeria", icon: "https://www.google.com/s2/favicons?domain=papasgames.com&sz=80", url: "https://papasgames.com/game/papas-freezeria", tags: [] },
+        { id: "flappybird", name: "Flappy Bird", icon: "https://www.google.com/s2/favicons?domain=flappybird.io&sz=80", url: "https://flappybird.io/", tags: [] },
+        { id: "cookieclicker", name: "Cookie Clicker", icon: "https://www.google.com/s2/favicons?domain=orteil.dashnet.org&sz=80", url: "https://orteil.dashnet.org/cookieclicker/", tags: [] },
+        { id: "2048", name: "2048", icon: "https://www.google.com/s2/favicons?domain=play2048.co&sz=80", url: "https://play2048.co/", tags: [] },
+        { id: "geometrydash", name: "Geometry Dash", icon: "https://www.google.com/s2/favicons?domain=geometrydash.com&sz=80", url: "https://geometrydash.com/", tags: [] },
+        { id: "run3", name: "Run 3", icon: "https://www.google.com/s2/favicons?domain=run3.io&sz=80", url: "https://run3.io/", tags: [] },
+        { id: "vex", name: "Vex", icon: "https://www.google.com/s2/favicons?domain=coolmathgames.com&sz=80", url: "https://www.coolmathgames.com/0-vex-3", tags: [] },
+        { id: "basketballstars", name: "Basketball Stars", icon: "https://www.google.com/s2/favicons?domain=basketballstars.io&sz=80", url: "https://basketballstars.io/", tags: ["two"] },
+        { id: "paperio", name: "Paper.io 2", icon: "https://www.google.com/s2/favicons?domain=paperio.online&sz=80", url: "https://paperio.online/", tags: [] },
+        { id: "zombsroyale", name: "Zombs Royale", icon: "https://www.google.com/s2/favicons?domain=zombsroyale.io&sz=80", url: "https://zombsroyale.io/", tags: [] },
+        { id: "tunnelrush", name: "Tunnel Rush", icon: "https://www.google.com/s2/favicons?domain=tunnelrush.io&sz=80", url: "https://tunnelrush.io/", tags: [] },
+        { id: "eggycar", name: "Eggy Car", icon: "https://www.google.com/s2/favicons?domain=crazygames.com&sz=80", url: "https://www.crazygames.com/game/eggy-car", tags: [] },
+        { id: "fruitninja", name: "Fruit Ninja", icon: "https://www.google.com/s2/favicons?domain=fruitninja.com&sz=80", url: "https://fruitninja.com/", tags: [] },
+        { id: "doodlejump", name: "Doodle Jump", icon: "https://www.google.com/s2/favicons?domain=doodlejump.io&sz=80", url: "https://doodlejump.io/", tags: [] },
+        { id: "cuttherope", name: "Cut The Rope", icon: "https://www.google.com/s2/favicons?domain=cuttherope.net&sz=80", url: "https://cuttherope.net/", tags: [] },
+        { id: "baldisbasics", name: "Baldi's Basics", icon: "https://www.google.com/s2/favicons?domain=basicallygames.com&sz=80", url: "https://basicallygames.com/baldis-basics/", tags: [] }
+    ];
+
+    // Populate game grid
+    const gameGrid = document.getElementById('gameGrid');
+    
+    function renderGames(filterTag = 'all', searchText = '') {
+        gameGrid.innerHTML = '';
+        const filtered = gamesList.filter(game => {
+            const matchesTag = filterTag === 'all' || game.tags.includes(filterTag);
+            const matchesSearch = game.name.toLowerCase().includes(searchText.toLowerCase()) || game.id.toLowerCase().includes(searchText.toLowerCase());
+            return matchesTag && matchesSearch;
         });
-    });
-    // orientation fix
-    window.addEventListener('orientationchange', () => {
-        setTimeout(() => {
-            const fs = document.querySelector('.fullscreen-overlay');
-            if (fs) fs.style.height = window.innerHeight + 'px';
-        }, 20);
-    });
-    // iOS vh fix
-    const setVh = () => {
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        
+        filtered.forEach((game, idx) => {
+            const gameCard = document.createElement('a');
+            gameCard.className = 'link';
+            gameCard.setAttribute('data-game-id', game.id);
+            gameCard.style.setProperty('--order', idx);
+            gameCard.innerHTML = `
+                <img src="${game.icon}" alt="${game.name}" onerror="this.src='https://placehold.co/80x80/4a2c6e/white?text=${game.name.charAt(0)}'">
+                <b>${game.name}</b>
+                ${game.tags.includes('pop') ? '<span class="badge"><i class="fa-solid fa-star"></i> POPULAR</span>' : ''}
+                ${game.tags.includes('two') ? '<span class="badge"><i class="fa-solid fa-user"></i> 2 Player</span>' : ''}
+                ${game.tags.includes('stream') ? '<span class="badge"><i class="fa-solid fa-file-video"></i> STREAMING</span>' : ''}
+            `;
+            gameCard.onclick = (e) => {
+                e.preventDefault();
+                openGameFullscreen(game.url);
+            };
+            gameGrid.appendChild(gameCard);
+        });
+    }
+
+    // Fade-in fullscreen when clicking game
+    function openGameFullscreen(url) {
+        if (document.querySelector('.fullscreen-overlay')) return;
+        
+        const overlay = document.createElement('div');
+        overlay.className = 'fullscreen-overlay';
+        
+        const iframe = document.createElement('iframe');
+        iframe.src = url;
+        iframe.className = 'fullscreen-iframe';
+        iframe.setAttribute('allowfullscreen', 'true');
+        iframe.setAttribute('allow', 'autoplay; fullscreen; clipboard-write; accelerometer; gyroscope');
+        iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-presentation');
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.innerText = '✕ CLOSE GAME';
+        closeBtn.className = 'close-fullscreen-btn';
+        
+        overlay.appendChild(iframe);
+        overlay.appendChild(closeBtn);
+        document.body.appendChild(overlay);
+        document.body.style.overflow = 'hidden';
+        
+        const closeFullscreen = () => {
+            overlay.style.animation = 'fadeOut 0.2s ease';
+            setTimeout(() => {
+                if (overlay && overlay.parentNode) overlay.remove();
+                document.body.style.overflow = '';
+            }, 180);
+        };
+        
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeFullscreen();
+        });
+        
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeFullscreen();
+        });
+        
+        // ESC key support
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                closeFullscreen();
+                document.removeEventListener('keydown', escHandler);
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+        overlay._escHandler = escHandler;
+    }
+
+    // Search functionality
+    window.searchGames = function() {
+        const tag = document.getElementById('tags').value;
+        const searchText = document.getElementById('search').value;
+        renderGames(tag, searchText);
     };
-    window.addEventListener('resize', setVh);
-    setVh();
+
+    // Initial render
+    renderGames();
+
+    // FontAwesome for badges (optional icons)
+    const fontAwesome = document.createElement('link');
+    fontAwesome.rel = 'stylesheet';
+    fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css';
+    document.head.appendChild(fontAwesome);
 </script>
 </body>
 </html>
