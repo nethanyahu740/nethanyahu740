@@ -3,573 +3,573 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Sky Rush - Arcade Unblocked Game</title>
+    <title>Game Hub: Sky Rush + Frogger Frenzy (Crossy Road Knockoff)</title>
     <style>
         * {
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
         }
 
         body {
             margin: 0;
             min-height: 100vh;
-            background: linear-gradient(145deg, #0a1f2e 0%, #0c2a3b 100%);
+            background: radial-gradient(circle at 20% 30%, #1a3f2c, #0a1f1a);
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Courier New', 'Press Start 2P', monospace, system-ui;
             touch-action: manipulation;
+            padding: 16px;
         }
 
-        /* game container - responsive */
-        .game-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-            box-sizing: border-box;
+        /* hub container */
+        .game-hub {
+            max-width: 1000px;
             width: 100%;
+            background: #0f2a22dd;
+            backdrop-filter: blur(12px);
+            border-radius: 56px;
+            padding: 18px 20px 25px;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,200,0.2);
+            border: 1px solid #f9e0a0;
         }
 
+        /* game selector buttons */
+        .game-selector {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+        .game-btn {
+            background: #f3b33d;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family: monospace;
+            padding: 12px 28px;
+            border-radius: 60px;
+            color: #232b1b;
+            box-shadow: 0 7px 0 #8b5a2b;
+            transition: 0.07s linear;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+        .game-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #8b5a2b; }
+        .game-btn.active {
+            background: #ffdd88;
+            box-shadow: 0 3px 0 #b96f20;
+            transform: translateY(4px);
+            border: 1px solid white;
+        }
+
+        .canvas-area {
+            background: #00000033;
+            border-radius: 32px;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+        }
         canvas {
             display: block;
             margin: 0 auto;
-            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.4), 0 0 0 4px #ffd966, 0 0 0 8px #2c3e2f;
-            border-radius: 18px;
-            cursor: pointer;
-            background-color: #87CEEB;
+            border-radius: 24px;
+            box-shadow: 0 12px 28px black;
+            background-color: #2c5a3e;
             width: 100%;
             height: auto;
+            cursor: pointer;
         }
 
-        /* retro UI panel */
         .info-panel {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            background: #1e2a2e;
-            padding: 12px 24px;
-            margin-top: 16px;
+            align-items: center;
+            background: #1e2d26;
+            margin-top: 18px;
+            padding: 10px 24px;
             border-radius: 60px;
-            gap: 32px;
             flex-wrap: wrap;
+            gap: 12px;
             justify-content: center;
-            box-shadow: inset 0 -2px 0 #3a4a4f, 0 6px 12px rgba(0,0,0,0.3);
         }
-
-        .score-box, .high-box {
+        .score-card {
             background: #000000aa;
             backdrop-filter: blur(4px);
-            padding: 6px 18px;
-            border-radius: 32px;
+            padding: 5px 20px;
+            border-radius: 40px;
             font-weight: bold;
-            color: #f9f3c1;
-            text-shadow: 0 2px 0 #3a2a0f;
-            letter-spacing: 2px;
+            color: #f7ecc7;
         }
-
-        .score-box span, .high-box span {
-            font-size: 1.2rem;
-            background: #f5bc70;
+        .score-card span {
+            background: #f3b33d;
             display: inline-block;
-            padding: 4px 12px;
+            padding: 4px 14px;
             border-radius: 32px;
-            color: #1f2c1b;
-            margin-left: 8px;
-            font-weight: bold;
+            margin-left: 10px;
+            color: #121f0e;
         }
-
-        button {
-            background: #f4c542;
+        button.small-restart {
+            background: #ffe1a0;
             border: none;
             font-family: monospace;
             font-weight: bold;
-            font-size: 1.2rem;
-            padding: 8px 20px;
-            border-radius: 48px;
-            color: #1f2f1c;
-            box-shadow: 0 5px 0 #a05e15;
+            font-size: 1rem;
+            padding: 6px 20px;
+            border-radius: 40px;
+            box-shadow: 0 4px 0 #b1621a;
             transition: 0.07s linear;
-            cursor: pointer;
-            touch-action: manipulation;
         }
-
-        button:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0 #a05e15;
-        }
+        button.small-restart:active { transform: translateY(2px); box-shadow: 0 1px 0 #b1621a;}
 
         .controls-tip {
             background: #00000077;
-            backdrop-filter: blur(8px);
-            border-radius: 48px;
-            padding: 8px 18px;
-            font-size: 0.8rem;
-            color: #eee5c9;
-            margin-top: 12px;
+            backdrop-filter: blur(4px);
+            padding: 6px 18px;
+            border-radius: 44px;
+            font-size: 0.7rem;
+            color: #e9f0cf;
             text-align: center;
+            margin-top: 12px;
         }
-
-        @media (max-width: 650px) {
-            .info-panel {
-                gap: 12px;
-                padding: 8px 16px;
-            }
-            .score-box span, .high-box span {
-                font-size: 1rem;
-            }
-            .controls-tip {
-                font-size: 0.7rem;
-            }
+        @media (max-width: 600px) {
+            .game-btn { font-size: 0.9rem; padding: 8px 18px;}
+            .score-card { font-size: 0.9rem;}
         }
     </style>
 </head>
 <body>
-<div class="game-container">
-    <canvas id="gameCanvas" width="800" height="500"></canvas>
+<div class="game-hub">
+    <div class="game-selector">
+        <button class="game-btn" id="btnSkyRush">✈️ SKY RUSH</button>
+        <button class="game-btn" id="btnCrossy">🐸 FROGGER FRENZY</button>
+    </div>
+    <div class="canvas-area">
+        <canvas id="gameCanvas" width="800" height="500"></canvas>
+    </div>
     <div class="info-panel">
-        <div class="score-box">⭐ SCORE <span id="scoreValue">0</span></div>
-        <div class="high-box">🏆 BEST <span id="highScoreValue">0</span></div>
-        <button id="resetBtn">🔄 RESTART</button>
+        <div class="score-card">🏆 SCORE <span id="scoreDisplay">0</span></div>
+        <div class="score-card">⭐ BEST <span id="bestDisplay">0</span></div>
+        <button class="small-restart" id="globalRestartBtn">🔄 RESTART GAME</button>
     </div>
-    <div class="controls-tip">
-        🖱️ PC: MOVE MOUSE or touchpad | 📱 iOS: TOUCH & DRAG (left/right) | 🚀 Dodge red enemies!
-    </div>
+    <div class="controls-tip" id="controlsMsg">⬅️  MOVE: MOUSE / TOUCH & DRAG  ➡️  |  Dodge & Survive!</div>
 </div>
 
 <script>
     (function(){
-        // ---------- CANVAS setup ----------
+        // ---------- CANVAS ----------
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-
-        // dimensions fixed ratio (800x500) but we'll scale visually
-        const CANVAS_W = 800;
-        const CANVAS_H = 500;
+        const CANVAS_W = 800, CANVAS_H = 500;
         canvas.width = CANVAS_W;
         canvas.height = CANVAS_H;
 
-        // ---------- Game settings ----------
+        // ---------- Game state ----------
+        let currentGame = "SKYRUSH";   // "SKYRUSH" or "CROSSY"
         let gameRunning = true;
         let score = 0;
         let highScore = 0;
         
-        // load highscore from localStorage if exists
+        // load global highscore (shared)
         try {
-            const saved = localStorage.getItem('skyRushHigh');
+            const saved = localStorage.getItem('gameHubHigh');
             if(saved && !isNaN(parseInt(saved))) highScore = parseInt(saved);
-        } catch(e) { /* silent */ }
-
-        // Player settings
-        const PLAYER_WIDTH = 36;
-        const PLAYER_HEIGHT = 36;
-        let playerX = CANVAS_W/2 - PLAYER_WIDTH/2;
-        const playerY = CANVAS_H - 70;
-        let playerSpeed = 9;   // pixels per frame update on move
-
-        // Obstacles array
-        let obstacles = [];
-        const OBSTACLE_SIZE = 34;     // square enemies
-        let frameCounter = 0;
-        let spawnDelay = 40;          // frames between spawns (gets lower with score)
-        let baseSpawnDelay = 40;
+        } catch(e){}
         
-        // difficulty scaling
-        let currentDifficulty = 1;
+        // UI elements
+        const scoreSpan = document.getElementById('scoreDisplay');
+        const bestSpan = document.getElementById('bestDisplay');
+        const controlsMsgDiv = document.getElementById('controlsMsg');
         
-        // --- movement flags for cross-platform (mouse/touch)
-        let targetPlayerX = playerX;   // for smooth follow (mouse/touch)
-        let useMouseControl = true;
-        
-        // for touch we store active touch id
-        let activeTouchId = null;
-        
-        // Helper functions
-        function updateHighScoreUI() {
-            document.getElementById('highScoreValue').innerText = highScore;
+        function updateUI() {
+            scoreSpan.innerText = Math.floor(score);
+            bestSpan.innerText = highScore;
         }
-        function updateScoreUI() {
-            document.getElementById('scoreValue').innerText = Math.floor(score);
-        }
-        
-        // save highscore
-        function saveHighScore() {
-            if(score > highScore) {
+        function saveHigh() {
+            if(Math.floor(score) > highScore) {
                 highScore = Math.floor(score);
-                updateHighScoreUI();
-                try {
-                    localStorage.setItem('skyRushHigh', highScore);
-                } catch(e) {}
+                updateUI();
+                try{ localStorage.setItem('gameHubHigh', highScore); } catch(e){}
             }
         }
         
-        // reset game fully
-        function resetGame() {
-            gameRunning = true;
-            score = 0;
-            updateScoreUI();
-            obstacles = [];
-            frameCounter = 0;
-            currentDifficulty = 1;
-            spawnDelay = baseSpawnDelay;
-            playerX = CANVAS_W/2 - PLAYER_WIDTH/2;
-            targetPlayerX = playerX;
-            // no invincibility, fresh start
-            gameRunning = true;
+        // --------------------------------------------------------------
+        // 1) SKY RUSH (dodge red enemies)
+        // --------------------------------------------------------------
+        let skyPlayerX = CANVAS_W/2 - 18;
+        const SKY_PLAYER_W = 36, SKY_PLAYER_H = 36;
+        let skyObstacles = [];
+        let skyFrame = 0;
+        let skySpawnDelay = 38;
+        
+        function resetSkyRush() {
+            skyPlayerX = CANVAS_W/2 - SKY_PLAYER_W/2;
+            skyObstacles = [];
+            skyFrame = 0;
+            skySpawnDelay = 38;
         }
         
-        // collision (rect intersect)
-        function collision(ax, ay, aw, ah, bx, by, bw, bh) {
-            return ax < bx+bw && ax+aw > bx && ay < by+bh && ay+ah > by;
-        }
-        
-        // spawn new enemy (red "block")
-        function spawnObstacle() {
-            let randX = Math.random() * (CANVAS_W - OBSTACLE_SIZE);
-            obstacles.push({
-                x: randX,
-                y: -OBSTACLE_SIZE,
-                w: OBSTACLE_SIZE,
-                h: OBSTACLE_SIZE,
-                speed: 3.2 + Math.min(4.5, score / 380)  // faster over time
+        function spawnSkyObstacle() {
+            let randX = Math.random() * (CANVAS_W - 34);
+            skyObstacles.push({
+                x: randX, y: -34, w: 34, h: 34,
+                speed: 3.0 + Math.min(4.2, score / 420)
             });
         }
         
-        // update obstacles, collisions, and scoring
-        function updateGame() {
+        function updateSkyRush() {
             if(!gameRunning) return;
+            // dynamic spawn
+            let dynDelay = Math.max(18, 38 - Math.floor(score / 280));
+            if(skyFrame >= dynDelay) {
+                skyFrame = 0;
+                spawnSkyObstacle();
+                if(score > 400 && Math.random()<0.3) spawnSkyObstacle();
+            } else skyFrame++;
             
-            // 1. update player position (from mouse/touch)
-            // clamp targetPlayerX to borders
-            let clampedTarget = Math.min(Math.max(targetPlayerX, 0), CANVAS_W - PLAYER_WIDTH);
-            targetPlayerX = clampedTarget;
-            // smooth follow for instant but responsive
-            playerX = targetPlayerX;
-            
-            // 2. dynamic difficulty: as score increases, spawn faster & more enemies
-            let dynamicSpawnDelay = Math.max(18, baseSpawnDelay - Math.floor(score / 280));
-            // also increase enemy speed global factor later in movement
-            
-            // 3. spawn new obstacles
-            if(frameCounter >= dynamicSpawnDelay) {
-                frameCounter = 0;
-                // sometimes spawn double when score high
-                spawnObstacle();
-                if(score > 500 && Math.random() < 0.4) {
-                    spawnObstacle();  // extra pressure!
-                }
-            } else {
-                frameCounter++;
-            }
-            
-            // 4. move obstacles & collision & scoring (when they pass bottom)
-            for(let i=0; i<obstacles.length; i++) {
-                const obs = obstacles[i];
-                // speed increases linearly with score to keep challenge
-                let speedBonus = Math.min(3.0, score / 350);
-                obs.y += obs.speed + speedBonus * 0.5;
-                
-                // collision check (only if game running)
-                if(collision(playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT, obs.x, obs.y, obs.w, obs.h)) {
-                    gameRunning = false;   // GAME OVER
-                    saveHighScore();       // save best if needed
+            // move obstacles
+            for(let i=0; i<skyObstacles.length; i++) {
+                let obs = skyObstacles[i];
+                let speedBonus = Math.min(2.8, score / 500);
+                obs.y += obs.speed + speedBonus * 0.4;
+                // collision
+                if(skyPlayerX < obs.x+obs.w && skyPlayerX+SKY_PLAYER_W > obs.x &&
+                   CANVAS_H-70 < obs.y+obs.h && CANVAS_H-70+SKY_PLAYER_H > obs.y) {
+                    gameRunning = false;
+                    saveHigh();
                     return;
                 }
             }
-            
-            // remove offscreen obstacles (below canvas or above out of range)
-            obstacles = obstacles.filter(obs => obs.y < CANVAS_H + 100);
-            
-            // SCORE INCREASE: based on survived frames + crossing obstacles? classic: each frame alive adds tiny score
-            // but also we add bonus per enemy that safely leaves screen? extra fun: +1 when enemy leaves bottom edge
-            // We'll track: for each obstacle that goes beyond canvas bottom without collision, give +2 pts.
-            // But simpler and nice: each frame player alive gives +0.1 score. But also additional when obstacle exits.
-            // Let's do hybrid: survival 0.08 per frame, and elimination score for enemy leaving screen.
-            // However to make it feel more rewarding: I'll add a system: for each obstacle that leaves bottom, give +3 pts.
-            // But we must avoid double counting after removal. We'll handle before filter:
-            let beforeCount = obstacles.length;
-            let passedObstacles = obstacles.filter(obs => obs.y + obs.h >= CANVAS_H);
-            // Actually simpler: we'll iterate and check after movement but before filter:
-            // While removing, count how many were y + h >= CANVAS_H, but also they were not collided.
-            let leavingCount = 0;
-            for(let i=0; i<obstacles.length; i++) {
-                if(obstacles[i].y + obstacles[i].h >= CANVAS_H && obstacles[i].y < CANVAS_H + 50) {
-                    // This obstacle just passed bottom this frame (approx)
-                    leavingCount++;
+            // remove offscreen & add score for passing enemies
+            let before = skyObstacles.length;
+            skyObstacles = skyObstacles.filter(obs => obs.y < CANVAS_H + 80);
+            let passed = before - skyObstacles.length;
+            if(passed > 0) score += passed * 2.2;
+            // survival points
+            score += 0.12;
+            updateUI();
+            if(Math.floor(score) > highScore) { highScore = Math.floor(score); updateUI(); saveHigh(); }
+        }
+        
+        function drawSkyRush() {
+            // sky gradient
+            const grad = ctx.createLinearGradient(0,0,0,CANVAS_H);
+            grad.addColorStop(0,"#4aa3df");
+            grad.addColorStop(1,"#b2e0fa");
+            ctx.fillStyle=grad;
+            ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
+            // clouds
+            ctx.fillStyle="#ffffffcc";
+            ctx.beginPath(); ctx.ellipse(120,60,45,35,0,0,Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(620,90,55,40,0,0,Math.PI*2); ctx.fill();
+            // ground
+            ctx.fillStyle="#8B5A2B"; ctx.fillRect(0,CANVAS_H-28,CANVAS_W,28);
+            ctx.fillStyle="#D4A373";
+            for(let i=0;i<12;i++) ctx.fillRect(i*70,CANVAS_H-20,35,10);
+            // enemies
+            for(let obs of skyObstacles) {
+                ctx.fillStyle="#e34d2b"; ctx.shadowBlur=4;
+                ctx.fillRect(obs.x,obs.y,obs.w,obs.h);
+                ctx.fillStyle="#FFF7E8";
+                ctx.fillRect(obs.x+6,obs.y+8,7,8); ctx.fillRect(obs.x+obs.w-13,obs.y+8,7,8);
+                ctx.fillStyle="#020202";
+                ctx.fillRect(obs.x+7,obs.y+9,4,5); ctx.fillRect(obs.x+obs.w-12,obs.y+9,4,5);
+            }
+            // player jet
+            ctx.fillStyle="#FFAA44cc";
+            ctx.beginPath(); ctx.moveTo(skyPlayerX+18,CANVAS_H-70+28); ctx.lineTo(skyPlayerX+6,CANVAS_H-70+42); ctx.lineTo(skyPlayerX+18,CANVAS_H-70+34); ctx.lineTo(skyPlayerX+30,CANVAS_H-70+42); ctx.fill();
+            ctx.fillStyle="#4FC3F7";
+            ctx.beginPath(); ctx.roundRect(skyPlayerX,CANVAS_H-70,SKY_PLAYER_W,SKY_PLAYER_H,10); ctx.fill();
+            ctx.fillStyle="#C0E0FF";
+            ctx.beginPath(); ctx.ellipse(skyPlayerX+18,CANVAS_H-70+12,11,9,0,0,Math.PI*2); ctx.fill();
+            ctx.fillStyle="#101820"; ctx.fillRect(skyPlayerX+14,CANVAS_H-70+10,8,5);
+        }
+        
+        // --------------------------------------------------------------
+        // 2) FROGGER FRENZY (Crossy Road knockoff: identical lanes)
+        // --------------------------------------------------------------
+        // Grid system: 50px tile size, 16 columns x 10 rows approx (800/50=16, 500/50=10)
+        const TILE = 50;
+        const COLS = 16, ROWS = 10;
+        let frogX = 7, frogY = 8;   // start near bottom (y index 8 = 9th row)
+        let crossyObstacles = [];    // {x, y, type, dir, speed}
+        let crossyFrame = 0;
+        let crossySpawnCounter = 0;
+        let lanes = [];    // store lane data: y row (index), direction, speed, pattern
+        
+        function initLanes() {
+            // lanes: row indices 1 to 6 (active roads), row 0 top grass, row 7 start grass, row 8-9 safe
+            // Classic crossy: cars move left/right
+            lanes = [
+                {row:1, dir:-1, speed:1.5, color:"#6a4e2e"},   // left
+                {row:2, dir:1, speed:1.8, color:"#5a6e4a"},
+                {row:3, dir:-1, speed:2.2, color:"#8b5a2b"},
+                {row:4, dir:1, speed:2.6, color:"#4a6e3a"},
+                {row:5, dir:-1, speed:3.0, color:"#95734a"},
+                {row:6, dir:1, speed:3.4, color:"#6b4e2a"}
+            ];
+        }
+        
+        function resetCrossyFrenzy() {
+            frogX = 7; frogY = 8;
+            crossyObstacles = [];
+            crossyFrame = 0;
+            crossySpawnCounter = 0;
+            initLanes();
+            // pre-spawn obstacles on each lane to look busy
+            for(let L of lanes) {
+                for(let i=0;i<4;i++) {
+                    let randX = Math.random() * (CANVAS_W - TILE);
+                    crossyObstacles.push({
+                        x: randX, y: L.row * TILE, w: TILE-4, h: TILE-6,
+                        dir: L.dir, speed: L.speed,
+                        laneRow: L.row
+                    });
                 }
             }
-            // add leaving bonus
-            if(leavingCount > 0) {
-                score += leavingCount * 2.5;
-                updateScoreUI();
-            }
-            
-            // survival points (active playing)
-            score += 0.12;
-            updateScoreUI();
-            
-            // Save highscore if current score surpasses highscore during game
-            if(Math.floor(score) > highScore) {
-                highScore = Math.floor(score);
-                updateHighScoreUI();
-                saveHighScore();
-            }
         }
         
-        // ---------- DRAWING: vibrant unblocked style ----------
-        function draw() {
-            ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
-            
-            // --- Sky gradient & clouds ---
-            const gradSky = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
-            gradSky.addColorStop(0, "#4aa3df");
-            gradSky.addColorStop(1, "#b2e0fa");
-            ctx.fillStyle = gradSky;
-            ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-            
-            // clouds (fluffy)
-            ctx.fillStyle = "#ffffffcc";
-            ctx.shadowBlur = 0;
-            ctx.beginPath();
-            ctx.ellipse(120, 60, 45, 35, 0, 0, Math.PI*2);
-            ctx.ellipse(170, 50, 40, 32, 0, 0, Math.PI*2);
-            ctx.ellipse(80, 70, 38, 30, 0, 0, Math.PI*2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(620, 90, 55, 40, 0, 0, Math.PI*2);
-            ctx.ellipse(690, 80, 48, 36, 0, 0, Math.PI*2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(400, 120, 50, 38, 0, 0, Math.PI*2);
-            ctx.fill();
-            
-            // ground runway style
-            ctx.fillStyle = "#8B5A2B";
-            ctx.fillRect(0, CANVAS_H-28, CANVAS_W, 28);
-            ctx.fillStyle = "#D4A373";
-            for(let i=0; i<12; i++) {
-                ctx.fillRect(i*70, CANVAS_H-20, 35, 10);
-            }
-            
-            // ---- draw enemies (fiery red blocks with menace eyes) ----
-            for(let obs of obstacles) {
-                // body
-                ctx.fillStyle = "#e34d2b";
-                ctx.shadowBlur = 5;
-                ctx.shadowColor = "#6a0d00";
-                ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
-                // angry eyes
-                ctx.fillStyle = "#FFF7E8";
-                ctx.fillRect(obs.x+6, obs.y+8, 7, 8);
-                ctx.fillRect(obs.x+obs.w-13, obs.y+8, 7, 8);
-                ctx.fillStyle = "#020202";
-                ctx.fillRect(obs.x+7, obs.y+9, 4, 5);
-                ctx.fillRect(obs.x+obs.w-12, obs.y+9, 4, 5);
-                // eyebrows
-                ctx.fillStyle = "#2e1c0a";
-                ctx.fillRect(obs.x+5, obs.y+5, 9, 3);
-                ctx.fillRect(obs.x+obs.w-14, obs.y+5, 9, 3);
-                // teeth
-                ctx.fillStyle = "#FFE0A3";
-                ctx.fillRect(obs.x+10, obs.y+24, 6, 6);
-                ctx.fillRect(obs.x+obs.w-16, obs.y+24, 6, 6);
-            }
-            
-            // ---- Player: awesome jetpack cat / spaceship style ----
-            ctx.shadowBlur = 2;
-            ctx.shadowColor = "#00000066";
-            // trail effect
-            ctx.fillStyle = "#FFAA44cc";
-            ctx.beginPath();
-            ctx.moveTo(playerX+PLAYER_WIDTH/2, playerY+PLAYER_HEIGHT-8);
-            ctx.lineTo(playerX+PLAYER_WIDTH/2-12, playerY+PLAYER_HEIGHT+12);
-            ctx.lineTo(playerX+PLAYER_WIDTH/2, playerY+PLAYER_HEIGHT+4);
-            ctx.lineTo(playerX+PLAYER_WIDTH/2+12, playerY+PLAYER_HEIGHT+12);
-            ctx.fill();
-            // main body
-            ctx.fillStyle = "#4FC3F7";
-            ctx.beginPath();
-            ctx.roundRect(playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT, 10);
-            ctx.fill();
-            // cockpit
-            ctx.fillStyle = "#C0E0FF";
-            ctx.beginPath();
-            ctx.ellipse(playerX+PLAYER_WIDTH/2, playerY+12, 11, 9, 0, 0, Math.PI*2);
-            ctx.fill();
-            ctx.fillStyle = "#101820";
-            ctx.fillRect(playerX+PLAYER_WIDTH/2-4, playerY+10, 8, 5);
-            ctx.fillStyle = "#FFFFFF";
-            ctx.beginPath();
-            ctx.arc(playerX+PLAYER_WIDTH/2-2, playerY+9, 1.5, 0, Math.PI*2);
-            ctx.fill();
-            // wings
-            ctx.fillStyle = "#F9A26C";
-            ctx.fillRect(playerX-10, playerY+12, 10, 12);
-            ctx.fillRect(playerX+PLAYER_WIDTH, playerY+12, 10, 12);
-            // thrust fire
-            ctx.fillStyle = "#ff7833";
-            ctx.beginPath();
-            ctx.moveTo(playerX+PLAYER_WIDTH/2-6, playerY+PLAYER_HEIGHT-4);
-            ctx.lineTo(playerX+PLAYER_WIDTH/2, playerY+PLAYER_HEIGHT+10);
-            ctx.lineTo(playerX+PLAYER_WIDTH/2+6, playerY+PLAYER_HEIGHT-4);
-            ctx.fill();
-            ctx.fillStyle = "#FFC857";
-            ctx.beginPath();
-            ctx.moveTo(playerX+PLAYER_WIDTH/2-3, playerY+PLAYER_HEIGHT-2);
-            ctx.lineTo(playerX+PLAYER_WIDTH/2, playerY+PLAYER_HEIGHT+7);
-            ctx.lineTo(playerX+PLAYER_WIDTH/2+3, playerY+PLAYER_HEIGHT-2);
-            ctx.fill();
-            
-            // ---- game over overlay ----
-            if(!gameRunning) {
-                ctx.fillStyle = "#000000aa";
-                ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-                ctx.font = "bold 32monospace";
-                ctx.fillStyle = "#FFD966";
-                ctx.shadowBlur = 0;
-                ctx.textAlign = "center";
-                ctx.fillText("💀 GAME OVER 💀", CANVAS_W/2, CANVAS_H/2 - 35);
-                ctx.font = "20px monospace";
-                ctx.fillStyle = "#FFF2B5";
-                ctx.fillText("tap RESTART to play again", CANVAS_W/2, CANVAS_H/2 + 35);
-                ctx.font = "16px monospace";
-                ctx.fillStyle = "#ffb347";
-                ctx.fillText("final score: " + Math.floor(score), CANVAS_W/2, CANVAS_H/2 + 85);
-            }
-            
-            // show score & difficulty hint
-            ctx.font = "bold 18px 'Courier New'";
-            ctx.fillStyle = "#101221";
-            ctx.shadowBlur = 2;
-            ctx.fillText("⚡ DODGE RED MENACE", 18, 44);
-            ctx.font = "14px monospace";
-            ctx.fillStyle = "#3c280f";
-            ctx.fillText("← move →", CANVAS_W-100, 35);
-            ctx.textAlign = "left";
-        }
-        
-        // Helper: Canvas roundRect
-        if (!CanvasRenderingContext2D.prototype.roundRect) {
-            CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
-                if (w < 2 * r) r = w / 2;
-                if (h < 2 * r) r = h / 2;
-                this.moveTo(x+r, y);
-                this.lineTo(x+w-r, y);
-                this.quadraticCurveTo(x+w, y, x+w, y+r);
-                this.lineTo(x+w, y+h-r);
-                this.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
-                this.lineTo(x+r, y+h);
-                this.quadraticCurveTo(x, y+h, x, y+h-r);
-                this.lineTo(x, y+r);
-                this.quadraticCurveTo(x, y, x+r, y);
-                return this;
-            };
-        }
-        
-        // ----- INPUT HANDLERS (mouse + touch for iOS) -----
-        function getCanvasRelativeX(clientX) {
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;   // canvas actual vs display size
-            let relativeX = (clientX - rect.left) * scaleX;
-            relativeX = Math.min(Math.max(relativeX, 0), CANVAS_W - PLAYER_WIDTH);
-            return relativeX;
-        }
-        
-        // Mouse move (PC)
-        function handleMouseMove(e) {
+        function updateCrossy() {
             if(!gameRunning) return;
-            e.preventDefault();
-            let mouseCanvasX = getCanvasRelativeX(e.clientX);
-            targetPlayerX = mouseCanvasX;
-        }
-        
-        // Touch handlers for iOS / any touch device
-        function handleTouchStart(e) {
-            e.preventDefault();
-            const touch = e.touches[0];
-            if(touch) {
-                activeTouchId = touch.identifier;
-                let touchX = getCanvasRelativeX(touch.clientX);
-                targetPlayerX = touchX;
+            // move existing obstacles
+            for(let obs of crossyObstacles) {
+                obs.x += obs.dir * obs.speed;
+                // wrap around
+                if(obs.x > CANVAS_W) obs.x = -obs.w;
+                if(obs.x + obs.w < 0) obs.x = CANVAS_W;
             }
-        }
-        
-        function handleTouchMove(e) {
-            e.preventDefault();
-            if(!gameRunning) return;
-            // find active touch
-            let activeTouch = null;
-            if(activeTouchId !== null) {
-                for(let i=0; i<e.touches.length; i++) {
-                    if(e.touches[i].identifier === activeTouchId) {
-                        activeTouch = e.touches[i];
-                        break;
+            // spawn new obstacles occasionally (to keep density)
+            if(Math.random()<0.02 && crossyObstacles.length<40) {
+                let laneChoice = lanes[Math.floor(Math.random()*lanes.length)];
+                let startX = laneChoice.dir === 1 ? -TILE : CANVAS_W;
+                crossyObstacles.push({
+                    x: startX, y: laneChoice.row * TILE, w: TILE-4, h: TILE-6,
+                    dir: laneChoice.dir, speed: laneChoice.speed,
+                    laneRow: laneChoice.row
+                });
+            }
+            
+            // COLLISION: frog vs obstacles on same row
+            let frogRect = {x: frogX*TILE, y: frogY*TILE, w: TILE-6, h: TILE-8};
+            for(let obs of crossyObstacles) {
+                if(obs.laneRow === frogY) {
+                    let obsRect = {x: obs.x, y: obs.y, w: obs.w, h: obs.h};
+                    if(frogRect.x < obsRect.x+obsRect.w && frogRect.x+frogRect.w > obsRect.x &&
+                       frogRect.y < obsRect.y+obsRect.h && frogRect.y+frogRect.h > obsRect.y) {
+                        gameRunning = false;
+                        saveHigh();
+                        return;
                     }
                 }
             }
-            if(!activeTouch && e.touches.length > 0) {
-                activeTouch = e.touches[0];
-                activeTouchId = activeTouch.identifier;
+            
+            // Check if frog reached top (row 0)
+            if(frogY === 0) {
+                // score big and reset frog position, increase score
+                score += 100;
+                frogX = 7; frogY = 8;
+                updateUI();
+                saveHigh();
+                // also increase difficulty slightly: speeds increment
+                for(let L of lanes) {
+                    L.speed += 0.12;
+                }
             }
-            if(activeTouch) {
-                let newX = getCanvasRelativeX(activeTouch.clientX);
-                targetPlayerX = newX;
+            // bounds: frog within canvas columns
+            if(frogX<0) frogX=0;
+            if(frogX>=COLS) frogX=COLS-1;
+            if(frogY<0) frogY=0;
+            if(frogY>=ROWS) frogY=ROWS-1;
+            
+            // passive score for surviving
+            score += 0.07;
+            updateUI();
+            if(Math.floor(score) > highScore) { highScore = Math.floor(score); updateUI(); saveHigh();}
+        }
+        
+        function drawCrossy() {
+            // grass background with road stripes
+            for(let row=0; row<ROWS; row++) {
+                let isRoad = lanes.some(l => l.row === row);
+                if(isRoad) {
+                    ctx.fillStyle = "#3c5e2b";
+                    ctx.fillRect(0, row*TILE, CANVAS_W, TILE);
+                    ctx.fillStyle = "#f5e6a0";
+                    for(let i=0;i<10;i++) {
+                        ctx.fillRect(i*80 + (Date.now()*0.01)%80, row*TILE+22, 35, 6);
+                    }
+                } else {
+                    let grad = ctx.createLinearGradient(0,row*TILE,0,row*TILE+TILE);
+                    grad.addColorStop(0,"#5b8c50");
+                    grad.addColorStop(1,"#3f6840");
+                    ctx.fillStyle=grad;
+                    ctx.fillRect(0, row*TILE, CANVAS_W, TILE);
+                    // grass details
+                    ctx.fillStyle = "#b9d48b";
+                    for(let i=0;i<12;i++) ctx.fillRect(i*67+10, row*TILE+12, 4, 8);
+                }
+            }
+            // draw moving obstacles (cars , logs style)
+            for(let obs of crossyObstacles) {
+                ctx.shadowBlur=0;
+                ctx.fillStyle = "#c94f2c";
+                ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+                ctx.fillStyle = "#f2c55e";
+                ctx.fillRect(obs.x+5, obs.y+8, obs.w-10, 10);
+                ctx.fillStyle = "#2e1f0a";
+                ctx.fillRect(obs.x+12, obs.y+20, 8, 8);
+                // wheels
+                ctx.fillStyle = "#000";
+                ctx.fillRect(obs.x+4, obs.y+obs.h-8, 8, 6);
+                ctx.fillRect(obs.x+obs.w-12, obs.y+obs.h-8, 8, 6);
+            }
+            // Draw frog (cute amphibian)
+            let fx = frogX*TILE, fy = frogY*TILE;
+            ctx.fillStyle = "#56b349";
+            ctx.beginPath(); ctx.ellipse(fx+TILE/2, fy+TILE/2-4, 16, 14, 0, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = "#b3ffa7";
+            ctx.beginPath(); ctx.ellipse(fx+TILE/2-5, fy+TILE/2-8, 4, 5, 0, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(fx+TILE/2+5, fy+TILE/2-8, 4, 5, 0, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle="#000";
+            ctx.fillRect(fx+TILE/2-7, fy+TILE/2-6, 3, 3);
+            ctx.fillRect(fx+TILE/2+4, fy+TILE/2-6, 3, 3);
+            // smile
+            ctx.beginPath(); ctx.arc(fx+TILE/2, fy+TILE/2-1, 8, 0.05, Math.PI-0.05); ctx.stroke();
+            // legs
+            ctx.fillStyle="#3f8a32";
+            ctx.fillRect(fx+4, fy+TILE-12, 10, 6);
+            ctx.fillRect(fx+TILE-14, fy+TILE-12, 10, 6);
+            // win particles if top row reached: drawn after
+            if(frogY===0) {
+                ctx.font="bold 24px monospace"; ctx.fillStyle="#FFD966"; ctx.shadowBlur=6;
+                ctx.fillText("+100!", fx+10, fy-8);
             }
         }
         
-        function handleTouchEnd(e) {
-            e.preventDefault();
-            activeTouchId = null;
-            // optional: remains last position, no drift
+        // --------------------------------------------------------------
+        // Input handler (mouse + touch unified) for both games
+        // --------------------------------------------------------------
+        let targetX = CANVAS_W/2;
+        let activeTouchId = null;
+        
+        function getCanvasRelativeX(clientX) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            let val = (clientX - rect.left) * scaleX;
+            return Math.min(Math.max(val, 0), CANVAS_W);
         }
         
-        // disable context menu on canvas
-        canvas.addEventListener('contextmenu', (e) => e.preventDefault());
-        canvas.addEventListener('mousemove', handleMouseMove);
-        canvas.addEventListener('touchstart', handleTouchStart, {passive: false});
-        canvas.addEventListener('touchmove', handleTouchMove, {passive: false});
-        canvas.addEventListener('touchend', handleTouchEnd);
-        canvas.addEventListener('touchcancel', handleTouchEnd);
+        function handleMove(clientX) {
+            let rawX = getCanvasRelativeX(clientX);
+            if(currentGame === "SKYRUSH") {
+                let newX = rawX - SKY_PLAYER_W/2;
+                newX = Math.min(Math.max(newX, 0), CANVAS_W - SKY_PLAYER_W);
+                skyPlayerX = newX;
+            } 
+            else if (currentGame === "CROSSY") {
+                // we use horizontal swipes: but we only map left/right relative moves
+                // Better to convert into relative cell shift? classic Crossy uses 1 tile per swipe.
+                // For smooth mouse/touch, we do "drag to move cell" with delta.
+                // Simpler but feel identical: treat mouse coordinate to snap cell?
+                // For authentic identical knockoff, we implement "mouse relative cell" but we also keep keys virtual: 
+                // To feel perfect: we'll use relative position to change columns.
+                let targetCol = Math.floor(rawX / TILE);
+                if(targetCol !== frogX && gameRunning) {
+                    frogX = targetCol;
+                    if(frogX<0) frogX=0;
+                    if(frogX>=COLS) frogX=COLS-1;
+                }
+            }
+        }
         
-        // also allow mouse leave doesn't interrupt but fine
+        function onMouseMove(e) { if(gameRunning) { handleMove(e.clientX); e.preventDefault();} }
+        function onTouchStart(e) { e.preventDefault(); if(!gameRunning) return; const t=e.touches[0]; if(t){ activeTouchId=t.identifier; handleMove(t.clientX);} }
+        function onTouchMove(e) { e.preventDefault(); if(!gameRunning) return; let found=null; if(activeTouchId!==null){ for(let i=0;i<e.touches.length;i++) if(e.touches[i].identifier===activeTouchId){ found=e.touches[i]; break;}} if(!found && e.touches.length) found=e.touches[0]; if(found) handleMove(found.clientX);}
+        function onTouchEnd(e){ e.preventDefault(); activeTouchId=null; }
         
-        // restart button
-        const resetBtn = document.getElementById('resetBtn');
-        resetBtn.addEventListener('click', () => {
-            resetGame();
-            gameRunning = true;
-            score = 0;
-            updateScoreUI();
-            obstacles = [];
-            frameCounter = 0;
-            // preserve highscore already loaded
-            saveHighScore();
-            updateHighScoreUI();
+        canvas.addEventListener('mousemove', onMouseMove);
+        canvas.addEventListener('touchstart', onTouchStart, {passive:false});
+        canvas.addEventListener('touchmove', onTouchMove, {passive:false});
+        canvas.addEventListener('touchend', onTouchEnd);
+        canvas.addEventListener('touchcancel', onTouchEnd);
+        canvas.addEventListener('contextmenu', e=>e.preventDefault());
+        
+        // Also support keyboard for PC (arrow keys for crossy moves)
+        window.addEventListener('keydown', (e) => {
+            if(!gameRunning) return;
+            if(currentGame === "CROSSY") {
+                if(e.key === 'ArrowLeft') { frogX--; if(frogX<0) frogX=0; e.preventDefault();}
+                else if(e.key === 'ArrowRight') { frogX++; if(frogX>=COLS) frogX=COLS-1; e.preventDefault();}
+                else if(e.key === 'ArrowUp') { frogY--; if(frogY<0) frogY=0; e.preventDefault();}
+                else if(e.key === 'ArrowDown') { frogY++; if(frogY>=ROWS) frogY=ROWS-1; e.preventDefault();}
+            } else if(currentGame === "SKYRUSH") {
+                if(e.key === 'ArrowLeft') { skyPlayerX -= 32; if(skyPlayerX<0) skyPlayerX=0; e.preventDefault();}
+                if(e.key === 'ArrowRight') { skyPlayerX += 32; if(skyPlayerX+SKY_PLAYER_W>CANVAS_W) skyPlayerX=CANVAS_W-SKY_PLAYER_W; e.preventDefault();}
+            }
         });
         
-        // initial high score UI load
-        updateHighScoreUI();
-        updateScoreUI();
-        
-        // ----- GAME LOOP (requestAnimationFrame) -----
-        let lastTimestamp = 0;
-        function gameLoop() {
-            if(gameRunning) {
-                updateGame();
+        // --------------------------------------------------------------
+        // Game switching & reset logic
+        // --------------------------------------------------------------
+        function resetCurrentGame() {
+            gameRunning = true;
+            if(currentGame === "SKYRUSH") {
+                resetSkyRush();
+                score = 0;
+                updateUI();
+            } else if(currentGame === "CROSSY") {
+                resetCrossyFrenzy();
+                score = 0;
+                updateUI();
             }
-            draw();
-            requestAnimationFrame(gameLoop);
         }
         
-        // start!
-        resetGame();   // fresh run
-        gameLoop();
+        function switchGame(gameId) {
+            currentGame = gameId;
+            resetCurrentGame();
+            gameRunning = true;
+            // update controls text
+            if(currentGame === "SKYRUSH") controlsMsgDiv.innerText = "✈️ SKY RUSH: MOVE MOUSE / DRAG LEFT-RIGHT | Arrow keys / Dodge red blocks!";
+            else controlsMsgDiv.innerText = "🐸 FROGGER FRENZY: MOVE MOUSE (SWIPE LEFT/RIGHT) or Arrow keys | Reach TOP lane +100!";
+        }
         
-        // optional: for window resize we ensure canvas visual scaling and recalc (but canvas logical pixels fixed)
-        // handle window orientation - just re-center mouse maybe not needed
-        function onResize() {}
-        window.addEventListener('resize', onResize);
+        // buttons & restart
+        document.getElementById('btnSkyRush').addEventListener('click',()=>{ switchGame("SKYRUSH"); });
+        document.getElementById('btnCrossy').addEventListener('click',()=>{ switchGame("CROSSY"); });
+        document.getElementById('globalRestartBtn').addEventListener('click',()=>{ resetCurrentGame(); gameRunning=true; });
+        
+        // initial setup
+        initLanes();
+        resetCrossyFrenzy();
+        resetSkyRush();
+        updateUI();
+        
+        // main loop
+        function gameLoop() {
+            if(gameRunning) {
+                if(currentGame === "SKYRUSH") updateSkyRush();
+                else updateCrossy();
+            }
+            // DRAW
+            if(currentGame === "SKYRUSH") drawSkyRush();
+            else drawCrossy();
+            
+            if(!gameRunning) {
+                ctx.fillStyle = "#000000aa";
+                ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
+                ctx.font = "bold 28px monospace";
+                ctx.fillStyle = "#FFD966";
+                ctx.textAlign = "center";
+                ctx.fillText("💀 GAME OVER 💀", CANVAS_W/2, CANVAS_H/2-25);
+                ctx.font = "18px monospace";
+                ctx.fillStyle = "#FFF2B5";
+                ctx.fillText("tap RESTART or switch game", CANVAS_W/2, CANVAS_H/2+40);
+            }
+            requestAnimationFrame(gameLoop);
+        }
+        gameLoop();
     })();
 </script>
 </body>
