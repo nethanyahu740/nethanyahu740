@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Sky Rush - Arcade Unblocked Game</title>
+    <style>
+        * {
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #0a1f2e 0%, #0c2a3b 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Courier New', 'Press Start 2P', monospace, system-ui;
+            touch-action: manipulation;
+        }
+
+        /* game container - responsive */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.4), 0 0 0 4px #ffd966, 0 0 0 8px #2c3e2f;
+            border-radius: 18px;
+            cursor: pointer;
+            background-color: #87CEEB;
+            width: 100%;
+            height: auto;
+        }
+
+        /* retro UI panel */
+        .info-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            background: #1e2a2e;
+            padding: 12px 24px;
+            margin-top: 16px;
+            border-radius: 60px;
+            gap: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+            box-shadow: inset 0 -2px 0 #3a4a4f, 0 6px 12px rgba(0,0,0,0.3);
+        }
+
+        .score-box, .high-box {
+            background: #000000aa;
+            backdrop-filter: blur(4px);
+            padding: 6px 18px;
+            border-radius: 32px;
+            font-weight: bold;
+            color: #f9f3c1;
+            text-shadow: 0 2px 0 #3a2a0f;
+            letter-spacing: 2px;
+        }
+
+        .score-box span, .high-box span {
+            font-size: 1.2rem;
+            background: #f5bc70;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 32px;
+            color: #1f2c1b;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
+        button {
+            background: #f4c542;
+            border: none;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1.2rem;
+            padding: 8px 20px;
+            border-radius: 48px;
+            color: #1f2f1c;
+            box-shadow: 0 5px 0 #a05e15;
+            transition: 0.07s linear;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        button:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #a05e15;
+        }
+
+        .controls-tip {
+            background: #00000077;
+            backdrop-filter: blur(8px);
+            border-radius: 48px;
+            padding: 8px 18px;
+            font-size: 0.8rem;
+            color: #eee5c9;
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        @media (max-width: 650px) {
+            .info-panel {
+                gap: 12px;
+                padding: 8px 16px;
+            }
+            .score-box span, .high-box span {
+                font-size: 1rem;
+            }
+            .controls-tip {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="game-container">
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
+    <div class="info-panel">
+        <div class="score-box">⭐ SCORE <span id="scoreValue">0</span></div>
+        <div class="high-box">🏆 BEST <span id="highScoreValue">0</span></div>
+        <button id="resetBtn">🔄 RESTART</button>
+    </div>
+    <div class="controls-tip">
+        🖱️ PC: MOVE MOUSE or touchpad | 📱 iOS: TOUCH & DRAG (left/right) | 🚀 Dodge red enemies!
+    </div>
+</div>
+
+<script>
+    (function(){
+        // ---------- CANVAS setup ----------
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // dimensions fixed ratio (800x500) but we'll scale visually
+        const CANVAS_W = 800;
+        const CANVAS_H = 500;
+        canvas.width = CANVAS_W;
+        canvas.height = CANVAS_H;
+
+        // ---------- Game settings ----------
+        let gameRunning = true;
+        let score = 0;
+        let highScore = 0;
+        
+        // load highscore from localStorage if exists
+        try {
+            const saved = localStorage.getItem('skyRushHigh');
+            if(saved && !isNaN(parseInt(saved))) highScore = parseInt(saved);
+        } catch(e) { /* silent */ }
+
+        // Player settings
+        const PLAYER_WIDTH = 36;
+        const PLAYER_HEIGHT = 36;
+        let playerX = CANVAS_W/2 - PLAYER_WIDTH/2;
+        const playerY = CANVAS_H - 70;
+        let playerSpeed = 9;   // pixels per frame update on move
+
+        // Obstacles array
+        let obstacles = [];
+        const OBSTACLE_SIZE = 34;     // square enemies
+        let frameCounter = 0;
+        let spawnDelay = 40;          // frames between spawns (gets lower with score)
+        let baseSpawnDelay = 40;
+        
+        // difficulty scaling
+        let currentDifficulty = 1;
+        
+        // --- movement flags for cross-platform (mouse/touch)
+        let targetPlayerX = playerX;   // for smooth follow (mouse/touch)
+        let useMouseControl = true;
+        
+        // for touch we store active touch id
+        let activeTouchId = null;
+        
+        // Helper functions
+        function updateHighScoreUI() {
+            document.getElementById('highScoreValue').innerText = highScore;
+        }
+        function updateScoreUI() {
+            document.getElementById('scoreValue').innerText = Math.floor(score);
+        }
+        
+        // save highscore
+        function saveHighScore() {
+            if(score > highScore) {
+                highScore = Math.floor(score);
+                updateHighScoreUI();
+                try {
+                    localStorage.setItem('skyRushHigh', highScore);
+                } catch(e) {}
+            }
+        }
+        
+        // reset game fully
+        function resetGame() {
+            gameRunning = true;
+            score = 0;
+            updateScoreUI();
+            obstacles = [];
+            frameCounter = 0;
+            currentDifficulty = 1;
+            spawnDelay = baseSpawnDelay;
+            playerX = CANVAS_W/2 - PLAYER_WIDTH/2;
+            targetPlayerX = playerX;
+            // no invincibility, fresh start
+            gameRunning = true;
+        }
+        
+        // collision (rect intersect)
+        function collision(ax, ay, aw, ah, bx, by, bw, bh) {
+            return ax < bx+bw && ax+aw > bx && ay < by+bh && ay+ah > by;
+        }
+        
+        // spawn new enemy (red "block")
+        function spawnObstacle() {
+            let randX = Math.random() * (CANVAS_W - OBSTACLE_SIZE);
+            obstacles.push({
+                x: randX,
+                y: -OBSTACLE_SIZE,
+                w: OBSTACLE_SIZE,
+                h: OBSTACLE_SIZE,
+                speed: 3.2 + Math.min(4.5, score / 380)  // faster over time
+            });
+        }
+        
+        // update obstacles, collisions, and scoring
+        function updateGame() {
+            if(!gameRunning) return;
+            
+            // 1. update player position (from mouse/touch)
+            // clamp targetPlayerX to borders
+            let clampedTarget = Math.min(Math.max(targetPlayerX, 0), CANVAS_W - PLAYER_WIDTH);
+            targetPlayerX = clampedTarget;
+            // smooth follow for instant but responsive
+            playerX = targetPlayerX;
+            
+            // 2. dynamic difficulty: as score increases, spawn faster & more enemies
+            let dynamicSpawnDelay = Math.max(18, baseSpawnDelay - Math.floor(score / 280));
+            // also increase enemy speed global factor later in movement
+            
+            // 3. spawn new obstacles
+            if(frameCounter >= dynamicSpawnDelay) {
+                frameCounter = 0;
+                // sometimes spawn double when score high
+                spawnObstacle();
+                if(score > 500 && Math.random() < 0.4) {
+                    spawnObstacle();  // extra pressure!
+                }
+            } else {
+                frameCounter++;
+            }
+            
+            // 4. move obstacles & collision & scoring (when they pass bottom)
+            for(let i=0; i<obstacles.length; i++) {
+                const obs = obstacles[i];
+                // speed increases linearly with score to keep challenge
+                let speedBonus = Math.min(3.0, score / 350);
+                obs.y += obs.speed + speedBonus * 0.5;
+                
+                // collision check (only if game running)
+                if(collision(playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT, obs.x, obs.y, obs.w, obs.h)) {
+                    gameRunning = false;   // GAME OVER
+                    saveHighScore();       // save best if needed
+                    return;
+                }
+            }
+            
+            // remove offscreen obstacles (below canvas or above out of range)
+            obstacles = obstacles.filter(obs => obs.y < CANVAS_H + 100);
+            
+            // SCORE INCREASE: based on survived frames + crossing obstacles? classic: each frame alive adds tiny score
+            // but also we add bonus per enemy that safely leaves screen? extra fun: +1 when enemy leaves bottom edge
+            // We'll track: for each obstacle that goes beyond canvas bottom without collision, give +2 pts.
+            // But simpler and nice: each frame player alive gives +0.1 score. But also additional when obstacle exits.
+            // Let's do hybrid: survival 0.08 per frame, and elimination score for enemy leaving screen.
+            // However to make it feel more rewarding: I'll add a system: for each obstacle that leaves bottom, give +3 pts.
+            // But we must avoid double counting after removal. We'll handle before filter:
+            let beforeCount = obstacles.length;
+            let passedObstacles = obstacles.filter(obs => obs.y + obs.h >= CANVAS_H);
+            // Actually simpler: we'll iterate and check after movement but before filter:
+            // While removing, count how many were y + h >= CANVAS_H, but also they were not collided.
+            let leavingCount = 0;
+            for(let i=0; i<obstacles.length; i++) {
+                if(obstacles[i].y + obstacles[i].h >= CANVAS_H && obstacles[i].y < CANVAS_H + 50) {
+                    // This obstacle just passed bottom this frame (approx)
+                    leavingCount++;
+                }
+            }
+            // add leaving bonus
+            if(leavingCount > 0) {
+                score += leavingCount * 2.5;
+                updateScoreUI();
+            }
+            
+            // survival points (active playing)
+            score += 0.12;
+            updateScoreUI();
+            
+            // Save highscore if current score surpasses highscore during game
+            if(Math.floor(score) > highScore) {
+                highScore = Math.floor(score);
+                updateHighScoreUI();
+                saveHighScore();
+            }
+        }
+        
+        // ---------- DRAWING: vibrant unblocked style ----------
+        function draw() {
+            ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+            
+            // --- Sky gradient & clouds ---
+            const gradSky = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
+            gradSky.addColorStop(0, "#4aa3df");
+            gradSky.addColorStop(1, "#b2e0fa");
+            ctx.fillStyle = gradSky;
+            ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+            
+            // clouds (fluffy)
+            ctx.fillStyle = "#ffffffcc";
+            ctx.shadowBlur = 0;
+            ctx.beginPath();
+            ctx.ellipse(120, 60, 45, 35, 0, 0, Math.PI*2);
+            ctx.ellipse(170, 50, 40, 32, 0, 0, Math.PI*2);
+            ctx.ellipse(80, 70, 38, 30, 0, 0, Math.PI*2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(620, 90, 55, 40, 0, 0, Math.PI*2);
+            ctx.ellipse(690, 80, 48, 36, 0, 0, Math.PI*2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(400, 120, 50, 38, 0, 0, Math.PI*2);
+            ctx.fill();
+            
+            // ground runway style
+            ctx.fillStyle = "#8B5A2B";
+            ctx.fillRect(0, CANVAS_H-28, CANVAS_W, 28);
+            ctx.fillStyle = "#D4A373";
+            for(let i=0; i<12; i++) {
+                ctx.fillRect(i*70, CANVAS_H-20, 35, 10);
+            }
+            
+            // ---- draw enemies (fiery red blocks with menace eyes) ----
+            for(let obs of obstacles) {
+                // body
+                ctx.fillStyle = "#e34d2b";
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = "#6a0d00";
+                ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+                // angry eyes
+                ctx.fillStyle = "#FFF7E8";
+                ctx.fillRect(obs.x+6, obs.y+8, 7, 8);
+                ctx.fillRect(obs.x+obs.w-13, obs.y+8, 7, 8);
+                ctx.fillStyle = "#020202";
+                ctx.fillRect(obs.x+7, obs.y+9, 4, 5);
+                ctx.fillRect(obs.x+obs.w-12, obs.y+9, 4, 5);
+                // eyebrows
+                ctx.fillStyle = "#2e1c0a";
+                ctx.fillRect(obs.x+5, obs.y+5, 9, 3);
+                ctx.fillRect(obs.x+obs.w-14, obs.y+5, 9, 3);
+                // teeth
+                ctx.fillStyle = "#FFE0A3";
+                ctx.fillRect(obs.x+10, obs.y+24, 6, 6);
+                ctx.fillRect(obs.x+obs.w-16, obs.y+24, 6, 6);
+            }
+            
+            // ---- Player: awesome jetpack cat / spaceship style ----
+            ctx.shadowBlur = 2;
+            ctx.shadowColor = "#00000066";
+            // trail effect
+            ctx.fillStyle = "#FFAA44cc";
+            ctx.beginPath();
+            ctx.moveTo(playerX+PLAYER_WIDTH/2, playerY+PLAYER_HEIGHT-8);
+            ctx.lineTo(playerX+PLAYER_WIDTH/2-12, playerY+PLAYER_HEIGHT+12);
+            ctx.lineTo(playerX+PLAYER_WIDTH/2, playerY+PLAYER_HEIGHT+4);
+            ctx.lineTo(playerX+PLAYER_WIDTH/2+12, playerY+PLAYER_HEIGHT+12);
+            ctx.fill();
+            // main body
+            ctx.fillStyle = "#4FC3F7";
+            ctx.beginPath();
+            ctx.roundRect(playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT, 10);
+            ctx.fill();
+            // cockpit
+            ctx.fillStyle = "#C0E0FF";
+            ctx.beginPath();
+            ctx.ellipse(playerX+PLAYER_WIDTH/2, playerY+12, 11, 9, 0, 0, Math.PI*2);
+            ctx.fill();
+            ctx.fillStyle = "#101820";
+            ctx.fillRect(playerX+PLAYER_WIDTH/2-4, playerY+10, 8, 5);
+            ctx.fillStyle = "#FFFFFF";
+            ctx.beginPath();
+            ctx.arc(playerX+PLAYER_WIDTH/2-2, playerY+9, 1.5, 0, Math.PI*2);
+            ctx.fill();
+            // wings
+            ctx.fillStyle = "#F9A26C";
+            ctx.fillRect(playerX-10, playerY+12, 10, 12);
+            ctx.fillRect(playerX+PLAYER_WIDTH, playerY+12, 10, 12);
+            // thrust fire
+            ctx.fillStyle = "#ff7833";
+            ctx.beginPath();
+            ctx.moveTo(playerX+PLAYER_WIDTH/2-6, playerY+PLAYER_HEIGHT-4);
+            ctx.lineTo(playerX+PLAYER_WIDTH/2, playerY+PLAYER_HEIGHT+10);
+            ctx.lineTo(playerX+PLAYER_WIDTH/2+6, playerY+PLAYER_HEIGHT-4);
+            ctx.fill();
+            ctx.fillStyle = "#FFC857";
+            ctx.beginPath();
+            ctx.moveTo(playerX+PLAYER_WIDTH/2-3, playerY+PLAYER_HEIGHT-2);
+            ctx.lineTo(playerX+PLAYER_WIDTH/2, playerY+PLAYER_HEIGHT+7);
+            ctx.lineTo(playerX+PLAYER_WIDTH/2+3, playerY+PLAYER_HEIGHT-2);
+            ctx.fill();
+            
+            // ---- game over overlay ----
+            if(!gameRunning) {
+                ctx.fillStyle = "#000000aa";
+                ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+                ctx.font = "bold 32monospace";
+                ctx.fillStyle = "#FFD966";
+                ctx.shadowBlur = 0;
+                ctx.textAlign = "center";
+                ctx.fillText("💀 GAME OVER 💀", CANVAS_W/2, CANVAS_H/2 - 35);
+                ctx.font = "20px monospace";
+                ctx.fillStyle = "#FFF2B5";
+                ctx.fillText("tap RESTART to play again", CANVAS_W/2, CANVAS_H/2 + 35);
+                ctx.font = "16px monospace";
+                ctx.fillStyle = "#ffb347";
+                ctx.fillText("final score: " + Math.floor(score), CANVAS_W/2, CANVAS_H/2 + 85);
+            }
+            
+            // show score & difficulty hint
+            ctx.font = "bold 18px 'Courier New'";
+            ctx.fillStyle = "#101221";
+            ctx.shadowBlur = 2;
+            ctx.fillText("⚡ DODGE RED MENACE", 18, 44);
+            ctx.font = "14px monospace";
+            ctx.fillStyle = "#3c280f";
+            ctx.fillText("← move →", CANVAS_W-100, 35);
+            ctx.textAlign = "left";
+        }
+        
+        // Helper: Canvas roundRect
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+                if (w < 2 * r) r = w / 2;
+                if (h < 2 * r) r = h / 2;
+                this.moveTo(x+r, y);
+                this.lineTo(x+w-r, y);
+                this.quadraticCurveTo(x+w, y, x+w, y+r);
+                this.lineTo(x+w, y+h-r);
+                this.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+                this.lineTo(x+r, y+h);
+                this.quadraticCurveTo(x, y+h, x, y+h-r);
+                this.lineTo(x, y+r);
+                this.quadraticCurveTo(x, y, x+r, y);
+                return this;
+            };
+        }
+        
+        // ----- INPUT HANDLERS (mouse + touch for iOS) -----
+        function getCanvasRelativeX(clientX) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;   // canvas actual vs display size
+            let relativeX = (clientX - rect.left) * scaleX;
+            relativeX = Math.min(Math.max(relativeX, 0), CANVAS_W - PLAYER_WIDTH);
+            return relativeX;
+        }
+        
+        // Mouse move (PC)
+        function handleMouseMove(e) {
+            if(!gameRunning) return;
+            e.preventDefault();
+            let mouseCanvasX = getCanvasRelativeX(e.clientX);
+            targetPlayerX = mouseCanvasX;
+        }
+        
+        // Touch handlers for iOS / any touch device
+        function handleTouchStart(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            if(touch) {
+                activeTouchId = touch.identifier;
+                let touchX = getCanvasRelativeX(touch.clientX);
+                targetPlayerX = touchX;
+            }
+        }
+        
+        function handleTouchMove(e) {
+            e.preventDefault();
+            if(!gameRunning) return;
+            // find active touch
+            let activeTouch = null;
+            if(activeTouchId !== null) {
+                for(let i=0; i<e.touches.length; i++) {
+                    if(e.touches[i].identifier === activeTouchId) {
+                        activeTouch = e.touches[i];
+                        break;
+                    }
+                }
+            }
+            if(!activeTouch && e.touches.length > 0) {
+                activeTouch = e.touches[0];
+                activeTouchId = activeTouch.identifier;
+            }
+            if(activeTouch) {
+                let newX = getCanvasRelativeX(activeTouch.clientX);
+                targetPlayerX = newX;
+            }
+        }
+        
+        function handleTouchEnd(e) {
+            e.preventDefault();
+            activeTouchId = null;
+            // optional: remains last position, no drift
+        }
+        
+        // disable context menu on canvas
+        canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+        canvas.addEventListener('mousemove', handleMouseMove);
+        canvas.addEventListener('touchstart', handleTouchStart, {passive: false});
+        canvas.addEventListener('touchmove', handleTouchMove, {passive: false});
+        canvas.addEventListener('touchend', handleTouchEnd);
+        canvas.addEventListener('touchcancel', handleTouchEnd);
+        
+        // also allow mouse leave doesn't interrupt but fine
+        
+        // restart button
+        const resetBtn = document.getElementById('resetBtn');
+        resetBtn.addEventListener('click', () => {
+            resetGame();
+            gameRunning = true;
+            score = 0;
+            updateScoreUI();
+            obstacles = [];
+            frameCounter = 0;
+            // preserve highscore already loaded
+            saveHighScore();
+            updateHighScoreUI();
+        });
+        
+        // initial high score UI load
+        updateHighScoreUI();
+        updateScoreUI();
+        
+        // ----- GAME LOOP (requestAnimationFrame) -----
+        let lastTimestamp = 0;
+        function gameLoop() {
+            if(gameRunning) {
+                updateGame();
+            }
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // start!
+        resetGame();   // fresh run
+        gameLoop();
+        
+        // optional: for window resize we ensure canvas visual scaling and recalc (but canvas logical pixels fixed)
+        // handle window orientation - just re-center mouse maybe not needed
+        function onResize() {}
+        window.addEventListener('resize', onResize);
+    })();
+</script>
+</body>
+</html>
